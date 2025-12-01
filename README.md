@@ -4,7 +4,7 @@ A curated collection of AI prompts specifically designed for WordPress developme
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0+-blue.svg)](https://wordpress.org/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-contributing)
 
 ## 📖 About
 
@@ -154,6 +154,6 @@ Built with ❤️ for the WordPress developer community. Special thanks to every
 
 ## 🔗 Connect
 
-Have questions or suggestions? Feel free to [open an issue](../../issues) or contribute to the project!
+Have questions or suggestions? Feel free to open an issue or contribute to the project!
 
 Happy coding! 🎉
