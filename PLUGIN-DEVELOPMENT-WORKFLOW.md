@@ -2,7 +2,7 @@
 
 This comprehensive workflow documents the complete process of developing and publishing a WordPress plugin to WordPress.org, from initial planning through final submission and maintenance.
 
-**Based on**: Post Formats for Block Themes development project (WordPress 6.8+)
+**Based on**: Real-world WordPress plugin development experience (WordPress 6.8+)
 
 ---
 
@@ -31,18 +31,17 @@ This comprehensive workflow documents the complete process of developing and pub
 - What is the minimum viable feature set?
 - What are the "nice to have" features for future versions?
 
-**Example (Post Formats for Block Themes):**
+**Example Plugin Concept:**
 ```
-Problem: Block themes don't support classic WordPress post formats
-Target Audience: WordPress developers and site builders using block themes
+Problem: Users need an easier way to manage custom post types with advanced fields
+Target Audience: WordPress site builders and content managers
 Core Features:
-  - Visual format selection modal
-  - 10 classic post formats (Standard, Aside, Status, Link, Gallery, Image, Quote, Video, Audio, Chat)
-  - Auto-detection based on content
-  - Format-specific block patterns
-  - Custom Chat Log block
-  - Format repair tool
-  - Full Site Editor support
+  - Custom post type registration interface
+  - Advanced custom field builder
+  - Field validation and conditional logic
+  - Import/export functionality
+  - Frontend display templates
+  - REST API integration
 ```
 
 ### 1.2 Research Existing Solutions
@@ -550,7 +549,7 @@ class Plugin {
 **Design Extensible Filters and Actions:**
 
 **Key Principles:**
-- Use consistent prefix (e.g., `pfbt_` for Post Formats for Block Themes)
+- Use consistent prefix (e.g., `myplugin_` or initials like `acf_` for Advanced Custom Fields)
 - Provide filters for all user-facing content
 - Allow developers to modify behavior
 - Document all hooks in code
@@ -1467,25 +1466,40 @@ echo esc_html( $user_provided_text );
 - Retest until Query Monitor is clean
 - WordPress.org reviewers use similar tools
 
-#### Real-World Example: Post Formats for Block Themes
+#### Real-World Example from a Plugin Project
 
 **Issue Found:**
 Query Monitor showed "Doing it Wrong" warning about block registration.
 
+```
+Doing it Wrong:
+Function WP_Block_Type_Registry::register was called incorrectly.
+Block type names must not contain uppercase characters.
+```
+
 **Investigation:**
 - Read error message carefully
 - Checked block registration code
-- Found `block.json` was missing from build directory
-- PHP was trying to register block without required metadata
+- Found `block.json` was missing from the build directory
+- PHP was trying to register block without required metadata file
 
 **Solution:**
-1. Copied `block.json` to `blocks/chatlog/build/` directory
-2. Updated textdomain to match plugin
-3. Verified `register_block_type()` path was correct
-4. Retested - warning disappeared
+1. Copied `block.json` to the correct build directory (`blocks/my-block/build/`)
+2. Updated textdomain in block.json to match plugin text domain
+3. Verified `register_block_type()` path pointed to correct location
+4. Retested with Query Monitor - warning disappeared
+
+**Code Fix:**
+```php
+// ❌ Wrong: Missing block.json in build directory
+register_block_type( PLUGIN_DIR . 'build/block.json' );  // File doesn't exist!
+
+// ✅ Correct: block.json exists at specified path
+register_block_type( PLUGIN_DIR . 'blocks/my-block/build/block.json' );
+```
 
 **Key Takeaway:**
-Query Monitor catches issues that would have been caught by WordPress.org reviewers. Fix them during development, not during review.
+Query Monitor catches issues during development that would otherwise be caught by WordPress.org reviewers. Fix them early, not during the review process.
 
 #### Query Monitor Pro Tips
 
@@ -2169,27 +2183,27 @@ phpunit.xml
    - Review asset updates in pull requests
    - Rollback to previous asset versions if needed
 
-**Real-World Example from This Project:**
+**Real-World Example from a Plugin Project:**
 
 ```bash
-# Our asset workflow for Post Formats for Block Themes
+# Example asset structure for a typical WordPress plugin
 .wordpress-org/
-├── icon-256x256.png          # 26KB - Small icon for search results
+├── icon-256x256.png          # 26KB - Plugin icon for search results
 ├── banner-772x250.png         # 345KB - Standard banner
-├── banner-1544x500.png        # 1.0MB - Retina banner
-├── screenshot-1.png           # ~200KB - Format selection modal
-├── screenshot-2.png           # ~200KB - Chat Log block editor
-├── screenshot-3.png           # ~200KB - Chat Log frontend
-├── screenshot-4.png           # ~200KB - Quote format
-├── screenshot-5.png           # ~200KB - Status format
-├── screenshot-6.png           # ~200KB - Repair tool
+├── banner-1544x500.png        # 1.0MB - Retina banner (2x)
+├── screenshot-1.png           # ~200KB - Main feature screenshot
+├── screenshot-2.png           # ~200KB - Settings page
+├── screenshot-3.png           # ~200KB - Frontend display
+├── screenshot-4.png           # ~200KB - Additional feature
+├── screenshot-5.png           # ~200KB - Mobile view
+├── screenshot-6.png           # ~200KB - Integration example
 ├── README.md                  # Asset documentation
 ├── ASSETS-CHECKLIST.md        # Pre-submission checklist
-└── DESIGN-PROMPT.md           # Design specifications
+└── DESIGN-PROMPT.md           # Design specifications for designer
 
 # Total assets: ~2.5MB
-# Plugin ZIP size: 84KB
-# User downloads: 84KB only!
+# Plugin ZIP size: 50-200KB (typical)
+# User downloads: Plugin code only, NOT assets!
 ```
 
 **Asset Verification Checklist:**
@@ -2213,16 +2227,18 @@ phpunit.xml
    ```
 
 2. **Asset File Size Matters**
-   - WordPress.org has 1MB per file limit
+   - WordPress.org has 1MB per file limit (strictly enforced)
    - Optimize with TinyPNG, ImageOptim, or Squoosh
    - Balance quality vs file size
-   - Our banners: 345KB (standard), 1.0MB (retina) - both acceptable
+   - Typical sizes: Icon 20-50KB, Banner 300-500KB, Retina banner 800KB-1MB
+   - All sizes under 1MB are acceptable if optimized
 
 3. **Screenshot Captions Are Critical**
    - Users can't click screenshots to enlarge on WordPress.org
    - Captions should explain what's shown
    - Use descriptive, benefit-focused language
-   - Example: "Format selection modal with 10 classic post formats and visual cards"
+   - Bad: "Modal window"
+   - Good: "Settings panel showing all configuration options with live preview"
 
 4. **Update Assets Independently**
    ```bash
@@ -2622,46 +2638,46 @@ Short description here (150 characters max).
 - What specific features or use cases does it solve?
 - Examples: `patterns`, `templates`, `chat-log`, `markdown`, `syntax-highlighting`
 
-**Real-World Example from This Project:**
+**Real-World Example from a Plugin Project:**
 
-Our plugin "Post Formats for Block Themes" uses these 5 tags:
+A plugin that brings classic post formats to block themes used these 5 tags:
 ```
 Tags: post-formats, block-theme, patterns, block-editor, chat-log
 ```
 
-**Why These Tags:**
+**Why These Tags Were Chosen:**
 
 1. **`post-formats`** (Primary Purpose)
-   - Exact match for what plugin does
+   - Exact match for the plugin's main function
    - Users searching for "post formats" will find it
-   - Core WordPress feature name
+   - Recognized WordPress core feature name
 
 2. **`block-theme`** (Technology Integration)
    - Targets block theme users specifically
-   - Distinguishes from classic theme support
-   - Growing market segment (WordPress direction)
+   - Distinguishes from classic theme plugins
+   - Aligns with WordPress direction (growing market)
 
-3. **`patterns`** (Feature)
-   - Plugin provides 10 format-specific patterns
+3. **`patterns`** (Feature Tag)
+   - Plugin provides format-specific block patterns
    - Popular search term in block editor ecosystem
-   - Highlights key feature
+   - Highlights a key differentiating feature
 
 4. **`block-editor`** (Technology Integration)
-   - Integrates with Gutenberg/block editor
+   - Integrates deeply with Gutenberg/block editor
    - Users filtering by "block-editor" will see it
    - Indicates modern WordPress compatibility
 
 5. **`chat-log`** (Unique Feature)
-   - Differentiates from other post format plugins
-   - Niche but specific search term
-   - Highlights unique Chat Log block feature
+   - Differentiates from competing plugins
+   - Niche but searchable term
+   - Highlights unique value proposition
 
-**Tags We Considered But Didn't Use:**
+**Tags Considered But Not Used:**
 - ❌ `gutenberg` - Too generic, redundant with `block-editor`
 - ❌ `templates` - Less important than other features
 - ❌ `editor` - Too broad, `block-editor` is more specific
 - ❌ `content` - Too generic, doesn't help discoverability
-- ❌ `formatting` - Similar to `post-formats`, wastes a tag slot
+- ❌ `formatting` - Too similar to `post-formats`, wastes a slot
 
 **Tag Research Tips:**
 
@@ -3051,22 +3067,21 @@ GPL v2 or later - link to LICENSE file
 - Documentation links
 ```
 
-**README.md Example from This Project:**
+**README.md Example:**
 
 ```markdown
-# Post Formats for Block Themes
+# Your Plugin Name
 
-Brings the power of WordPress Post Formats to modern block themes with a beautiful, accessible interface.
+Brief tagline describing what your plugin does in one sentence.
 
 ## Features
 
-- 🎨 **10 Classic Post Formats** - Aside, Audio, Chat, Gallery, Image, Link, Quote, Status, Video, Standard
-- 🤖 **Intelligent Auto-Detection** - Automatically suggests the best format based on your content
-- 🎯 **Block Patterns** - Format-specific patterns for quick content creation
-- 💬 **Chat Log Block** - Parse and display chat transcripts from Slack, Discord, Teams, WhatsApp, and more
-- ♿ **Accessibility First** - WCAG 2.1 AA compliant, keyboard navigation, screen reader friendly
-- 🏗️ **Site Editor Support** - Format-specific templates for full site editing
-- 🔧 **Repair Tool** - Fix legacy post format assignments from classic themes
+- ✨ **Feature 1 Name** - Detailed description of what this feature does
+- 🚀 **Feature 2 Name** - Explain the benefits to users
+- 🎯 **Feature 3 Name** - Highlight what makes this unique
+- 💡 **Feature 4 Name** - Show how it solves user problems
+- ♿ **Accessibility** - WCAG 2.1 AA compliant, keyboard navigation, screen reader friendly
+- 🏗️ **Modern WordPress** - Full Site Editor and block editor support
 
 ## Development
 
@@ -3074,12 +3089,12 @@ Brings the power of WordPress Post Formats to modern block themes with a beautif
 - Node.js 20+ and npm
 - PHP 7.4+ and Composer
 - WordPress 6.8+
-- Local WordPress development environment
+- Local WordPress development environment (Local, XAMPP, Docker, etc.)
 
 ### Setup
 ```bash
 # Clone repository
-git clone https://github.com/courtneyr-dev/post-formats-for-block-themes.git
+git clone https://github.com/yourusername/your-plugin-slug.git
 
 # Install dependencies
 npm install
@@ -3101,12 +3116,12 @@ wp plugin install query-monitor --activate
 ```
 
 ### Architecture
-- `/blocks/` - Custom blocks (Chat Log)
+- `/blocks/` - Custom blocks
 - `/includes/` - PHP classes and utilities
-- `/patterns/` - Format-specific block patterns
-- `/templates/` - Site Editor template parts
+- `/patterns/` - Block patterns (if applicable)
+- `/templates/` - Template parts (if applicable)
 - `/src/` - JavaScript source files
-- `/build/` - Compiled JavaScript assets
+- `/build/` - Compiled assets
 
 ## Contributing
 
@@ -3125,8 +3140,8 @@ GPL v2 or later
 
 ## Support
 
-- [WordPress.org Support Forum](https://wordpress.org/support/plugin/post-formats-for-block-themes/)
-- [GitHub Issues](https://github.com/courtneyr-dev/post-formats-for-block-themes/issues)
+- [WordPress.org Support Forum](https://wordpress.org/support/plugin/your-plugin-slug/)
+- [GitHub Issues](https://github.com/yourusername/your-plugin-slug/issues)
 ```
 
 **README.md Best Practices:**
@@ -3255,13 +3270,13 @@ Please use the [support forum](https://wordpress.org/support/plugin/plugin-slug/
 Initial release of Post Formats for Block Themes. Bring classic post formats to modern block themes!
 ```
 
-**readme.txt Example from This Project:**
+**readme.txt Example:**
 
 ```
-=== Post Formats for Block Themes ===
-Contributors: courane01
+=== Your Plugin Name ===
+Contributors: your-wporg-username
 Donate link: https://example.com/donate
-Tags: post-formats, block-theme, patterns, block-editor, chat-log
+Tags: tag1, tag2, tag3, tag4, tag5
 Requires at least: 6.8
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -3269,93 +3284,81 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Brings the classic WordPress post formats to modern block themes with an intuitive interface and format-specific patterns.
+Short description of your plugin in under 150 characters. Focus on the main benefit to users.
 
 == Description ==
 
-Add visual variety and semantic meaning to your posts with **Post Formats for Block Themes**. This plugin restores the beloved Post Formats feature for modern block themes with a beautiful, accessible interface.
+Compelling user-focused description of what your plugin does and why users need it. Start with the main benefit or problem it solves.
 
-**Choose from 10 Classic Post Formats:**
+**Key Features:**
 
-* 📝 **Aside** - Quick notes and thoughts
-* 🎵 **Audio** - Music and podcasts
-* 💬 **Chat** - Conversations and interviews
-* 🖼️ **Gallery** - Photo collections
-* 📷 **Image** - Single photos
-* 🔗 **Link** - Shared links with commentary
-* 💭 **Quote** - Quotations with attribution
-* 📱 **Status** - Twitter-style microblog posts
-* 🎬 **Video** - Video content
-* 📄 **Standard** - Traditional blog posts
-
-**Intelligent Features:**
-
-* **Auto-Detection** - Plugin suggests the best format based on your content
-* **Block Patterns** - 10 format-specific patterns for quick content creation
-* **Chat Log Block** - Automatically parse chat transcripts from Slack, Discord, Teams, WhatsApp, Telegram, and Signal
-* **Site Editor Support** - Create format-specific templates with full site editing
-* **Repair Tool** - Fix legacy post format assignments when migrating from classic themes
-* **Accessibility First** - WCAG 2.1 AA compliant, keyboard navigation, screen reader friendly
+* ✨ **Feature 1 Name** - Brief description of user benefit
+* 🚀 **Feature 2 Name** - What users can accomplish
+* 🎯 **Feature 3 Name** - How it makes their life easier
+* 💡 **Feature 4 Name** - Why it's better than alternatives
+* ♿ **Accessibility** - WCAG 2.1 AA compliant, keyboard navigation, screen reader friendly
+* 🏗️ **Modern WordPress** - Full integration with block editor and Site Editor
 
 **Perfect For:**
 
-* Bloggers who want to add visual variety to their content
-* Content creators using modern block themes (Twenty Twenty-Four, etc.)
-* Teams who need to share meeting notes and chat logs
-* Anyone migrating from classic themes who wants to keep post formats
+* User type 1 who needs to accomplish X
+* User type 2 who wants to achieve Y
+* Anyone who struggles with Z
+* Teams or individuals working on specific use case
 
 == Installation ==
 
-1. Install via the WordPress plugin directory or upload the ZIP file
+1. Install the plugin via WordPress plugin directory or upload ZIP file
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Create or edit a post in the block editor
-4. Click the format button (chat bubble icon) in the editor toolbar
-5. Select your desired post format
-6. Optionally insert a format-specific block pattern
+3. Navigate to the plugin settings (if applicable)
+4. Configure your preferences
+5. Start using the plugin features
 
 == Frequently Asked Questions ==
 
-= Does this work with classic themes? =
+= Does this work with my theme? =
 
-This plugin is designed specifically for block themes (WordPress 5.9+). For classic theme support, use the built-in Post Formats feature.
+Yes! This plugin works with any modern block theme (WordPress 5.9+) and most classic themes.
 
-= Can I create custom templates for each format? =
+= Will this slow down my site? =
 
-Yes! Use the Site Editor to create format-specific templates (single-format-aside, single-format-quote, etc.).
+No, the plugin is optimized for performance with minimal database queries and efficient code.
 
-= How does the Chat Log block work? =
+= How do I get support? =
 
-Paste a chat transcript from Slack, Discord, Teams, WhatsApp, or other platforms. The block automatically detects the format and renders it beautifully.
+Please use the [support forum](https://wordpress.org/support/plugin/your-plugin-slug/) or visit our [GitHub repository](https://github.com/yourusername/your-plugin-slug/issues).
 
 = Is this plugin accessible? =
 
 Yes! We follow WCAG 2.1 AA guidelines with full keyboard navigation, proper ARIA labels, and screen reader support.
 
+= Can I use this with other plugins? =
+
+Yes! This plugin is designed to work alongside popular plugins like WooCommerce, Yoast SEO, and others.
+
 == Screenshots ==
 
-1. Format selection modal with 10 classic post formats and visual cards
-2. Chat Log block in editor showing platform auto-detection for Slack transcript
-3. Beautifully formatted chat conversation on published post (frontend)
-4. Quote format with elegant styling and attribution
-5. Status format with Twitter-style microblog layout
-6. Repair tool for fixing legacy post format assignments
+1. Main feature in action - showing the primary use case
+2. Settings page with all configuration options
+3. Frontend display showing how users see the output
+4. Additional feature highlighting unique capability
+5. Integration with WordPress block editor
+6. Mobile responsive view or additional feature
 
 == Changelog ==
 
 = 1.0.0 =
 * Initial release
-* 10 classic post formats with visual format selector
-* Intelligent auto-detection based on content
-* Format-specific block patterns
-* Chat Log block with multi-platform support (Slack, Discord, Teams, WhatsApp, Telegram, Signal, SRT, VTT)
-* Site Editor integration with format-specific templates
-* Format repair tool for migrating from classic themes
+* Core feature 1
+* Core feature 2
+* Core feature 3
 * Full accessibility compliance (WCAG 2.1 AA)
+* Comprehensive documentation
 
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release! Bring the power of classic post formats to your modern block theme.
+Initial release! Brief compelling reason to install this plugin.
 ```
 
 **readme.txt Best Practices:**
@@ -3458,39 +3461,43 @@ grep -E "[A-Z]" readme.txt | grep "^Tags:"  # Tags should be lowercase
 
 ---
 
-#### Real-World Tips from This Project
+#### Real-World Tips from Plugin Projects
 
 **1. Screenshot Captions Matter**
 - WordPress.org users can't enlarge screenshots
 - Captions explain what users are seeing
 - Use benefit-focused language
 - Bad: "Modal window"
-- Good: "Format selection modal with 10 classic post formats and visual cards"
+- Good: "Settings panel showing all configuration options with live preview"
+- Better: "Easy-to-use interface for managing all plugin features in one place"
 
 **2. Keep Short Description Under 150 Characters**
-- WordPress.org enforces this limit
-- Focus on the main benefit
+- WordPress.org enforces this strict limit
+- Focus on the main benefit, not features
 - Don't waste characters on "This plugin" prefix
-- Bad (162 chars): "This plugin brings the classic WordPress post formats to modern block themes with an intuitive interface and format-specific patterns."
-- Good (149 chars): "Brings the classic WordPress post formats to modern block themes with an intuitive interface and format-specific patterns."
+- Bad (162 chars): "This plugin provides comprehensive form building capabilities for WordPress with drag and drop interface and advanced features."
+- Good (148 chars): "Powerful form builder with drag-and-drop interface, advanced validation, and seamless integration with popular email services."
 
 **3. Tags Are Critical for Discoverability**
-- Only 5 tags allowed
+- Only 5 tags allowed (strictly enforced)
 - Must be lowercase with hyphens
 - Choose strategically (see section 8.2.1)
-- Monitor performance and adjust
+- Balance specificity with search volume
+- Monitor stats and adjust tags if needed
 
 **4. Changelog Tells Your Plugin's Story**
-- Users read changelog to understand evolution
-- Group changes by type (Added, Fixed, Changed)
-- Be specific about security fixes
-- Show active development
+- Users read changelog to understand evolution and active development
+- Group changes by type (Added, Fixed, Changed, Security)
+- Be specific about security fixes ("Security: Fixed XSS vulnerability")
+- Show active maintenance even for small fixes
+- Example: "* Fixed: Typo in settings label" shows attention to detail
 
 **5. FAQ Section Prevents Support Requests**
-- Answer questions before they're asked
-- Address compatibility concerns
-- Explain limitations clearly
+- Answer questions before users need to ask
+- Address common compatibility concerns upfront
+- Explain limitations clearly and honestly
 - Link to documentation for detailed answers
+- Common FAQs: theme compatibility, other plugin conflicts, performance impact, accessibility support
 
 ---
 
@@ -3678,7 +3685,7 @@ Looking forward to your response!
 
 ## Lessons Learned
 
-### Critical Lessons from Post Formats for Block Themes Development
+### Critical Lessons from Real-World Plugin Development
 
 ### 1. Parser Requirements Must Match Documentation
 
@@ -3871,11 +3878,11 @@ This workflow documents the complete plugin development process from initial con
 9. **Maintain actively** - Security updates, compatibility testing, bug fixes
 10. **Learn continuously** - Each project teaches new lessons
 
-This workflow is a living document. Update it as you learn new techniques, discover better practices, or encounter new challenges.
+This workflow is a living document. Update it as you learn new techniques, discover better practices, or encounter new challenges in your own plugin development projects.
 
-**Project:** Post Formats for Block Themes (WordPress 6.8+)
-**Documentation Version:** 1.0.0
-**Last Updated:** 2024-03-15
+**Documentation Version:** 2.0
+**Last Updated:** December 2025
+**Compatible With:** WordPress 6.8+
 
 ---
 
