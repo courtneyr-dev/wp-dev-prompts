@@ -1,0 +1,209 @@
+name: Dependabot Auto-merge
+
+# Automatically merge Dependabot PRs for patch and minor updates
+# after CI tests pass. Major updates require manual review.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  # ============================================================================
+  # AUTO-MERGE SAFE UPDATES
+  # ============================================================================
+  auto-merge:
+    name: Auto-merge Dependabot PRs
+    runs-on: ubuntu-latest
+
+    # Only run for Dependabot PRs
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Wait for CI to complete
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          # Wait for these checks to complete
+          check-name: |
+            PHP Linting (PHPCS + PHPStan)
+            JavaScript/CSS Linting
+            PHPUnit - PHP 8.2 / WP 6.7
+            JavaScript Unit Tests (Jest)
+            WordPress Plugin Check (PCP)
+            Security Scanning
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+          # Fail if checks don't complete in 30 minutes
+          allowed-conclusions: success
+
+      - name: Auto-merge patch updates
+        # Auto-merge patch updates for all ecosystems
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: |
+          echo "Auto-merging patch update: ${{ steps.metadata.outputs.dependency-names }}"
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-merge minor dev dependency updates
+        # Auto-merge minor updates for development dependencies only
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-minor' &&
+          steps.metadata.outputs.dependency-type == 'direct:development'
+        run: |
+          echo "Auto-merging minor dev dependency update: ${{ steps.metadata.outputs.dependency-names }}"
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on PR requiring review
+        # Comment on PRs that need manual review
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-major' ||
+          (steps.metadata.outputs.update-type == 'version-update:semver-minor' &&
+           steps.metadata.outputs.dependency-type == 'direct:production')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const updateType = '${{ steps.metadata.outputs.update-type }}';
+            const depType = '${{ steps.metadata.outputs.dependency-type }}';
+            const depNames = '${{ steps.metadata.outputs.dependency-names }}';
+
+            let comment = '🤖 **Dependabot PR requires manual review**\n\n';
+
+            if (updateType === 'version-update:semver-major') {
+              comment += '⚠️ This is a **major version update** which may contain breaking changes.\n\n';
+              comment += '**Review checklist:**\n';
+              comment += '- [ ] Read the changelog/release notes\n';
+              comment += '- [ ] Check for breaking changes\n';
+              comment += '- [ ] Test locally\n';
+              comment += '- [ ] Update code if needed\n';
+            } else {
+              comment += '⚠️ This is a **minor update** to a **production dependency**.\n\n';
+              comment += '**Review checklist:**\n';
+              comment += '- [ ] Review the changelog\n';
+              comment += '- [ ] Test locally if significant changes\n';
+            }
+
+            comment += '\n**Dependencies:** `' + depNames + '`\n';
+            comment += '\nOnce reviewed and CI passes, merge this PR manually.';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Approve PR (if auto-merging)
+        # Automatically approve PRs that will be auto-merged
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
+          (steps.metadata.outputs.update-type == 'version-update:semver-minor' &&
+           steps.metadata.outputs.dependency-type == 'direct:development')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              event: 'APPROVE',
+              body: '✅ Auto-approving safe dependency update. CI passed.'
+            });
+
+  # ============================================================================
+  # SECURITY UPDATE NOTIFICATIONS
+  # ============================================================================
+  notify-security:
+    name: Notify Security Updates
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Check if security update
+        id: security-check
+        run: |
+          # Dependabot includes [security] in the commit message for security updates
+          if [[ "${{ github.event.pull_request.title }}" == *"[security]"* ]]; then
+            echo "is_security=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_security=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Add security label
+        if: steps.security-check.outputs.is_security == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['security', 'priority-high']
+            });
+
+      - name: Comment on security update
+        if: steps.security-check.outputs.is_security == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `🚨 **Security Update Detected**
+
+            This PR contains a security fix and should be reviewed and merged as soon as possible.
+
+            **Action required:**
+            1. Review the security advisory details
+            2. Verify CI tests pass
+            3. Merge immediately if tests pass
+            4. Deploy to production ASAP
+
+            See the PR description for vulnerability details.`;
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
+
+      - name: Send Slack notification for security updates
+        if: steps.security-check.outputs.is_security == 'true' && secrets.SLACK_WEBHOOK_URL != ''
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "🚨 Security Update Available",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚨 *Security Update Available*\n*Repository:* ${{ github.repository }}\n*Dependencies:* ${{ steps.metadata.outputs.dependency-names }}\n<${{ github.event.pull_request.html_url }}|View PR>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

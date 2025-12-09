@@ -1,0 +1,266 @@
+# Dependabot configuration for automated dependency updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+
+updates:
+  # ============================================================================
+  # COMPOSER DEPENDENCIES (PHP)
+  # ============================================================================
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+
+    # Group updates to reduce PR noise
+    groups:
+      # Group all WordPress-related packages together
+      wordpress:
+        patterns:
+          - "wp-*"
+          - "wordpress/*"
+          - "*wordpress*"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Group testing tools together
+      testing:
+        patterns:
+          - "phpunit/*"
+          - "yoast/phpunit-polyfills"
+          - "10up/wp_mock"
+          - "brain/monkey"
+          - "mockery/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Group code quality tools
+      code-quality:
+        patterns:
+          - "squizlabs/*"
+          - "wp-coding-standards/*"
+          - "phpstan/*"
+          - "szepeviktor/*"
+          - "vimeo/psalm"
+          - "psalm/*"
+          - "phpcompatibility/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+    # Commit message configuration
+    commit-message:
+      prefix: "build(composer)"
+      prefix-development: "chore(composer-dev)"
+      include: "scope"
+
+    # Only create PRs for security updates and minor/patch updates
+    # Review major updates manually
+    open-pull-requests-limit: 10
+
+    # Add labels to PRs
+    labels:
+      - "dependencies"
+      - "composer"
+
+    # Ignore major version updates for these (review manually)
+    ignore:
+      - dependency-name: "phpunit/phpunit"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "phpstan/phpstan"
+        update-types: ["version-update:semver-major"]
+
+    # Reviewers (optional - uncomment and customize)
+    # reviewers:
+    #   - "your-github-username"
+
+    # Assignees (optional)
+    # assignees:
+    #   - "your-github-username"
+
+  # ============================================================================
+  # NPM DEPENDENCIES (JavaScript)
+  # ============================================================================
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+
+    # Group updates to reduce PR noise
+    groups:
+      # Group all WordPress packages together
+      wordpress:
+        patterns:
+          - "@wordpress/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Group testing tools
+      testing:
+        patterns:
+          - "jest"
+          - "@testing-library/*"
+          - "playwright"
+          - "@playwright/*"
+          - "@axe-core/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Group linting tools
+      linting:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@eslint/*"
+          - "stylelint"
+          - "stylelint-*"
+          - "prettier"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Group build tools
+      build:
+        patterns:
+          - "webpack"
+          - "webpack-*"
+          - "@babel/*"
+          - "postcss"
+          - "postcss-*"
+        update-types:
+          - "minor"
+          - "patch"
+
+    # Commit message configuration
+    commit-message:
+      prefix: "build(npm)"
+      prefix-development: "chore(npm-dev)"
+      include: "scope"
+
+    open-pull-requests-limit: 10
+
+    labels:
+      - "dependencies"
+      - "npm"
+
+    # Ignore major updates for these critical packages
+    ignore:
+      - dependency-name: "@wordpress/scripts"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "webpack"
+        update-types: ["version-update:semver-major"]
+
+    # Versioning strategy
+    versioning-strategy: "increase"
+
+  # ============================================================================
+  # GITHUB ACTIONS
+  # Keep workflow actions up to date
+  # ============================================================================
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+
+    # Group all GitHub Actions updates together
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+    open-pull-requests-limit: 5
+
+# ============================================================================
+# AUTO-MERGE CONFIGURATION (Requires separate workflow)
+# ============================================================================
+# To enable auto-merge of patch updates, create:
+# .github/workflows/dependabot-auto-merge.yml
+#
+# Example workflow:
+# ---
+# name: Dependabot Auto-merge
+# on: pull_request
+#
+# permissions:
+#   contents: write
+#   pull-requests: write
+#
+# jobs:
+#   auto-merge:
+#     runs-on: ubuntu-latest
+#     if: github.actor == 'dependabot[bot]'
+#     steps:
+#       - name: Dependabot metadata
+#         id: metadata
+#         uses: dependabot/fetch-metadata@v2
+#         with:
+#           github-token: "${{ secrets.GITHUB_TOKEN }}"
+#
+#       - name: Enable auto-merge for patch updates
+#         if: |
+#           steps.metadata.outputs.update-type == 'version-update:semver-patch' &&
+#           contains(fromJSON('["dependencies", "npm", "composer"]'), steps.metadata.outputs.package-ecosystem)
+#         run: gh pr merge --auto --squash "$PR_URL"
+#         env:
+#           PR_URL: ${{ github.event.pull_request.html_url }}
+#           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# ---
+
+# ============================================================================
+# TIPS FOR USING DEPENDABOT
+# ============================================================================
+#
+# 1. Review Security Updates Immediately
+#    - Dependabot will create PRs for security vulnerabilities
+#    - These should be reviewed and merged ASAP
+#
+# 2. Test Before Merging
+#    - Ensure your CI passes before merging any PR
+#    - Review breaking changes in major updates
+#
+# 3. Manage PR Volume
+#    - Use grouping to reduce the number of PRs
+#    - Adjust schedules if you're getting too many updates
+#
+# 4. Security Alerts
+#    - Enable Dependabot security alerts in repository settings
+#    - Enable Dependabot security updates for automatic fixes
+#
+# 5. Custom Ignore Rules
+#    - Add specific packages to ignore if updates cause issues
+#    - Document why packages are ignored
+#
+# 6. Review Major Updates Carefully
+#    - Major version updates often have breaking changes
+#    - Read changelogs before merging
+#    - Test thoroughly
+#
+# 7. Keep Actions Updated
+#    - GitHub Actions should stay current for security
+#    - Review action changelog for breaking changes
+#
+# ============================================================================

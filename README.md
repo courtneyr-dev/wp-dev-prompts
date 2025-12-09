@@ -49,6 +49,53 @@ Work with WordPress REST API and AJAX functionality
 ### 🎨 **Customizer & Settings**
 Build theme customizers and admin settings pages
 
+### 🧪 **Testing & Automation** ⭐ NEW!
+Complete testing infrastructure for WordPress plugins and themes covering all 21 quality dimensions
+
+## 🧪 Testing Automation Framework
+
+**NEW!** A comprehensive testing automation framework for WordPress plugins and themes. This includes:
+
+- **[TESTING-README.md](./TESTING-README.md)** - Complete overview of the testing framework
+- **[TESTING-AUTOMATION-PROMPTS.md](./TESTING-AUTOMATION-PROMPTS.md)** - 24 AI prompts for every testing scenario
+- **[TESTING-SETUP-GUIDE.md](./TESTING-SETUP-GUIDE.md)** - Step-by-step setup instructions
+- **[TESTING-QUICK-REFERENCE.md](./TESTING-QUICK-REFERENCE.md)** - One-page command reference
+- **[QA-TESTING-CHECKLIST.md](./QA-TESTING-CHECKLIST.md)** - Comprehensive manual QA checklist
+- **[setup-testing.sh](./setup-testing.sh)** - Automated setup script
+- **GitHub Actions Workflows** - Production-ready CI/CD pipelines
+- **Dependabot Configuration** - Automated dependency updates
+
+### What's Covered
+
+This testing framework provides complete coverage across:
+
+**PHP Testing**: Unit tests, integration tests, PHPCS, PHPStan, PHP compatibility
+**JavaScript Testing**: ESLint, Jest, TypeScript, Stylelint
+**Security**: SAST, dependency scanning, sanitization checks, nonce validation
+**Accessibility**: WCAG 2.1 AA compliance with axe-core
+**Performance**: Lighthouse CI, bundle size checks, query optimization
+**WordPress-Specific**: Plugin Check, i18n validation, enqueueing patterns
+
+### Quick Start with Testing
+
+```bash
+# Clone this repository
+git clone https://github.com/courtneyr-dev/wp-dev-prompts.git
+cd wp-dev-prompts
+
+# Run automated setup
+bash setup-testing.sh --plugin-name="My Plugin" --text-domain="my-plugin"
+
+# Install WordPress test suite
+bash bin/install-wp-tests.sh wordpress_test root root localhost latest
+
+# Start testing!
+composer test
+npm run test:unit
+```
+
+See **[TESTING-README.md](./TESTING-README.md)** for complete documentation.
+
 ## 🚀 Quick Start
 
 1. **Browse the prompts** in the relevant category folder
