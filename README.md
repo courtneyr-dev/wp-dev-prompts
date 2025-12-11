@@ -11,7 +11,7 @@
 
 ## 🎯 Start Here: New Project?
 
-### **👉 [PROJECT-KICKSTART-PROMPT.md](PROJECT-KICKSTART-PROMPT.md) 👈**
+### **👉 [PROJECT-KICKSTART-PROMPT.md](prompts/PROJECT-KICKSTART-PROMPT.md) 👈**
 
 **The single prompt to rule them all.**
 
@@ -64,7 +64,7 @@ Use the kickstart prompt for guided development:
 
 ```bash
 # 1. Open the kickstart prompt
-open PROJECT-KICKSTART-PROMPT.md
+open prompts/PROJECT-KICKSTART-PROMPT.md
 
 # 2. Copy the prompt template
 
@@ -114,13 +114,13 @@ Pick what you need:
 
 ```bash
 # Documentation workflow
-open DOCUMENTATION-WORKFLOW.md
+open guides/DOCUMENTATION-WORKFLOW.md
 
 # Testing setup guide
-open TESTING-SETUP-GUIDE.md
+open guides/testing/TESTING-SETUP-GUIDE.md
 
 # Development lifecycle
-open DEVELOPMENT-LIFECYCLE.md
+open guides/DEVELOPMENT-LIFECYCLE.md
 
 # Browse templates
 cd templates/
@@ -130,75 +130,62 @@ cd templates/
 
 ## 📂 Repository Structure
 
-### 🎯 **Start Here**
-
-| File | Description |
-|------|-------------|
-| **[PROJECT-KICKSTART-PROMPT.md](PROJECT-KICKSTART-PROMPT.md)** | 👈 **START HERE** - Complete project prompt |
-
-### 📋 **Core Workflows**
-
-| File | Description | Size |
-|------|-------------|------|
-| **[DEVELOPMENT-LIFECYCLE.md](DEVELOPMENT-LIFECYCLE.md)** | Complete dev lifecycle (10 phases) | 53 KB |
-| **[DOCUMENTATION-WORKFLOW.md](DOCUMENTATION-WORKFLOW.md)** | Documentation with automated screenshots | 33 KB |
-| **[PLUGIN-DEVELOPMENT-WORKFLOW.md](PLUGIN-DEVELOPMENT-WORKFLOW.md)** | Plugin development guide | 106 KB |
-| **[SCREENSHOT-DOCUMENTATION-GUIDE.md](SCREENSHOT-DOCUMENTATION-GUIDE.md)** | Screenshot best practices | 20 KB |
-
-### 🧪 **Testing Resources**
-
-| File | Description | Size |
-|------|-------------|------|
-| **[TESTING-README.md](TESTING-README.md)** | Testing framework overview | 12 KB |
-| **[TESTING-SETUP-GUIDE.md](TESTING-SETUP-GUIDE.md)** | Step-by-step testing setup | 26 KB |
-| **[TESTING-AUTOMATION-PROMPTS.md](TESTING-AUTOMATION-PROMPTS.md)** | 24 testing prompts for AI | 40 KB |
-| **[TESTING-QUICK-REFERENCE.md](TESTING-QUICK-REFERENCE.md)** | Command cheat sheet | 12 KB |
-
-### 🤖 **AI Prompts**
-
-| File | Description | Size |
-|------|-------------|------|
-| **[TESTING-AUTOMATION-PROMPTS.md](TESTING-AUTOMATION-PROMPTS.md)** | 24 prompts for testing setup | 40 KB |
-| **[COMMUNITY-FILES-PROMPTS.md](COMMUNITY-FILES-PROMPTS.md)** | 16 prompts for docs & community | 19 KB |
-
-### 📑 **Templates**
-
 ```
-templates/
-├── community/              # Community file templates
-│   ├── CONTRIBUTING-TEMPLATE.md
-│   ├── SECURITY-TEMPLATE.md
-│   └── SUPPORT-TEMPLATE.md
-├── github/                 # GitHub templates
-│   ├── ISSUE_TEMPLATE/
-│   │   ├── bug_report.md
-│   │   ├── feature_request.md
-│   │   ├── question.md
-│   │   └── config.yml
-│   └── PULL_REQUEST_TEMPLATE.md
-├── workflows/              # Workflow templates
-│   ├── BLUEPRINT-CREATION-GUIDE.md
-│   ├── BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md
-│   ├── USER-STORY-TEMPLATE.md
-│   └── VISUAL-REGRESSION-TESTING-TEMPLATE.md
-└── checklists/             # QA checklists
-    └── QA-TESTING-CHECKLIST.md
-```
-
-### 🔧 **Scripts & Automation**
-
-```
-scripts/
-└── setup-testing.sh        # Automated testing setup
-
-github-workflows/           # GitHub Actions
-├── wordpress-plugin-ci.yml
-├── visual-regression-testing.yml
-└── dependabot-auto-merge.yml
-
-.github/
-├── dependabot.yml
-└── workflows/
+wp-dev-prompts/
+├── 📋 prompts/                           # 🎯 START HERE
+│   ├── PROJECT-KICKSTART-PROMPT.md      # 👈 Main entry point
+│   ├── prompts/TESTING-AUTOMATION-PROMPTS.md    # 24 testing prompts
+│   └── prompts/COMMUNITY-FILES-PROMPTS.md       # 16 documentation prompts
+│
+├── 📚 guides/                            # Complete development guides
+│   ├── guides/DEVELOPMENT-LIFECYCLE.md         # 10-phase lifecycle
+│   ├── guides/DOCUMENTATION-WORKFLOW.md        # Doc creation workflow
+│   ├── guides/PLUGIN-DEVELOPMENT-WORKFLOW.md   # Plugin development
+│   ├── guides/SCREENSHOT-DOCUMENTATION-GUIDE.md # Screenshot guide
+│   └── testing/                         # Testing guides
+│       ├── guides/testing/TESTING-README.md           # Testing overview
+│       ├── guides/testing/TESTING-SETUP-GUIDE.md      # Setup instructions
+│       └── guides/testing/TESTING-QUICK-REFERENCE.md  # Command reference
+│
+├── 📑 templates/                         # Ready-to-use templates
+│   ├── community/                       # Community files
+│   │   ├── CONTRIBUTING-TEMPLATE.md
+│   │   ├── SECURITY-TEMPLATE.md
+│   │   └── SUPPORT-TEMPLATE.md
+│   ├── github/                          # GitHub templates
+│   │   ├── ISSUE_TEMPLATE/
+│   │   │   ├── bug_report.md
+│   │   │   ├── feature_request.md
+│   │   │   ├── question.md
+│   │   │   └── config.yml
+│   │   └── PULL_REQUEST_TEMPLATE.md
+│   ├── workflows/                       # Workflow templates
+│   │   ├── templates/workflows/BLUEPRINT-CREATION-GUIDE.md
+│   │   ├── templates/workflows/BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md
+│   │   ├── templates/workflows/USER-STORY-TEMPLATE.md
+│   │   └── templates/workflows/VISUAL-REGRESSION-TESTING-TEMPLATE.md
+│   └── checklists/                      # QA checklists
+│       └── templates/checklists/QA-TESTING-CHECKLIST.md
+│
+├── 🔧 scripts/                           # Automation scripts
+│   └── setup-testing.sh                 # Automated testing setup
+│
+├── ⚙️ github-workflows/                  # GitHub Actions workflows
+│   ├── wordpress-plugin-ci.yml
+│   ├── visual-regression-testing.yml
+│   └── dependabot-auto-merge.yml
+│
+├── 📖 docs/                              # Additional documentation
+│   ├── SETUP-COMPLETE.md                # Setup completion guide
+│   └── product-research.md              # Research insights
+│
+├── .github/                              # GitHub configuration
+│   ├── dependabot.yml
+│   └── workflows/
+│
+├── README.md                             # This file
+├── CONTRIBUTING.md                       # Contributing guidelines
+└── LICENSE                               # CC0 1.0 Universal
 ```
 
 ---
@@ -207,7 +194,7 @@ github-workflows/           # GitHub Actions
 
 ### 🆕 For New Projects
 
-**Use PROJECT-KICKSTART-PROMPT.md** - It guides you through:
+**Use [PROJECT-KICKSTART-PROMPT.md](prompts/PROJECT-KICKSTART-PROMPT.md)** - It guides you through:
 
 1. **Phase 1: Planning** - Research, user stories, architecture
 2. **Phase 2: Setup** - Project structure, Git, base files
@@ -227,7 +214,7 @@ bash scripts/setup-testing.sh --plugin-name="Your Plugin"
 
 **Add documentation:**
 ```bash
-# Follow DOCUMENTATION-WORKFLOW.md
+# Follow guides/DOCUMENTATION-WORKFLOW.md
 # Creates Playground Blueprint + automated screenshots
 ```
 
@@ -244,10 +231,10 @@ cp templates/community/*.md .
 
 ```
 # Setting up testing
-Use TESTING-AUTOMATION-PROMPTS.md > "Initial Project Testing Setup"
+Use prompts/TESTING-AUTOMATION-PROMPTS.md > "Initial Project Testing Setup"
 
 # Creating documentation
-Use COMMUNITY-FILES-PROMPTS.md > "Generate User Guide"
+Use prompts/COMMUNITY-FILES-PROMPTS.md > "Generate User Guide"
 
 # Writing user stories
 Use templates/workflows/USER-STORY-TEMPLATE.md
@@ -335,39 +322,39 @@ Use templates/workflows/USER-STORY-TEMPLATE.md
 
 **Follow this path:**
 
-1. 📋 **[PROJECT-KICKSTART-PROMPT.md](PROJECT-KICKSTART-PROMPT.md)** - Start here
-2. 📝 **[USER-STORY-TEMPLATE.md](templates/workflows/USER-STORY-TEMPLATE.md)** - Plan features
-3. 📘 **[PLUGIN-DEVELOPMENT-WORKFLOW.md](PLUGIN-DEVELOPMENT-WORKFLOW.md)** - Development guide
-4. 🧪 **[TESTING-SETUP-GUIDE.md](TESTING-SETUP-GUIDE.md)** - Add testing
-5. 📚 **[DOCUMENTATION-WORKFLOW.md](DOCUMENTATION-WORKFLOW.md)** - Create docs
-6. ✅ **[QA-TESTING-CHECKLIST.md](templates/checklists/QA-TESTING-CHECKLIST.md)** - Pre-release QA
+1. 📋 **[PROJECT-KICKSTART-PROMPT.md](prompts/PROJECT-KICKSTART-PROMPT.md)** - Start here
+2. 📝 **[templates/workflows/USER-STORY-TEMPLATE.md](templates/workflows/USER-STORY-TEMPLATE.md)** - Plan features
+3. 📘 **[guides/PLUGIN-DEVELOPMENT-WORKFLOW.md](guides/PLUGIN-DEVELOPMENT-WORKFLOW.md)** - Development guide
+4. 🧪 **[guides/testing/TESTING-SETUP-GUIDE.md](guides/testing/TESTING-SETUP-GUIDE.md)** - Add testing
+5. 📚 **[guides/DOCUMENTATION-WORKFLOW.md](guides/DOCUMENTATION-WORKFLOW.md)** - Create docs
+6. ✅ **[templates/checklists/QA-TESTING-CHECKLIST.md](templates/checklists/QA-TESTING-CHECKLIST.md)** - Pre-release QA
 
 ### 🎨 I'm Building a Theme
 
 **Follow this path:**
 
-1. 📋 **[PROJECT-KICKSTART-PROMPT.md](PROJECT-KICKSTART-PROMPT.md)** - Start here
-2. 📘 **[PLUGIN-DEVELOPMENT-WORKFLOW.md](PLUGIN-DEVELOPMENT-WORKFLOW.md)** - Adapt for themes
-3. 👁️ **[VISUAL-REGRESSION-TESTING-TEMPLATE.md](templates/workflows/VISUAL-REGRESSION-TESTING-TEMPLATE.md)** - Visual testing
-4. 📚 **[DOCUMENTATION-WORKFLOW.md](DOCUMENTATION-WORKFLOW.md)** - Theme docs
-5. 📸 **[SCREENSHOT-DOCUMENTATION-GUIDE.md](SCREENSHOT-DOCUMENTATION-GUIDE.md)** - Screenshots
+1. 📋 **[PROJECT-KICKSTART-PROMPT.md](prompts/PROJECT-KICKSTART-PROMPT.md)** - Start here
+2. 📘 **[guides/PLUGIN-DEVELOPMENT-WORKFLOW.md](guides/PLUGIN-DEVELOPMENT-WORKFLOW.md)** - Adapt for themes
+3. 👁️ **[templates/workflows/VISUAL-REGRESSION-TESTING-TEMPLATE.md](templates/workflows/VISUAL-REGRESSION-TESTING-TEMPLATE.md)** - Visual testing
+4. 📚 **[guides/DOCUMENTATION-WORKFLOW.md](guides/DOCUMENTATION-WORKFLOW.md)** - Theme docs
+5. 📸 **[guides/SCREENSHOT-DOCUMENTATION-GUIDE.md](guides/SCREENSHOT-DOCUMENTATION-GUIDE.md)** - Screenshots
 
 ### 🧪 I Just Want Testing
 
 **Quick setup:**
 
-1. 📖 **[TESTING-README.md](TESTING-README.md)** - Understand what's included
+1. 📖 **[guides/testing/TESTING-README.md](guides/testing/TESTING-README.md)** - Understand what's included
 2. 🔧 **Run [setup-testing.sh](scripts/setup-testing.sh)** - Automated setup
-3. ⚡ **[TESTING-QUICK-REFERENCE.md](TESTING-QUICK-REFERENCE.md)** - Daily commands
+3. ⚡ **[guides/testing/TESTING-QUICK-REFERENCE.md](guides/testing/TESTING-QUICK-REFERENCE.md)** - Daily commands
 
 ### 📚 I Just Want Documentation
 
 **Documentation workflow:**
 
-1. 📚 **[DOCUMENTATION-WORKFLOW.md](DOCUMENTATION-WORKFLOW.md)** - 5-phase process
-2. 🎯 **[BLUEPRINT-CREATION-GUIDE.md](templates/workflows/BLUEPRINT-CREATION-GUIDE.md)** - Create Blueprint
-3. 📸 **[BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md](templates/workflows/BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md)** - Automate screenshots
-4. 🤖 **[COMMUNITY-FILES-PROMPTS.md](COMMUNITY-FILES-PROMPTS.md)** - AI prompts for docs
+1. 📚 **[guides/DOCUMENTATION-WORKFLOW.md](guides/DOCUMENTATION-WORKFLOW.md)** - 5-phase process
+2. 🎯 **[templates/workflows/BLUEPRINT-CREATION-GUIDE.md](templates/workflows/BLUEPRINT-CREATION-GUIDE.md)** - Create Blueprint
+3. 📸 **[templates/workflows/BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md](templates/workflows/BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md)** - Automate screenshots
+4. 🤖 **[prompts/COMMUNITY-FILES-PROMPTS.md](prompts/COMMUNITY-FILES-PROMPTS.md)** - AI prompts for docs
 
 ### 🚀 I'm Setting Up CI/CD
 
@@ -392,7 +379,7 @@ Use templates/workflows/USER-STORY-TEMPLATE.md
 - ✅ **Visual regression** - Compare UI changes
 - ✅ **QA validation** - Reproducible test scenarios
 
-See: [BLUEPRINT-CREATION-GUIDE.md](templates/workflows/BLUEPRINT-CREATION-GUIDE.md)
+See: [templates/workflows/BLUEPRINT-CREATION-GUIDE.md](templates/workflows/BLUEPRINT-CREATION-GUIDE.md)
 
 ### Automated Screenshot Generation
 
@@ -403,7 +390,7 @@ See: [BLUEPRINT-CREATION-GUIDE.md](templates/workflows/BLUEPRINT-CREATION-GUIDE.
 3. Run `npm run screenshots` to generate all
 4. Auto-optimize for WordPress.org
 
-See: [DOCUMENTATION-WORKFLOW.md](DOCUMENTATION-WORKFLOW.md)
+See: [guides/DOCUMENTATION-WORKFLOW.md](guides/DOCUMENTATION-WORKFLOW.md)
 
 ### Test-Driven Development
 
@@ -418,7 +405,7 @@ Target: **80%+ code coverage**
 ### AI-Powered Workflow
 
 **Use AI for configuration and boilerplate:**
-- Copy prompts from TESTING-AUTOMATION-PROMPTS.md
+- Copy prompts from prompts/TESTING-AUTOMATION-PROMPTS.md
 - Generate configs (phpunit.xml, .phpcs.xml, etc.)
 - Create documentation (README, guides, FAQs)
 - Write community files (Contributing, Security)
@@ -576,4 +563,4 @@ If this framework helps you build better WordPress projects, please star the rep
 
 ---
 
-**Ready to start?** → [PROJECT-KICKSTART-PROMPT.md](PROJECT-KICKSTART-PROMPT.md) 🚀
+**Ready to start?** → [PROJECT-KICKSTART-PROMPT.md](prompts/PROJECT-KICKSTART-PROMPT.md) 🚀
