@@ -118,6 +118,27 @@ All resources are based on real-world WordPress development experience:
 
 ## 🚀 Quick Start
 
+### 🎯 Starting a New Project with AI? (Recommended)
+
+Use our comprehensive kickstart prompt to guide the entire project lifecycle:
+
+**[📋 PROJECT-KICKSTART-PROMPT.md](./PROJECT-KICKSTART-PROMPT.md)** - Complete project prompt template
+
+1. Open [PROJECT-KICKSTART-PROMPT.md](./PROJECT-KICKSTART-PROMPT.md)
+2. Copy the prompt and fill in your project details
+3. Paste into Claude, ChatGPT, or your AI assistant
+4. Follow the guided workflow through all phases
+
+**What you'll get:**
+- ✅ Guided through complete development lifecycle
+- ✅ Testing infrastructure setup (21 dimensions)
+- ✅ Documentation with automated screenshots
+- ✅ WordPress Playground Blueprint
+- ✅ Community files and GitHub templates
+- ✅ Production-ready, fully tested code
+
+---
+
 ### Option 1: Testing Framework Setup (Most Popular)
 
 Set up complete testing automation for your WordPress plugin or theme:
