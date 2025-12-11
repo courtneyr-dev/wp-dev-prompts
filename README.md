@@ -83,26 +83,36 @@ All resources are based on real-world WordPress development experience:
 
 | Resource | Description | Size |
 |----------|-------------|------|
+| **[DEVELOPMENT-LIFECYCLE.md](./DEVELOPMENT-LIFECYCLE.md)** | 🔄 Complete dev lifecycle | 53 KB |
 | **[PLUGIN-DEVELOPMENT-WORKFLOW.md](./PLUGIN-DEVELOPMENT-WORKFLOW.md)** | 📘 Complete plugin dev guide | 106 KB |
+| **[USER-STORY-TEMPLATE.md](./USER-STORY-TEMPLATE.md)** | 📝 User story templates | 25 KB |
+| **[DOCUMENTATION-WORKFLOW.md](./DOCUMENTATION-WORKFLOW.md)** | 📚 Documentation process | 45 KB |
+| **[SCREENSHOT-DOCUMENTATION-GUIDE.md](./SCREENSHOT-DOCUMENTATION-GUIDE.md)** | 📸 Screenshot best practices | 35 KB |
 | **[BLUEPRINT-CREATION-GUIDE.md](./BLUEPRINT-CREATION-GUIDE.md)** | 🎯 WordPress Playground blueprints | 3.7 KB |
-| **[BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md](./BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md)** | 📸 Automated screenshot guide | 12 KB |
+| **[BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md](./BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md)** | 🤖 Automated screenshots | 12 KB |
 | **[VISUAL-REGRESSION-TESTING-TEMPLATE.md](./VISUAL-REGRESSION-TESTING-TEMPLATE.md)** | 👁️ Visual testing template | 16 KB |
 | **[product-research.md](./product-research.md)** | 🔍 Product research insights | 101 KB |
 
 ### 🎨 AI Prompts Collection
 
-*(Coming soon - organized prompt library)*
+| Resource | Description | Size |
+|----------|-------------|------|
+| **[TESTING-AUTOMATION-PROMPTS.md](./TESTING-AUTOMATION-PROMPTS.md)** | 🧪 24 testing prompts | 39 KB |
+| **[COMMUNITY-FILES-PROMPTS.md](./COMMUNITY-FILES-PROMPTS.md)** | 📝 Documentation & community file prompts | 35 KB |
 
-Categories planned:
-- Theme Development
-- Plugin Development
-- Block Development
-- Database & Custom Post Types
-- WordPress Core Functions
-- Performance & Optimization
-- Security Best Practices
-- REST API & AJAX
-- Customizer & Settings
+### 📑 Templates & Community Files
+
+**Ready-to-use templates** (`templates/` directory):
+
+**Community Templates** (`templates/community/`):
+- `CONTRIBUTING-TEMPLATE.md` - Contributing guidelines
+- `SECURITY-TEMPLATE.md` - Security policy
+- `SUPPORT-TEMPLATE.md` - Support documentation
+
+**GitHub Templates** (`templates/github/`):
+- `ISSUE_TEMPLATE/` - Bug reports, feature requests, questions
+- `PULL_REQUEST_TEMPLATE.md` - PR template with checklists
+- `config.yml` - Issue template configuration
 
 ---
 
@@ -185,19 +195,24 @@ open TESTING-SETUP-GUIDE.md
 
 **Follow this path:**
 
-1. 📘 **[PLUGIN-DEVELOPMENT-WORKFLOW.md](./PLUGIN-DEVELOPMENT-WORKFLOW.md)** - Complete dev process
-2. 🧪 **[TESTING-SETUP-GUIDE.md](./TESTING-SETUP-GUIDE.md)** - Add testing infrastructure
-3. 🎯 **[BLUEPRINT-CREATION-GUIDE.md](./BLUEPRINT-CREATION-GUIDE.md)** - Create demo environment
-4. ✅ **[QA-TESTING-CHECKLIST.md](./QA-TESTING-CHECKLIST.md)** - Pre-release validation
+1. 📝 **[USER-STORY-TEMPLATE.md](./USER-STORY-TEMPLATE.md)** - Plan features with user stories
+2. 📘 **[PLUGIN-DEVELOPMENT-WORKFLOW.md](./PLUGIN-DEVELOPMENT-WORKFLOW.md)** - Complete dev process
+3. 🧪 **[TESTING-SETUP-GUIDE.md](./TESTING-SETUP-GUIDE.md)** - Add testing infrastructure
+4. 📚 **[DOCUMENTATION-WORKFLOW.md](./DOCUMENTATION-WORKFLOW.md)** - Document with automated screenshots
+5. 🎯 **[BLUEPRINT-CREATION-GUIDE.md](./BLUEPRINT-CREATION-GUIDE.md)** - Create Playground demo
+6. ✅ **[QA-TESTING-CHECKLIST.md](./QA-TESTING-CHECKLIST.md)** - Pre-release validation
 
 ### 🎨 Working on a Theme?
 
 **Your workflow:**
 
-1. 📘 Adapt **[PLUGIN-DEVELOPMENT-WORKFLOW.md](./PLUGIN-DEVELOPMENT-WORKFLOW.md)** for themes
-2. 👁️ **[VISUAL-REGRESSION-TESTING-TEMPLATE.md](./VISUAL-REGRESSION-TESTING-TEMPLATE.md)** - Visual testing
-3. 🧪 **[TESTING-SETUP-GUIDE.md](./TESTING-SETUP-GUIDE.md)** - Testing infrastructure
-4. ✅ **[QA-TESTING-CHECKLIST.md](./QA-TESTING-CHECKLIST.md)** - Theme-specific QA
+1. 📝 **[USER-STORY-TEMPLATE.md](./USER-STORY-TEMPLATE.md)** - Plan features and layouts
+2. 📘 Adapt **[PLUGIN-DEVELOPMENT-WORKFLOW.md](./PLUGIN-DEVELOPMENT-WORKFLOW.md)** for themes
+3. 👁️ **[VISUAL-REGRESSION-TESTING-TEMPLATE.md](./VISUAL-REGRESSION-TESTING-TEMPLATE.md)** - Visual testing
+4. 📚 **[DOCUMENTATION-WORKFLOW.md](./DOCUMENTATION-WORKFLOW.md)** - Create theme documentation
+5. 📸 **[SCREENSHOT-DOCUMENTATION-GUIDE.md](./SCREENSHOT-DOCUMENTATION-GUIDE.md)** - Theme screenshots
+6. 🧪 **[TESTING-SETUP-GUIDE.md](./TESTING-SETUP-GUIDE.md)** - Testing infrastructure
+7. ✅ **[QA-TESTING-CHECKLIST.md](./QA-TESTING-CHECKLIST.md)** - Theme-specific QA
 
 ### 🚀 Setting Up CI/CD?
 
