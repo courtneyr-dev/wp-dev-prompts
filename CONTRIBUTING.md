@@ -103,6 +103,8 @@ Add prompts for:
 - Security auditing
 - Performance optimization
 - Accessibility testing
+- Website and digital experience auditing
+- Content strategy and SEO analysis
 
 **Prompt Requirements:**
 - Follow the established template
@@ -163,13 +165,18 @@ Contribute:
 ```
 wp-dev-prompts/
 ├── prompts/                    # AI prompts organized by category
-│   ├── plugin-development/
-│   ├── theme-development/
-│   ├── block-development/
-│   ├── testing/
-│   └── security/
-├── workflows/                  # Development workflow guides
+│   ├── PROJECT-KICKSTART-PROMPT.md
+│   ├── TESTING-AUTOMATION-PROMPTS.md
+│   ├── COMMUNITY-FILES-PROMPTS.md
+│   ├── PLUGIN-MARKETING-PROMPTS.md
+│   └── site-review/           # Website review and auditing
+├── guides/                     # Development workflow guides
 ├── templates/                  # Templates for various files
+│   ├── community/
+│   ├── github/
+│   ├── marketing/
+│   ├── workflows/
+│   └── checklists/
 ├── github-workflows/          # GitHub Actions templates
 └── .github/                   # GitHub community files
 ```
@@ -362,10 +369,12 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 ### Scopes
 
 - `prompts`: AI prompts
+- `site-review`: Website auditing and review prompts
 - `workflows`: Development workflows
 - `testing`: Testing infrastructure
 - `ci`: GitHub Actions and CI/CD
 - `docs`: Documentation
+- `marketing`: Marketing resources and strategies
 
 ### Examples
 

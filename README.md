@@ -62,6 +62,13 @@ This repository provides everything you need for professional WordPress developm
 - **Ready-to-use templates**: Email sequences, social calendars, press releases
 - **Multi-channel strategy**: Content, social, podcasts, newsletters, community
 
+### 🔍 Website & Digital Experience Review System
+- **Comprehensive site audit framework**: Multi-agent system for website assessment
+- **12 specialized sub-agents**: Content, SEO, accessibility, performance, security, and more
+- **Decision tree routing**: Automated assessment scoping based on problem type
+- **RACI ownership model**: Clear accountability for all review findings
+- **Integration with WordPress development**: Use findings to inform plugin/theme projects
+
 ---
 
 ## 🚀 Quick Start Options
@@ -144,7 +151,9 @@ wp-dev-prompts/
 │   ├── PROJECT-KICKSTART-PROMPT.md      # 👈 Main entry point
 │   ├── TESTING-AUTOMATION-PROMPTS.md    # 24 testing prompts
 │   ├── COMMUNITY-FILES-PROMPTS.md       # 16 documentation prompts
-│   └── PLUGIN-MARKETING-PROMPTS.md      # 32 marketing prompts
+│   ├── PLUGIN-MARKETING-PROMPTS.md      # 32 marketing prompts
+│   └── site-review/                     # Website review system
+│       └── DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md
 │
 ├── 📚 guides/                            # Complete development guides
 │   ├── DEVELOPMENT-LIFECYCLE.md         # 10-phase lifecycle
@@ -395,6 +404,24 @@ Use templates/workflows/USER-STORY-TEMPLATE.md
    - **Podcast Pitch Template** - Outreach to podcasters
    - **Press Release Template** - Professional media announcements
 
+### 🔍 I Need to Audit a Website
+
+**Comprehensive digital experience review:**
+
+1. 📋 **[prompts/site-review/DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md](prompts/site-review/DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md)** - Master orchestrator prompt
+2. **Use Case Scenarios:**
+   - **Client site audits** - Before proposing WordPress solutions
+   - **Pre-redesign assessment** - Baseline before major changes
+   - **Performance diagnostics** - Identify bottlenecks and optimization opportunities
+   - **Accessibility compliance** - WCAG audit and remediation planning
+   - **Competitive analysis** - Benchmark against competitors
+   - **Security review** - Assess vulnerabilities and privacy compliance
+3. **12 Specialized Sub-Agents:**
+   - Content Strategy, SEO, Accessibility, Performance
+   - Security, Analytics, Brand Consistency, Localization
+   - Content Marketing, User Research, Competitive Intelligence
+4. **Integration:** Use findings to inform WordPress plugin/theme development decisions
+
 ---
 
 ## 🌟 Key Concepts
@@ -564,21 +591,28 @@ Built for the WordPress community with ❤️
 - Multi-channel marketing playbook
 - Launch and ongoing promotion strategies
 
+### ✅ Completed (v1.2 - December 2024)
+- **Digital Experience Integrity System** - Master agent prompt for comprehensive website reviews
+- **12 specialized sub-agents** - Content, SEO, accessibility, performance, security, competitive analysis
+- **RACI ownership model** - Clear accountability framework for review findings
+- **Decision tree routing** - Automated assessment scoping based on problem identification
+- **WordPress integration guide** - Connect site audit findings to plugin/theme development
+
 ### 🔮 Planned
 
-**v1.2 - Enhanced AI Integration**
+**v1.3 - Enhanced AI Integration**
 - Theme-specific prompt collection
 - Block development prompts
 - WooCommerce integration guides
 - Multisite-specific workflows
 
-**v1.3 - Extended Testing**
+**v1.4 - Extended Testing**
 - Load testing templates
 - Security audit workflows
 - Compliance checking (GDPR, WCAG)
 - Cross-browser matrix expansion
 
-**v1.4 - Documentation Expansion**
+**v1.5 - Documentation Expansion**
 - Video documentation workflows
 - Interactive documentation examples
 - API documentation generators
@@ -592,8 +626,8 @@ If this framework helps you build better WordPress projects, please star the rep
 
 ---
 
-**Last Updated**: December 11, 2024
-**Framework Version**: 1.1.0
+**Last Updated**: December 12, 2024
+**Framework Version**: 1.2.0
 **WordPress**: 6.5+
 **PHP**: 8.0+
 

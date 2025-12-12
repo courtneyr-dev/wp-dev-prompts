@@ -60,10 +60,27 @@ This repository contains:
 - Community file templates
 - GitHub Actions CI/CD workflows
 - WordPress Playground Blueprint guides
+- Digital Experience Integrity System (comprehensive website review framework)
 
 # What I Need You To Do
 
 Follow the complete development lifecycle from the wp-dev-prompts framework:
+
+## Phase 0: Website Assessment (Optional)
+
+**If building for an existing website**, consider running a comprehensive site review first using the Digital Experience Integrity System (site-review/DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md):
+
+1. Assess the existing site's content strategy and information architecture
+2. Review current SEO, accessibility, and performance baselines
+3. Identify gaps that the plugin/theme should address
+4. Understand the technical environment and constraints
+5. Use findings to inform feature requirements and architecture decisions
+
+This phase is particularly valuable when:
+- Building solutions for client sites
+- Creating plugins to solve specific site problems
+- Ensuring compatibility with existing site infrastructure
+- Planning features based on actual user needs and site data
 
 ## Phase 1: Research & Planning (DEVELOPMENT-LIFECYCLE.md)
 
@@ -466,6 +483,9 @@ By following this prompt and the wp-dev-prompts framework, you'll end up with:
 
 As you work through the project, reference these files:
 
+**Pre-Research (Optional):**
+- [DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md](site-review/DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md) - Comprehensive website assessment
+
 **Planning Phase:**
 - [DEVELOPMENT-LIFECYCLE.md](DEVELOPMENT-LIFECYCLE.md)
 - [USER-STORY-TEMPLATE.md](USER-STORY-TEMPLATE.md)
@@ -586,8 +606,8 @@ If you need help with:
 
 ---
 
-**Last Updated:** December 10, 2024
-**Framework Version:** 1.0.0
+**Last Updated:** December 12, 2024
+**Framework Version:** 1.2.0
 **Compatible With:** WordPress 6.5+, PHP 8.0+
 
 ---
