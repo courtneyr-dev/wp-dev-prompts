@@ -1,0 +1,249 @@
+name: Visual Regression Testing
+
+# Automated visual regression testing using Playwright
+# Takes screenshots and compares them to baseline images
+# Integrates with WordPress Playground for consistent environment
+
+on:
+  # Run on pull requests to catch visual changes before merge
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/**/*.{js,jsx,ts,tsx,css,scss}'
+      - 'includes/**/*.php'
+      - '**/*.php'
+      - 'tests/visual/**'
+  # Allow manual workflow runs
+  workflow_dispatch:
+    inputs:
+      update_baselines:
+        description: 'Update baseline screenshots'
+        required: false
+        type: boolean
+        default: false
+
+# Cancel in-progress runs when a new run is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # VISUAL REGRESSION TESTING
+  # ============================================================================
+  visual-regression:
+    name: Visual Regression - ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # Test across multiple browsers
+        browser: [chromium, firefox, webkit]
+        # Optionally test multiple viewports
+        # viewport: [desktop, tablet, mobile]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Need full history to compare with base branch
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Restore baseline screenshots
+        uses: actions/cache/restore@v4
+        id: cache-baseline
+        with:
+          path: tests/visual/__screenshots__/
+          key: visual-baseline-${{ matrix.browser }}-${{ github.base_ref || 'main' }}
+          restore-keys: |
+            visual-baseline-${{ matrix.browser }}-
+
+      - name: Start WordPress environment
+        run: |
+          # Start wp-env for testing
+          npm run env:start
+
+          # Wait for WordPress to be ready
+          timeout 60 bash -c 'until curl -f http://localhost:8888 > /dev/null 2>&1; do sleep 2; done'
+
+          # Activate plugin/theme
+          npm run env:cli -- plugin activate $(basename $(pwd))
+
+          # Import test data if available
+          if [ -f "tests/data/test-content.xml" ]; then
+            npm run env:cli -- plugin install wordpress-importer --activate
+            npm run env:cli -- import tests/data/test-content.xml --authors=create
+          fi
+
+      - name: Run visual regression tests
+        id: visual-tests
+        run: |
+          if [ "${{ github.event.inputs.update_baselines }}" = "true" ] || [ ! -d "tests/visual/__screenshots__" ]; then
+            echo "Updating baseline screenshots..."
+            npm run test:visual -- --update-snapshots --project=${{ matrix.browser }}
+          else
+            echo "Running visual regression tests..."
+            npm run test:visual -- --project=${{ matrix.browser }}
+          fi
+        env:
+          CI: true
+          PLAYWRIGHT_BROWSER: ${{ matrix.browser }}
+        continue-on-error: true
+
+      - name: Stop WordPress environment
+        if: always()
+        run: npm run env:stop
+
+      - name: Save baseline screenshots
+        if: github.event.inputs.update_baselines == 'true' || steps.visual-tests.outcome == 'failure'
+        uses: actions/cache/save@v4
+        with:
+          path: tests/visual/__screenshots__/
+          key: visual-baseline-${{ matrix.browser }}-${{ github.head_ref || github.ref_name }}-${{ github.sha }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-test-results-${{ matrix.browser }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
+
+      - name: Upload diff images
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs-${{ matrix.browser }}
+          path: tests/visual/__screenshots__/**/*-diff.png
+          retention-days: 30
+
+      - name: Comment on PR with results
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const browser = '${{ matrix.browser }}';
+
+            // Read test results
+            let comment = `## 🎨 Visual Regression Test Results (${browser})\n\n`;
+            comment += `❌ Visual differences detected!\n\n`;
+            comment += `### Changes Found\n`;
+            comment += `Screenshots show visual differences from the baseline.\n\n`;
+            comment += `📊 [View detailed test report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n`;
+            comment += `**Next Steps:**\n`;
+            comment += `1. Download the diff images from the artifacts\n`;
+            comment += `2. Review the changes carefully\n`;
+            comment += `3. If intentional, update baselines by re-running with "Update baseline screenshots" option\n`;
+            comment += `4. If unintentional, fix the CSS/layout issues\n`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  # ============================================================================
+  # GENERATE VISUAL REGRESSION REPORT
+  # ============================================================================
+  report:
+    name: Generate Visual Regression Report
+    runs-on: ubuntu-latest
+    needs: [visual-regression]
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: test-artifacts/
+
+      - name: Generate HTML report
+        run: |
+          mkdir -p visual-regression-report
+
+          cat > visual-regression-report/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Visual Regression Report</title>
+            <style>
+              body { font-family: system-ui; max-width: 1200px; margin: 0 auto; padding: 20px; }
+              h1 { color: #333; }
+              .browser-section { margin: 40px 0; }
+              .test-result { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+              .passed { background: #e8f5e9; }
+              .failed { background: #ffebee; }
+              .diff-image { max-width: 100%; margin: 10px 0; }
+              img { max-width: 400px; border: 1px solid #ddd; }
+            </style>
+          </head>
+          <body>
+            <h1>🎨 Visual Regression Test Report</h1>
+            <p>Workflow Run: <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">#${{ github.run_id }}</a></p>
+            <p>Branch: ${{ github.head_ref || github.ref_name }}</p>
+            <p>Commit: ${{ github.sha }}</p>
+
+            <div id="results"></div>
+
+            <script>
+              // Parse and display results from artifacts
+              // This is a placeholder - customize based on your test structure
+              document.getElementById('results').innerHTML = '<p>Download artifacts for detailed results</p>';
+            </script>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-report
+          path: visual-regression-report/
+          retention-days: 30
+
+  # ============================================================================
+  # AUTO-APPROVE MINOR VISUAL CHANGES (Optional)
+  # Use with caution - only for trusted contributors
+  # ============================================================================
+  auto-approve:
+    name: Auto-approve Minor Changes
+    runs-on: ubuntu-latest
+    needs: [visual-regression]
+    # Only run on PRs from trusted sources (e.g., dependabot, team members)
+    if: |
+      github.event_name == 'pull_request' &&
+      (github.actor == 'dependabot[bot]' || contains(github.event.pull_request.labels.*.name, 'auto-approve-visual'))
+
+    steps:
+      - name: Approve PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              event: 'APPROVE',
+              body: '✅ Automated visual regression tests passed. Auto-approving.'
+            });

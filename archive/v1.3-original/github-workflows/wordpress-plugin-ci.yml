@@ -1,0 +1,546 @@
+name: WordPress Plugin CI/CD
+
+# Comprehensive CI/CD workflow for WordPress plugins
+# Covers: Linting, Testing, Security, Accessibility, Performance, and Deployment
+# Customize the matrix, paths, and conditions for your specific plugin
+
+on:
+  push:
+    branches: [main, develop, trunk]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+  pull_request:
+    branches: [main, develop]
+  # Allow manual workflow runs
+  workflow_dispatch:
+
+# Cancel in-progress runs when a new run is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # STATIC ANALYSIS - PHP
+  # Runs fast checks first to fail fast
+  # ============================================================================
+  lint-php:
+    name: PHP Linting (PHPCS + PHPStan)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl, mysqli
+          coverage: none
+          tools: phpcs, phpstan, composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run PHPCS
+        run: ./vendor/bin/phpcs --report=summary --report=source
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse --error-format=github --no-progress
+
+  # ============================================================================
+  # STATIC ANALYSIS - JavaScript/CSS
+  # ============================================================================
+  lint-js:
+    name: JavaScript/CSS Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint:js
+
+      - name: Run Stylelint
+        run: npm run lint:css
+        # Continue even if CSS linting fails (can be warnings-heavy)
+        continue-on-error: true
+
+      - name: Run TypeScript type checking
+        if: hashFiles('tsconfig.json') != ''
+        run: npm run typecheck
+        continue-on-error: true
+
+  # ============================================================================
+  # PHP UNIT & INTEGRATION TESTS
+  # Matrix strategy tests multiple PHP and WordPress versions
+  # ============================================================================
+  phpunit:
+    name: PHPUnit - PHP ${{ matrix.php }} / WP ${{ matrix.wordpress }}
+    runs-on: ubuntu-latest
+    needs: [lint-php]  # Only run if linting passes
+
+    # Run tests in parallel across multiple PHP and WordPress versions
+    strategy:
+      fail-fast: false  # Continue running other matrix jobs even if one fails
+      matrix:
+        php: ['8.0', '8.1', '8.2', '8.3']
+        wordpress: ['6.5', '6.6', '6.7']
+        include:
+          # Test against WordPress trunk (next version)
+          - php: '8.3'
+            wordpress: 'trunk'
+        # Optional: Exclude specific combinations if incompatible
+        # exclude:
+        #   - php: '8.3'
+        #     wordpress: '6.5'
+
+    # MariaDB service for WordPress tests
+    services:
+      mysql:
+        image: mariadb:10.11
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+          MARIADB_INIT_CONNECT: 'SET GLOBAL max_allowed_packet=67108864;'
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl, mysqli, zip, gd, curl
+          # Enable coverage only on one specific matrix combination to save time
+          coverage: ${{ matrix.php == '8.2' && matrix.wordpress == '6.7' && 'pcov' || 'none' }}
+          ini-values: pcov.directory=., memory_limit=512M
+          tools: composer:v2, wp-cli
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php }}-composer-
+            ${{ runner.os }}-composer-
+
+      - name: Cache WordPress test suite
+        uses: actions/cache@v4
+        with:
+          path: |
+            /tmp/wordpress
+            /tmp/wordpress-tests-lib
+          key: wp-${{ matrix.wordpress }}-${{ hashFiles('bin/install-wp-tests.sh') }}
+          restore-keys: |
+            wp-${{ matrix.wordpress }}-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Install WordPress test suite
+        run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 ${{ matrix.wordpress }} true
+
+      - name: Run PHPUnit tests
+        run: |
+          if [ "${{ matrix.php }}" = "8.2" ] && [ "${{ matrix.wordpress }}" = "6.7" ]; then
+            ./vendor/bin/phpunit --coverage-clover=coverage.xml --log-junit=test-results.xml
+          else
+            ./vendor/bin/phpunit --log-junit=test-results.xml
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpunit-results-php-${{ matrix.php }}-wp-${{ matrix.wordpress }}
+          path: test-results.xml
+
+      - name: Upload coverage to Codecov
+        if: matrix.php == '8.2' && matrix.wordpress == '6.7'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          flags: phpunit
+          name: PHP ${{ matrix.php }} / WP ${{ matrix.wordpress }}
+
+  # ============================================================================
+  # JAVASCRIPT UNIT TESTS
+  # ============================================================================
+  jest:
+    name: JavaScript Unit Tests (Jest)
+    runs-on: ubuntu-latest
+    needs: [lint-js]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run Jest tests
+        run: npm run test:unit -- --coverage --maxWorkers=2
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/clover.xml
+          flags: jest
+          name: JavaScript tests
+
+  # ============================================================================
+  # WORDPRESS PLUGIN CHECK
+  # Official WordPress.org plugin validation
+  # ============================================================================
+  plugin-check:
+    name: WordPress Plugin Check (PCP)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Plugin Check
+        uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: './'
+          checks: |
+            i18n_usage
+            plugin_header_fields
+            plugin_readme
+            late_escaping
+            enqueued_scripts
+            enqueued_styles
+            file_type
+            plugin_updater
+
+  # ============================================================================
+  # SECURITY SCANNING
+  # Multiple layers: Composer audit, NPM audit, and Trivy
+  # ============================================================================
+  security:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Composer Security Audit
+        run: composer audit --locked --format=plain
+        continue-on-error: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: NPM Security Audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Trivy Filesystem Scan
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+          scanners: 'vuln,secret,misconfig'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'trivy'
+
+  # ============================================================================
+  # ACCESSIBILITY TESTING (Optional)
+  # Uses Playwright + axe-core for WCAG compliance
+  # ============================================================================
+  accessibility:
+    name: Accessibility Testing (WCAG 2.1 AA)
+    runs-on: ubuntu-latest
+    # Only run on main branch or when label is present
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'accessibility')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start WordPress with wp-env
+        run: |
+          npm run env:start
+          npm run env:cli -- plugin activate $(basename $(pwd))
+
+      - name: Wait for WordPress to be ready
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:8888 > /dev/null 2>&1; do sleep 2; done'
+
+      - name: Run accessibility tests
+        run: npm run test:a11y
+        continue-on-error: true
+
+      - name: Stop wp-env
+        if: always()
+        run: npm run env:stop
+
+      - name: Upload accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: test-results/
+
+  # ============================================================================
+  # PERFORMANCE TESTING (Optional)
+  # Lighthouse CI for performance budgets
+  # ============================================================================
+  performance:
+    name: Performance Testing (Lighthouse CI)
+    runs-on: ubuntu-latest
+    # Only run on main branch or when label is present
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'performance')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Start WordPress with wp-env
+        run: |
+          npm run env:start
+          npm run env:cli -- plugin activate $(basename $(pwd))
+
+      - name: Wait for WordPress to be ready
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:8888 > /dev/null 2>&1; do sleep 2; done'
+
+      - name: Run Lighthouse CI
+        run: npx @lhci/cli@latest autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        continue-on-error: true
+
+      - name: Stop wp-env
+        if: always()
+        run: npm run env:stop
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+
+  # ============================================================================
+  # BUILD ASSETS
+  # Compile production-ready assets for deployment
+  # ============================================================================
+  build:
+    name: Build Production Assets
+    runs-on: ubuntu-latest
+    needs: [phpunit, jest, plugin-check, security]
+    # Only run on main branch or tags
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install Composer dependencies (production only)
+        run: composer install --no-dev --optimize-autoloader --prefer-dist
+
+      - name: Build production assets
+        run: npm run build:prod
+
+      - name: Create build artifact
+        run: |
+          mkdir -p artifacts
+          rsync -av --exclude-from='.distignore' ./ artifacts/$(basename $(pwd))/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-build
+          path: artifacts/
+          retention-days: 7
+
+  # ============================================================================
+  # DEPLOY TO WORDPRESS.ORG
+  # Automatic deployment on tagged releases
+  # ============================================================================
+  deploy:
+    name: Deploy to WordPress.org
+    runs-on: ubuntu-latest
+    needs: [build]
+    # Only run on version tags (e.g., v1.0.0, 1.2.3)
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2, wp-cli
+
+      - name: Install dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader
+          npm ci
+
+      - name: Build production assets
+        run: npm run build:prod
+
+      - name: WordPress.org Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: ${{ secrets.PLUGIN_SLUG }}
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ github.event.repository.name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ============================================================================
+  # NOTIFY ON FAILURE
+  # Optional: Send notifications when builds fail
+  # ============================================================================
+  notify:
+    name: Notify on Failure
+    runs-on: ubuntu-latest
+    needs: [lint-php, lint-js, phpunit, jest, plugin-check, security]
+    if: failure() && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Send Slack notification
+        if: ${{ secrets.SLACK_WEBHOOK_URL }}
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "❌ CI Failed for ${{ github.repository }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "❌ *CI Failed*\n*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Workflow:* ${{ github.workflow }}\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
