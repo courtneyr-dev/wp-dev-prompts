@@ -1,13 +1,16 @@
 # 🚀 WordPress Development Prompts & Testing Framework
 
-**Complete WordPress development toolkit with AI-powered prompts, automated testing, marketing strategies, and production-ready workflows.**
+**Complete WordPress development toolkit with AI-powered prompts, automated testing, and cross-platform AI compatibility.**
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 [![WordPress](https://img.shields.io/badge/WordPress-6.5+-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-8.0+-purple.svg)](https://www.php.net/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Version](https://img.shields.io/badge/Version-2.0.0-blue.svg)](https://github.com/courtneyr-dev/wp-dev-prompts)
 
-> **Enhanced with [Automattic/agent-skills](https://github.com/Automattic/agent-skills)** - WordPress Agent Skills for AI assistants, providing modern best practices for WordPress 6.9+ development including block development, Interactivity API, performance optimization, and WP-CLI operations.
+> **Works with any AI platform**: Claude Code, Cursor, Cline, GitHub Copilot, ChatGPT, Gemini, and more.
+>
+> **Enhanced with [Automattic/agent-skills](https://github.com/Automattic/agent-skills)** - WordPress Agent Skills for AI assistants, providing modern best practices for WordPress 6.9+ development.
 
 ---
 
@@ -146,75 +149,96 @@ cd templates/
 
 ---
 
-## 📂 Repository Structure
+## 📂 Repository Structure (v2.0.0)
 
 ```
 wp-dev-prompts/
-├── 📋 prompts/                           # 🎯 START HERE
-│   ├── PROJECT-KICKSTART-PROMPT.md      # 👈 Main entry point
-│   ├── TESTING-AUTOMATION-PROMPTS.md    # 30 testing prompts (enhanced)
-│   ├── BLOCK-DEVELOPMENT-PROMPTS.md     # 12 block development prompts (NEW)
-│   ├── COMMUNITY-FILES-PROMPTS.md       # 16 documentation prompts
-│   ├── PLUGIN-MARKETING-PROMPTS.md      # 32 marketing prompts
-│   └── site-review/                     # Website review system
-│       └── DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md
+├── 📋 prompts/                           # AI Prompts
+│   ├── README.md                        # Prompt structure guide
+│   ├── core/                            # Portable prompts (<2000 tokens)
+│   │   ├── testing/
+│   │   ├── blocks/
+│   │   ├── security/
+│   │   └── documentation/
+│   ├── extended/                        # Full-featured prompts
+│   │   ├── PROJECT-KICKSTART-PROMPT.md  # 👈 Main entry point
+│   │   ├── TESTING-AUTOMATION-PROMPTS.md
+│   │   ├── BLOCK-DEVELOPMENT-PROMPTS.md
+│   │   ├── COMMUNITY-FILES-PROMPTS.md
+│   │   └── PLUGIN-MARKETING-PROMPTS.md
+│   └── legacy/                          # Backward compatibility symlinks
 │
-├── 📚 guides/                            # Complete development guides
-│   ├── DEVELOPMENT-LIFECYCLE.md         # 10-phase lifecycle
-│   ├── DOCUMENTATION-WORKFLOW.md        # Doc creation workflow
-│   ├── PLUGIN-DEVELOPMENT-WORKFLOW.md   # Plugin development
-│   ├── PLUGIN-MARKETING-STRATEGY.md     # Complete marketing playbook
-│   ├── SCREENSHOT-DOCUMENTATION-GUIDE.md # Screenshot guide
-│   └── testing/                         # Testing guides
-│       ├── TESTING-README.md            # Testing overview
-│       ├── TESTING-SETUP-GUIDE.md       # Setup instructions
-│       └── TESTING-QUICK-REFERENCE.md   # Command reference
+├── 🤖 agents/                            # Modular AI Agents
+│   ├── README.md                        # Agent architecture
+│   ├── orchestrators/                   # Master coordinators
+│   │   └── site-review-orchestrator.md
+│   ├── specialists/                     # Domain experts (10 agents)
+│   │   ├── content-strategy.md
+│   │   ├── seo-strategy.md
+│   │   ├── accessibility.md
+│   │   ├── performance.md
+│   │   ├── security-advisory.md
+│   │   └── ... (5 more)
+│   └── compositions/                    # Pre-configured groups
+│       ├── full-site-assessment.md
+│       ├── content-review.md
+│       ├── experience-review.md
+│       ├── security-review.md
+│       └── launch-readiness.md
 │
+├── 📚 skills/                            # Knowledge Modules
+│   ├── README.md                        # Skill format guide
+│   ├── wordpress/                       # WordPress skills
+│   │   ├── plugin-architecture.md
+│   │   ├── block-development.md
+│   │   ├── interactivity-api.md
+│   │   ├── block-themes.md
+│   │   ├── wp-cli.md
+│   │   └── playground.md
+│   ├── security/                        # Security skills
+│   │   ├── input-sanitization.md
+│   │   ├── output-escaping.md
+│   │   ├── nonces-capabilities.md
+│   │   └── database-queries.md
+│   ├── testing/                         # Testing skills
+│   │   ├── phpunit-wordpress.md
+│   │   ├── phpcs-wordpress.md
+│   │   ├── phpstan-wordpress.md
+│   │   └── playwright-wordpress.md
+│   ├── performance/                     # Performance skills
+│   │   ├── core-web-vitals.md
+│   │   └── wp-profiling.md
+│   └── accessibility/                   # Accessibility skills
+│       └── wcag-checklist.md
+│
+├── 🔌 platforms/                         # Platform Configurations
+│   ├── README.md                        # Platform selection guide
+│   ├── universal/                       # Cross-platform specs
+│   │   ├── prompt-specification.md
+│   │   └── capability-matrix.md
+│   ├── claude-code/                     # Claude Code
+│   │   ├── README.md
+│   │   └── CLAUDE.md.template
+│   ├── cursor/                          # Cursor
+│   │   ├── README.md
+│   │   └── cursorrules.template
+│   ├── cline/                           # Cline
+│   │   ├── README.md
+│   │   └── clinerules.template
+│   └── copilot/                         # GitHub Copilot
+│       ├── README.md
+│       └── copilot-instructions.template
+│
+├── 📖 workflows/                         # Multi-step Guides
+│   └── README.md                        # Workflow structure
+│
+├── 📚 guides/                            # Development guides
 ├── 📑 templates/                         # Ready-to-use templates
-│   ├── community/                       # Community files
-│   │   ├── CONTRIBUTING-TEMPLATE.md
-│   │   ├── SECURITY-TEMPLATE.md
-│   │   └── SUPPORT-TEMPLATE.md
-│   ├── github/                          # GitHub templates
-│   │   ├── ISSUE_TEMPLATE/
-│   │   │   ├── bug_report.md
-│   │   │   ├── feature_request.md
-│   │   │   ├── question.md
-│   │   │   └── config.yml
-│   │   └── PULL_REQUEST_TEMPLATE.md
-│   ├── marketing/                       # Marketing templates
-│   │   ├── BLOG-POST-LAUNCH-TEMPLATE.md
-│   │   ├── EMAIL-SEQUENCE-TEMPLATE.md
-│   │   ├── SOCIAL-MEDIA-CALENDAR-TEMPLATE.md
-│   │   ├── PODCAST-PITCH-TEMPLATE.md
-│   │   └── PRESS-RELEASE-TEMPLATE.md
-│   ├── workflows/                       # Workflow templates
-│   │   ├── BLUEPRINT-CREATION-GUIDE.md
-│   │   ├── BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md
-│   │   ├── USER-STORY-TEMPLATE.md
-│   │   └── VISUAL-REGRESSION-TESTING-TEMPLATE.md
-│   └── checklists/                      # QA checklists
-│       └── QA-TESTING-CHECKLIST.md
-│
 ├── 🔧 scripts/                           # Automation scripts
-│   └── setup-testing.sh                 # Automated testing setup
-│
-├── ⚙️ github-workflows/                  # GitHub Actions workflows
-│   ├── wordpress-plugin-ci.yml
-│   ├── visual-regression-testing.yml
-│   └── dependabot-auto-merge.yml
-│
+├── ⚙️ github-workflows/                  # GitHub Actions
 ├── 📖 docs/                              # Additional documentation
-│   ├── SETUP-COMPLETE.md                # Setup completion guide
-│   └── product-research.md              # Research insights
-│
-├── .github/                              # GitHub configuration
-│   ├── dependabot.yml
-│   └── workflows/
-│
-├── README.md                             # This file
-├── CONTRIBUTING.md                       # Contributing guidelines
-└── LICENSE                               # CC0 1.0 Universal
+└── 📁 archive/                           # Previous versions
+    └── v1.3-original/                   # Complete v1.3 backup
 ```
 
 ---
@@ -578,48 +602,39 @@ Built for the WordPress community with ❤️
 
 ## 🗺️ Roadmap
 
-**Current Version: 1.0.0**
+**Current Version: 2.0.0**
 
-### ✅ Completed (v1.0)
+### ✅ Completed (v1.0-1.3)
 - Complete testing framework (21 dimensions)
 - Documentation workflow with Playground
-- Community file templates
-- GitHub Actions CI/CD workflows
-- AI prompts for all phases
-- Project kickstart prompt
+- Community file templates and marketing prompts
+- Digital Experience Integrity System
+- Integration with Automattic/agent-skills
 
-### ✅ Completed (v1.1 - December 2024)
-- **Complete marketing strategy guide**
-- **32 marketing AI prompts** (blog, video, social, outreach)
-- **5 marketing templates** (blog, email, social, podcast, press)
-- Multi-channel marketing playbook
-- Launch and ongoing promotion strategies
-
-### ✅ Completed (v1.2 - December 2024)
-- **Digital Experience Integrity System** - Master agent prompt for comprehensive website reviews
-- **12 specialized sub-agents** - Content, SEO, accessibility, performance, security, competitive analysis
-- **RACI ownership model** - Clear accountability framework for review findings
-- **Decision tree routing** - Automated assessment scoping based on problem identification
-- **WordPress integration guide** - Connect site audit findings to plugin/theme development
+### ✅ Completed (v2.0.0 - December 2024)
+- **Cross-platform AI compatibility** - Works with Claude Code, Cursor, Cline, Copilot, ChatGPT, Gemini
+- **Modular agent architecture** - Orchestrators, specialists, and compositions
+- **Skill-based knowledge modules** - 17 focused skills across 5 domains
+- **Platform configuration templates** - CLAUDE.md, .cursorrules, .clinerules, copilot-instructions.md
+- **Universal prompt specification** - XML-style tags for all platforms
+- **Legacy compatibility** - Symlinks preserve existing paths
 
 ### 🔮 Planned
 
-**v1.4 - Extended Testing**
-- Load testing templates
-- Security audit workflows
-- Compliance checking (GDPR, WCAG)
-- Cross-browser matrix expansion
+**v2.1 - Portable Prompts**
+- Create <2000 token versions of all prompts
+- Test across ChatGPT, Gemini, and Claude Web
 
-**v1.5 - Documentation Expansion**
-- Video documentation workflows
-- Interactive documentation examples
-- API documentation generators
-- Translation workflows
+**v2.2 - Extended Workflows**
+- Multi-step workflow guides
+- New plugin creation workflow
+- Block creation workflow
+- Testing setup workflow
 
-**v1.6 - Extended Platform Support**
-- WooCommerce integration guides
-- Multisite-specific workflows
-- Theme-specific prompt collection
+**v2.3 - Additional Platforms**
+- ChatGPT custom GPT configuration
+- Gemini Gems setup
+- Additional MCP server integrations
 
 ---
 
@@ -647,11 +662,12 @@ This framework incorporates best practices and guidance from:
 ---
 
 **Last Updated**: December 30, 2024
-**Framework Version**: 1.3.0
+**Framework Version**: 2.0.0
 **WordPress**: 6.5+
 **PHP**: 8.0+
 **Enhanced With**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills)
+**Platforms**: Claude Code, Cursor, Cline, GitHub Copilot, ChatGPT, Gemini
 
 ---
 
-**Ready to start?** → [PROJECT-KICKSTART-PROMPT.md](prompts/PROJECT-KICKSTART-PROMPT.md) 🚀
+**Ready to start?** → [PROJECT-KICKSTART-PROMPT.md](prompts/extended/PROJECT-KICKSTART-PROMPT.md) 🚀
