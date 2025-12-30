@@ -40,9 +40,15 @@ I'm starting a new WordPress [plugin/theme] project and want to use the wp-dev-p
 - [Use case 3]
 
 **Technical Requirements:**
-- Minimum WordPress: [e.g., 6.5]
+- Minimum WordPress: [e.g., 6.9+] *(See: [Automattic/agent-skills](https://github.com/Automattic/agent-skills) for WP 6.9+ best practices)*
 - Minimum PHP: [e.g., 8.0]
 - Dependencies: [List any required plugins or libraries]
+
+**Project Type Detection:**
+*(From [Automattic/agent-skills wp-project-triage](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-project-triage))*
+- Repository type: [plugin/theme/block-theme/full-site]
+- Available tooling: [PHP/Node.js/Composer/npm]
+- Existing test infrastructure: [describe if any]
 
 **Repository:** https://github.com/[username]/[repo-name]
 
@@ -127,6 +133,35 @@ Use the prompts from TESTING-AUTOMATION-PROMPTS.md to generate configurations.
 
 ## Phase 4: Development
 
+*(Architecture guidance from [Automattic/agent-skills wp-plugin-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-plugin-development))*
+
+**Plugin Architecture Best Practices:**
+- Maintain a single bootstrap (main plugin file with header)
+- Defer heavy operations to hooks rather than load-time execution
+- Register activation/deactivation hooks at top level, separate from other callbacks
+
+**Security Foundation:**
+*(From [Automattic/agent-skills security reference](https://github.com/Automattic/agent-skills))*
+- Validate/sanitize input early; escape output late
+- Combine nonces with capability checks (nonces prevent CSRF, not authorization)
+- Avoid processing entire superglobal arrays; access only specific keys
+- Apply `wp_unslash()` before sanitization when necessary
+- Use parameterized SQL statements rather than concatenating user input
+
+**For Block Development:**
+*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-development))*
+- Upgrade to `apiVersion: 3` for WordPress 6.9+ compatibility (WP 7.0 will run post editor in iframe regardless of apiVersion)
+- Choose between static blocks (saved in post content), dynamic blocks (server-rendered), or interactive blocks using `viewScriptModule`
+- Never change block names (breaks compatibility) or modify saved markup without deprecations
+- Always add deprecations with migration paths when changing block structure
+
+**For Interactive Blocks:**
+*(From [Automattic/agent-skills wp-interactivity-api](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-interactivity-api))*
+- Use `@wordpress/create-block-interactive-template` for new interactive blocks
+- Ensure server-rendered markup + client hydration align
+- Keep directives scoped and minimal
+- Note: `data-wp-ignore` is deprecated in WP 6.9
+
 1. Implement features following WordPress Coding Standards
 2. Write tests as we go (TDD approach)
 3. Follow security best practices (sanitization, escaping, nonces, capabilities)
@@ -143,9 +178,13 @@ Follow the 5-phase documentation workflow:
 - Outline user guide structure
 
 **Phase 2: WordPress Playground Blueprint**
+*(Enhanced with [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-playground))*
 - Create blueprint.json following BLUEPRINT-CREATION-GUIDE.md
 - Set up demo environment with sample content
 - Configure settings for documentation state
+- Use `npx @wp-playground/cli@latest server --auto-mount` for local testing
+- Note: Playground instances are ephemeral and SQLite-backed; never point at production data
+- Test across different WordPress and PHP versions for compatibility verification
 
 **Phase 3: Automated Screenshot Generation**
 - Write Playwright tests for screenshots (BLUEPRINT-PLAYWRIGHT-SCREENSHOTS-TEMPLATE.md)
@@ -170,16 +209,32 @@ Use COMMUNITY-FILES-PROMPTS.md to generate any documentation with AI assistance.
 
 ## Phase 6: Pre-Launch (QA-TESTING-CHECKLIST.md)
 
+**Performance Optimization:**
+*(From [Automattic/agent-skills wp-performance](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-performance))*
+- Establish baseline performance with `curl` or WP-CLI before making changes
+- Run `wp doctor check` to catch common issues (autoload bloat, debug flags, plugin overload)
+- Use `wp profile stage` to identify where time is spent
+- Focus on dominant bottlenecks: queries, autoloaded options, object cache misses, remote HTTP calls, or cron spikes
+- Note: WP 6.9 classic themes benefit from on-demand CSS loading (30-65% reduction)
+
 1. Run complete test suite
 2. Perform manual QA using QA-TESTING-CHECKLIST.md
 3. Security audit
 4. Accessibility compliance check (WCAG 2.1 AA)
 5. Performance testing
 6. Cross-browser testing
-7. WordPress compatibility testing (6.5, 6.6, 6.7, trunk)
+7. WordPress compatibility testing (6.5, 6.6, 6.7, 6.8, 6.9, trunk)
 8. PHP compatibility testing (8.0, 8.1, 8.2, 8.3)
 
 ## Phase 7: Deployment
+
+**WP-CLI Operations:**
+*(From [Automattic/agent-skills wp-wpcli-and-ops](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-wpcli-and-ops))*
+- Establish execution environment (development, staging, or production)
+- Backup database before performing risky changes
+- For migrations: export database, perform dry-run test, then execute
+- Use `wp-cli.yml` configuration files for automation
+- For multisite: always decide whether operating on single site (`--url=`) or network-wide (`--network`)
 
 1. Version tagging and changelog
 2. WordPress.org submission (if applicable)
@@ -606,9 +661,10 @@ If you need help with:
 
 ---
 
-**Last Updated:** December 12, 2024
-**Framework Version:** 1.2.0
+**Last Updated:** December 30, 2024
+**Framework Version:** 1.3.0
 **Compatible With:** WordPress 6.5+, PHP 8.0+
+**Enhanced With:** [Automattic/agent-skills](https://github.com/Automattic/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---
 

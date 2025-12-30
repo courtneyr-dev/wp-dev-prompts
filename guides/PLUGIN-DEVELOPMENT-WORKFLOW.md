@@ -476,6 +476,32 @@ composer require --dev phpcompatibility/phpcompatibility-wp
 
 ## Phase 3: Development
 
+> **Architecture Guidance**: This section incorporates best practices from [Automattic/agent-skills wp-plugin-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-plugin-development) for WordPress 6.9+.
+
+### 3.0 Plugin Architecture Principles
+
+*(From [Automattic/agent-skills wp-plugin-development](https://github.com/Automattic/agent-skills))*
+
+**Core Architecture Rules:**
+- **Single Bootstrap**: Maintain a single bootstrap (main plugin file with header) as the entry point
+- **Defer Heavy Operations**: Never run heavy operations at load-time; defer to hooks instead
+- **Separate Hook Registration**: Register activation/deactivation hooks at the top level, separate from other hook callbacks
+- **Lifecycle Awareness**: Understand and respect WordPress's hook execution order
+
+**Security Foundation:**
+*(From [Automattic/agent-skills security reference](https://github.com/Automattic/agent-skills))*
+- **Input/Output Rule**: Validate/sanitize input early; escape output late
+- **CSRF + Capabilities**: Nonces prevent CSRF attacks, but always combine with `current_user_can()` for authorization
+- **Specific Access**: Avoid processing entire `$_POST` or `$_GET` arrays; access only specific required keys
+- **Slash Handling**: Apply `wp_unslash()` before sanitization when necessary
+- **SQL Safety**: Use parameterized queries with `$wpdb->prepare()` rather than concatenating user input
+
+**Settings Management:**
+Use WordPress Settings API for all admin settings:
+- `register_setting()` with sanitization callbacks
+- `add_settings_section()` and `add_settings_field()`
+- Built-in sanitization and nonce handling
+
 ### 3.1 WordPress Plugin Architecture
 
 **Main Plugin Class (includes/class-plugin.php):**
@@ -618,6 +644,41 @@ add_action( 'pfbt_format_selected', function( $post_id, $new_format, $old_format
 ```
 
 ### 3.3 Block Development
+
+> **Block Development Guidance**: This section incorporates best practices from [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-development) for WordPress 6.9+.
+
+**Critical Block Development Rules:**
+*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills))*
+
+1. **Use apiVersion 3**: WordPress 7.0 will run the post editor in an iframe regardless of block apiVersion. Upgrade to apiVersion 3 for WordPress 6.9+ compatibility.
+
+2. **Never Change Block Names**: Changing the block name (namespace/block-name) breaks compatibility and causes "Invalid block" errors for existing content.
+
+3. **Always Add Deprecations**: When changing saved markup or attributes, add deprecation entries with migration paths rather than silently changing selectors.
+
+4. **Block Model Choice**:
+   - **Static blocks**: Content saved in post_content (use `save.js`)
+   - **Dynamic blocks**: Server-rendered via `render.php` or `render_callback`
+   - **Interactive blocks**: Use `viewScriptModule` and the Interactivity API
+
+5. **Maintain Fixtures**: Keep example content samples for each deprecated version to ensure testing and documentation accuracy.
+
+**Deprecation Example:**
+```javascript
+// In block registration
+deprecated: [
+    {
+        attributes: { /* old attribute schema */ },
+        save: function( { attributes } ) {
+            // Old save implementation
+        },
+        migrate: function( attributes ) {
+            // Convert old attributes to new format
+            return { ...attributes, newAttribute: convertOldValue( attributes.oldAttribute ) };
+        },
+    },
+],
+```
 
 **Block Registration (blocks/chatlog/chatlog-block.php):**
 ```php

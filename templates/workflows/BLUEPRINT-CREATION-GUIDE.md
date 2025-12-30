@@ -1,5 +1,24 @@
 # WordPress Playground Blueprint Creation Guide
 
+> **Enhanced with**: [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-playground) - WordPress Playground Agent Skills
+
+## Key Capabilities
+
+*(From [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills))*
+
+WordPress Playground enables:
+- **Quick Local Testing**: Spin up isolated WordPress environments with `npx @wp-playground/cli@latest server --auto-mount`
+- **Blueprint Execution**: Run JSON-based configuration scripts for reproducible WordPress setups
+- **Version Flexibility**: Test across different WordPress and PHP versions for compatibility verification
+- **Debugging Support**: Xdebug integration for IDE-based debugging within isolated instances
+- **Snapshot Creation**: Export configured sites as shareable ZIP files for collaboration or CI pipelines
+
+**Requirements**: Node.js ≥ 20.18, npm/npx available
+
+**Critical Constraint**: Playground instances are ephemeral and SQLite-backed; **never** point at production data.
+
+---
+
 ## Quick Reference for Prompting Claude
 
 ### Optimal Prompt Template
@@ -143,5 +162,44 @@ When hitting "Invalid blueprint" errors, the encoding method is likely the issue
 
 ---
 
+## CLI-Based Testing Workflow
+
+*(From [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills))*
+
+### Quick Local Development
+
+```bash
+# Start Playground server with auto-mount (watches current directory)
+npx @wp-playground/cli@latest server --auto-mount
+
+# Run a specific blueprint
+npx @wp-playground/cli@latest run-blueprint --file=blueprint.json
+
+# Test with specific WordPress/PHP versions
+npx @wp-playground/cli@latest server --wp=6.9 --php=8.2
+```
+
+### Export and Share
+
+```bash
+# Export current state as ZIP for sharing
+# (Useful for CI pipelines or team collaboration)
+```
+
+### Browser Alternative
+
+For quick previews without CLI tools, load blueprints directly via URL:
+```
+https://playground.wordpress.net/#[BASE64_ENCODED_BLUEPRINT]
+```
+
+Or reference a hosted blueprint:
+```
+https://playground.wordpress.net/?blueprint-url=https://example.com/blueprint.json
+```
+
+---
+
 *Created: 2025-12-09*
-*Last Updated: 2025-12-09*
+*Last Updated: 2025-12-30*
+*Enhanced with: [Automattic/agent-skills](https://github.com/Automattic/agent-skills)*

@@ -3,6 +3,7 @@
 Comprehensive prompt templates for setting up automated testing infrastructure across all 21 quality dimensions for WordPress plugins and themes. These prompts help you work with AI assistants to establish production-ready testing pipelines.
 
 **Compatible with**: WordPress 6.7+ | PHP 8.0+ | Node 20+
+**Enhanced with**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---
 
@@ -16,6 +17,8 @@ Comprehensive prompt templates for setting up automated testing infrastructure a
 6. [Performance Testing Prompts](#performance-testing-prompts)
 7. [Code Quality Prompts](#code-quality-prompts)
 8. [CI/CD Setup Prompts](#cicd-setup-prompts)
+9. [Performance Profiling Prompts](#performance-profiling-prompts) *(NEW - from agent-skills)*
+10. [Block Development Testing Prompts](#block-development-testing-prompts) *(NEW - from agent-skills)*
 
 ---
 
@@ -1573,6 +1576,304 @@ After setting up testing infrastructure:
 - [WP-CLI Testing Framework](https://make.wordpress.org/cli/handbook/plugin-unit-tests/)
 - [@wordpress/scripts Documentation](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/)
 - [GitHub Actions for WordPress](https://github.com/marketplace?query=wordpress)
+- [Automattic/agent-skills](https://github.com/Automattic/agent-skills) - WordPress Agent Skills for AI assistants
+
+---
+
+## Performance Profiling Prompts
+
+*(From [Automattic/agent-skills wp-performance](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-performance))*
+
+### 25. WordPress Performance Profiling Setup
+
+#### Context
+Set up performance profiling infrastructure for diagnosing slow WordPress sites without browser access.
+
+#### Prompt
+```markdown
+I need to set up performance profiling for my WordPress [plugin/theme/site] to diagnose slow performance.
+
+Issue description:
+- Slow TTFB on: [frontend/admin screens/REST endpoints]
+- Suspected bottleneck: [queries/autoload/caching/cron/HTTP calls/unknown]
+- Environment: [development/staging/production]
+
+Please help me:
+1. Establish baseline performance measurements using curl or WP-CLI
+2. Run wp doctor check to identify common issues
+3. Set up wp profile for deep profiling
+4. Configure Query Monitor for headless debugging (REST API headers)
+5. Create a systematic debugging workflow
+
+Key areas to investigate:
+- Database queries and autoloaded options
+- Object cache effectiveness
+- Remote HTTP call latency
+- Cron task performance
+- Hook execution time
+
+Note: WordPress 6.9 includes on-demand CSS loading for classic themes (30-65% reduction).
+Follow the "measure first, then optimize" approach from agent-skills.
+```
+
+#### Variables to Customize
+- `[plugin/theme/site]`: What you're profiling
+- Issue description specifics
+- Environment details
+
+#### Expected Output
+- Baseline measurement commands
+- WP-CLI profiling setup
+- Query Monitor configuration
+- Systematic debugging checklist
+
+#### Notes
+*(From [Automattic/agent-skills wp-performance](https://github.com/Automattic/agent-skills))*
+- Always establish baseline before making changes
+- Focus on the dominant bottleneck first
+- Re-run measurements after each change to verify improvements
+- Avoid production changes without explicit approval
+
+---
+
+### 26. WP-CLI Performance Diagnostics
+
+#### Context
+Use WP-CLI commands for performance diagnostics without browser access.
+
+#### Prompt
+```markdown
+Help me diagnose performance issues on my WordPress site using WP-CLI.
+
+Current symptoms:
+- [Describe slow behavior: slow page loads, admin lag, API timeouts, etc.]
+
+Please provide commands for:
+1. Initial diagnostics with `wp doctor check`
+2. Profile stage timing with `wp profile stage`
+3. Hook execution profiling
+4. Database query analysis
+5. Autoload options review (look for bloat)
+6. Object cache status check
+7. Cron task analysis
+
+Environment:
+- WordPress version: [version]
+- PHP version: [version]
+- Object cache: [none/Redis/Memcached/other]
+- Hosting: [shared/VPS/managed/other]
+
+Follow systematic approach: diagnose → identify bottleneck → target optimization → verify.
+```
+
+#### Expected Output
+- Complete WP-CLI command sequence
+- Interpretation guidance for outputs
+- Recommended follow-up actions
+- Optimization suggestions based on findings
+
+---
+
+## Block Development Testing Prompts
+
+*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-development))*
+
+### 27. Block Validation and Deprecation Testing
+
+#### Context
+Set up testing for block validation, deprecation handling, and migration paths.
+
+#### Prompt
+```markdown
+Create a testing strategy for my Gutenberg block to ensure proper validation and backward compatibility.
+
+Block details:
+- Block name: [namespace/block-name]
+- Block type: [static/dynamic/interactive]
+- Current apiVersion: [2/3]
+- WordPress target: [6.9+]
+
+Please create tests for:
+1. Block inserter availability
+2. Save/reload cycle validation (no "Invalid block" errors)
+3. Frontend output accuracy
+4. Asset loading verification
+5. Attribute persistence
+6. Deprecation migration paths
+
+Important considerations from agent-skills:
+- WordPress 7.0 will run post editor in iframe regardless of apiVersion
+- Upgrade to apiVersion: 3 for WordPress 6.9+ compatibility
+- Never change block names (breaks compatibility)
+- Always add deprecations with migration paths when changing saved markup
+- Maintain fixtures for each deprecated version
+
+Test file: tests/e2e/blocks/[block-name].spec.js
+```
+
+#### Variables to Customize
+- Block name and namespace
+- Block type
+- Current and target apiVersion
+- WordPress version requirements
+
+#### Expected Output
+- Playwright E2E test suite for block validation
+- Deprecation test patterns
+- Migration verification tests
+- Fixture examples for deprecated versions
+
+#### Notes
+*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills))*
+- Keep example content samples (fixtures) for each deprecated version
+- Prioritize migration paths: "When in doubt, add a migration path rather than silently changing selectors"
+
+---
+
+### 28. Interactivity API Testing
+
+#### Context
+Test WordPress Interactivity API directives and store behavior.
+
+#### Prompt
+```markdown
+Create E2E tests for my block using the WordPress Interactivity API.
+
+Block details:
+- Block name: [namespace/block-name]
+- Store namespace: [namespace]
+- Directives used: [data-wp-interactive, data-wp-bind, data-wp-on, data-wp-context, etc.]
+
+Please create tests for:
+1. View script module loading verification
+2. DOM elements have required data-wp-interactive attributes
+3. Store namespace matches directive references
+4. Hydration success (no JavaScript errors)
+5. Client-side state management
+6. Action/callback execution
+7. Server-rendered markup + client hydration alignment
+
+Important considerations from agent-skills:
+- data-wp-ignore is deprecated in WordPress 6.9
+- Server state resets between page transitions
+- Ensure scoped and minimal directives
+- Verify no JavaScript errors block hydration
+
+Test file: tests/e2e/interactivity/[block-name].spec.js
+```
+
+#### Variables to Customize
+- Block name and store namespace
+- Directives being used
+- Expected interactions
+
+#### Expected Output
+- Playwright tests for Interactivity API behavior
+- Hydration verification tests
+- Store state tests
+- Directive functionality tests
+
+#### Notes
+*(From [Automattic/agent-skills wp-interactivity-api](https://github.com/Automattic/agent-skills))*
+- For new interactive blocks, use `@wordpress/create-block-interactive-template`
+- Check for JavaScript console errors that may block hydration
+- Verify directive scoping is minimal and purposeful
+
+---
+
+## WP-CLI Operations Testing Prompts
+
+*(From [Automattic/agent-skills wp-wpcli-and-ops](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-wpcli-and-ops))*
+
+### 29. WP-CLI Migration Testing
+
+#### Context
+Test database migrations and URL replacements using WP-CLI.
+
+#### Prompt
+```markdown
+Create a testing workflow for database migrations using WP-CLI.
+
+Migration scenario:
+- Operation: [search-replace/export/import/reset]
+- Environment: [development/staging/production]
+- Multisite: [yes/no]
+- Source URL: [old-domain.com]
+- Target URL: [new-domain.com]
+
+Please create:
+1. Pre-migration backup procedure
+2. Dry-run test commands
+3. Verification queries
+4. Rollback procedure
+5. Post-migration validation
+
+Safety requirements from agent-skills:
+- Always confirm execution environment before write operations
+- Back up database for risky changes
+- Follow three-step migration: export → dry-run → execute
+- For multisite: explicitly decide single site (--url=) vs network-wide (--network)
+
+Document each step with expected output.
+```
+
+#### Expected Output
+- Complete WP-CLI command sequence with explanations
+- Backup and restore procedures
+- Dry-run verification approach
+- Multisite-specific considerations
+
+---
+
+## Block Theme Testing Prompts
+
+*(From [Automattic/agent-skills wp-block-themes](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-themes))*
+
+### 30. Block Theme Style Debugging
+
+#### Context
+Debug theme.json styles that aren't applying or are being overridden.
+
+#### Prompt
+```markdown
+Help me debug styling issues in my WordPress block theme.
+
+Issue:
+- [Describe what styles aren't applying]
+- Expected behavior: [what should happen]
+- Actual behavior: [what's happening instead]
+
+Theme structure:
+- Theme root: [path]
+- Has child theme: [yes/no]
+- theme.json version: [2/3]
+
+Please help me:
+1. Verify theme root identification (especially with multiple themes present)
+2. Check WordPress style hierarchy: core defaults → theme.json → child theme → user customizations
+3. Distinguish between settings (UI controls/presets) and styles (default appearance)
+4. Verify template and parts are in correct directories (no nested parts subdirectories)
+5. Check if user customizations are overriding theme defaults
+
+Key debugging steps from agent-skills:
+- Check if user Site Editor customizations are masking theme edits
+- Verify settings vs styles distinction in theme.json
+- Ensure template files are in templates/, parts in parts/ (not nested)
+
+Provide systematic debugging approach.
+```
+
+#### Expected Output
+- Diagnostic checklist
+- Common issues and solutions
+- theme.json validation steps
+- Style hierarchy debugging approach
+
+#### Notes
+*(From [Automattic/agent-skills wp-block-themes](https://github.com/Automattic/agent-skills))*
+- User customizations can mask theme edits - check this first
+- Settings control UI options; styles control default appearance
+- Templates go in templates/, parts go in parts/ (no subdirectory nesting)
 
 ---
 

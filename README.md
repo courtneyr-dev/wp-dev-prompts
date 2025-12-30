@@ -7,6 +7,8 @@
 [![PHP](https://img.shields.io/badge/PHP-8.0+-purple.svg)](https://www.php.net/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
+> **Enhanced with [Automattic/agent-skills](https://github.com/Automattic/agent-skills)** - WordPress Agent Skills for AI assistants, providing modern best practices for WordPress 6.9+ development including block development, Interactivity API, performance optimization, and WP-CLI operations.
+
 ---
 
 ## 🎯 Start Here: New Project?
@@ -34,8 +36,9 @@ This repository provides everything you need for professional WordPress developm
 
 ### 🤖 AI-Powered Development
 - **One kickstart prompt** that references the entire framework
-- **70+ specialized prompts** for testing, documentation, community files, and marketing
+- **90+ specialized prompts** for testing, documentation, community files, marketing, and block development
 - **Works with Claude, ChatGPT, Copilot, and any AI assistant**
+- **Enhanced with [Automattic/agent-skills](https://github.com/Automattic/agent-skills)** - Modern WordPress 6.9+ best practices
 
 ### 🧪 Complete Testing Framework
 - **21 quality dimensions**: PHP, JavaScript, security, accessibility, performance
@@ -149,7 +152,8 @@ cd templates/
 wp-dev-prompts/
 ├── 📋 prompts/                           # 🎯 START HERE
 │   ├── PROJECT-KICKSTART-PROMPT.md      # 👈 Main entry point
-│   ├── TESTING-AUTOMATION-PROMPTS.md    # 24 testing prompts
+│   ├── TESTING-AUTOMATION-PROMPTS.md    # 30 testing prompts (enhanced)
+│   ├── BLOCK-DEVELOPMENT-PROMPTS.md     # 12 block development prompts (NEW)
 │   ├── COMMUNITY-FILES-PROMPTS.md       # 16 documentation prompts
 │   ├── PLUGIN-MARKETING-PROMPTS.md      # 32 marketing prompts
 │   └── site-review/                     # Website review system
@@ -600,12 +604,6 @@ Built for the WordPress community with ❤️
 
 ### 🔮 Planned
 
-**v1.3 - Enhanced AI Integration**
-- Theme-specific prompt collection
-- Block development prompts
-- WooCommerce integration guides
-- Multisite-specific workflows
-
 **v1.4 - Extended Testing**
 - Load testing templates
 - Security audit workflows
@@ -618,6 +616,11 @@ Built for the WordPress community with ❤️
 - API documentation generators
 - Translation workflows
 
+**v1.6 - Extended Platform Support**
+- WooCommerce integration guides
+- Multisite-specific workflows
+- Theme-specific prompt collection
+
 ---
 
 ## ⭐ Star This Repository
@@ -626,10 +629,28 @@ If this framework helps you build better WordPress projects, please star the rep
 
 ---
 
-**Last Updated**: December 12, 2024
-**Framework Version**: 1.2.0
+## 🙏 Credits & Sources
+
+This framework incorporates best practices and guidance from:
+
+- **[Automattic/agent-skills](https://github.com/Automattic/agent-skills)** - WordPress Agent Skills for AI assistants (MIT License)
+  - wp-plugin-development - Plugin architecture and security patterns
+  - wp-block-development - Block creation, deprecations, and apiVersion guidance
+  - wp-block-themes - theme.json, templates, and style variations
+  - wp-interactivity-api - Directives, stores, and hydration patterns
+  - wp-performance - Profiling, WP-CLI diagnostics, and optimization
+  - wp-wpcli-and-ops - Database operations, migrations, and multisite
+  - wp-playground - Blueprint creation and local testing
+  - wp-abilities-api - Permission-based functionality (WP 6.9+)
+  - wp-project-triage - Repository detection and tooling identification
+
+---
+
+**Last Updated**: December 30, 2024
+**Framework Version**: 1.3.0
 **WordPress**: 6.5+
 **PHP**: 8.0+
+**Enhanced With**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills)
 
 ---
 
