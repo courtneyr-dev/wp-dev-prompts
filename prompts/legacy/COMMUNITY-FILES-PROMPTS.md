@@ -1,0 +1,1 @@
+../extended/COMMUNITY-FILES-PROMPTS.md

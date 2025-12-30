@@ -1,0 +1,1 @@
+../extended/PROJECT-KICKSTART-PROMPT.md

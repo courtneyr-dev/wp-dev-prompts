@@ -1,0 +1,1 @@
+../extended/TESTING-AUTOMATION-PROMPTS.md
