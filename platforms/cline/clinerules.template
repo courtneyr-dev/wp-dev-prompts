@@ -1,0 +1,166 @@
+# .clinerules Template for WordPress Projects
+
+> **Platform**: Cline (VS Code extension)
+> **Purpose**: Project guidelines for Cline AI assistant
+> **Usage**: Copy to your project root as `.clinerules`
+
+## Instructions
+
+Copy this file to your WordPress plugin/theme project root as `.clinerules` and customize the placeholders.
+
+---
+
+# WordPress Project Guidelines
+
+## Project Information
+
+- **Name**: [PROJECT_NAME]
+- **Type**: WordPress [plugin/theme]
+- **Slug**: [project-slug]
+- **Text Domain**: [text-domain]
+- **Function Prefix**: [prefix_]
+- **Minimum WordPress**: 6.5
+- **Minimum PHP**: 8.0
+
+## Development Standards
+
+### Coding Standards
+
+Follow WordPress Coding Standards:
+- Tabs for indentation
+- Spaces inside parentheses: `function( $arg )`
+- Yoda conditions: `if ( 'value' === $var )`
+- Single quotes unless interpolating
+
+### Security Requirements
+
+For ALL user input:
+
+1. **Sanitize Input**
+   - `sanitize_text_field()` for text
+   - `absint()` for positive integers
+   - `sanitize_email()` for emails
+   - `sanitize_url()` for URLs
+
+2. **Escape Output**
+   - `esc_html()` for HTML content
+   - `esc_attr()` for attributes
+   - `esc_url()` for URLs
+   - `wp_kses_post()` for allowed HTML
+
+3. **Verify Authority**
+   - Check nonces: `wp_verify_nonce()`
+   - Check capabilities: `current_user_can()`
+   - Always combine both checks
+
+4. **Database Safety**
+   - Use `$wpdb->prepare()` for all queries with variables
+
+### Naming Conventions
+
+```
+Functions:     [prefix_]function_name
+Classes:       [Prefix_]Class_Name
+Constants:     [PREFIX_]CONSTANT_NAME
+Hooks:         [prefix_]_hook_name
+Options:       [prefix_]_option_name
+Meta keys:     _[prefix_]_meta_key
+```
+
+## File Structure
+
+```
+[project-slug]/
+├── [project-slug].php    # Main plugin file
+├── includes/             # PHP classes
+├── src/                  # Block source (JS/CSS)
+├── build/                # Compiled assets
+├── assets/               # Static assets
+├── languages/            # Translation files
+└── tests/                # PHPUnit tests
+```
+
+## Common Tasks
+
+### When Creating Admin Pages
+
+Always include:
+- Nonce field in form
+- Capability check at handler start
+- Sanitization of all inputs
+- Success/error notices
+
+### When Creating AJAX Handlers
+
+Always include:
+- `check_ajax_referer()` for nonce
+- `current_user_can()` for capability
+- `wp_send_json_success/error()` for response
+
+### When Creating Blocks
+
+- Use `block.json` for registration
+- Set `apiVersion: 3` for WordPress 6.9+
+- Include deprecations when changing markup
+- Test save/reload cycles
+
+### When Creating Database Queries
+
+- Always use `$wpdb->prepare()`
+- Use appropriate placeholders (%d, %s, %f)
+- Escape LIKE wildcards with `$wpdb->esc_like()`
+
+## Testing Requirements
+
+When creating new functionality:
+1. Suggest PHPUnit tests for PHP code
+2. Suggest Jest tests for JavaScript
+3. Consider edge cases and error conditions
+4. Follow test naming: `test_[method]_[condition]_[expectation]`
+
+## i18n Requirements
+
+All user-facing strings must use:
+- `__( 'text', '[text-domain]' )`
+- `_e( 'text', '[text-domain]' )`
+- `esc_html__( 'text', '[text-domain]' )`
+- `esc_attr__( 'text', '[text-domain]' )`
+
+Include translator comments for strings with placeholders:
+```php
+/* translators: %s: user name */
+sprintf( __( 'Hello, %s', '[text-domain]' ), $name );
+```
+
+## Plan Mode vs Act Mode
+
+### Use Plan Mode When
+
+- Starting new features
+- Making architectural decisions
+- Unsure about approach
+- Task involves multiple files
+
+### Use Act Mode When
+
+- Implementation is clear
+- Making small, focused changes
+- Following an approved plan
+- Fixing specific bugs
+
+## Permissions
+
+Before creating or modifying files, describe:
+- What you're about to change
+- Why it's necessary
+- Expected impact
+
+## DO NOT
+
+- Use `eval()` or similar dangerous functions
+- Trust user input without sanitization
+- Output without escaping
+- Skip nonce verification
+- Ignore capability checks
+- Use deprecated WordPress functions
+- Hard-code URLs or paths

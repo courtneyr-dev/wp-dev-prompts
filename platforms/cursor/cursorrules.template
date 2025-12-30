@@ -1,0 +1,152 @@
+# .cursorrules Template for WordPress Projects
+
+> **Platform**: Cursor
+> **Purpose**: Project-specific rules for Cursor AI
+> **Usage**: Copy to your project root as `.cursorrules`
+
+## Instructions
+
+Copy this file to your WordPress plugin/theme project root as `.cursorrules` and customize the placeholders.
+
+---
+
+# WordPress Development Rules
+
+## Project Context
+
+You are working on a WordPress [plugin/theme] called [PROJECT_NAME].
+
+- **Slug**: [project-slug]
+- **Text Domain**: [text-domain]
+- **Prefix**: [prefix_]
+- **Minimum WordPress**: 6.5
+- **Minimum PHP**: 8.0
+
+## Coding Standards
+
+### PHP Standards
+
+- Follow WordPress PHP Coding Standards
+- Use tabs for indentation
+- Use Yoda conditions: `if ( 'value' === $var )`
+- Add spaces inside parentheses: `function_name( $arg )`
+- Use single quotes for strings unless interpolating
+
+### JavaScript Standards
+
+- Follow WordPress JavaScript Coding Standards
+- Use tabs for indentation
+- Use @wordpress/scripts for builds
+- Prefer @wordpress packages over custom implementations
+
+### Naming Conventions
+
+- Functions: `[prefix_]snake_case`
+- Classes: `[Prefix_]Class_Name`
+- Constants: `[PREFIX_]UPPER_CASE`
+- Hooks: `[prefix_]_hook_name`
+
+## Security Requirements
+
+ALWAYS when handling user input:
+1. Sanitize input with appropriate function (sanitize_text_field, absint, etc.)
+2. Escape output with context function (esc_html, esc_attr, esc_url)
+3. Verify nonces for form submissions
+4. Check user capabilities before privileged operations
+5. Use $wpdb->prepare() for database queries
+
+## Common Patterns
+
+### Admin Page Handler
+
+```php
+function [prefix_]handle_settings() {
+    if ( ! isset( $_POST['[prefix_]_nonce'] ) ||
+         ! wp_verify_nonce( $_POST['[prefix_]_nonce'], '[prefix_]_save_settings' ) ) {
+        return;
+    }
+
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    $value = isset( $_POST['option'] )
+        ? sanitize_text_field( wp_unslash( $_POST['option'] ) )
+        : '';
+
+    update_option( '[prefix_]_option', $value );
+}
+```
+
+### AJAX Handler
+
+```php
+add_action( 'wp_ajax_[prefix_]_action', '[prefix_]_ajax_handler' );
+
+function [prefix_]_ajax_handler() {
+    check_ajax_referer( '[prefix_]_nonce', 'nonce' );
+
+    if ( ! current_user_can( 'edit_posts' ) ) {
+        wp_send_json_error( 'Unauthorized' );
+    }
+
+    // Process...
+    wp_send_json_success( $data );
+}
+```
+
+### Block Registration
+
+```php
+function [prefix_]_register_blocks() {
+    register_block_type( __DIR__ . '/build/blocks/my-block' );
+}
+add_action( 'init', '[prefix_]_register_blocks' );
+```
+
+## File Structure
+
+Expect this structure:
+```
+[project-slug]/
+├── [project-slug].php
+├── includes/
+├── src/
+├── build/
+├── assets/
+├── languages/
+└── tests/
+```
+
+## i18n
+
+Wrap all user-facing strings:
+- `__( 'text', '[text-domain]' )`
+- `_e( 'text', '[text-domain]' )`
+- `esc_html__( 'text', '[text-domain]' )`
+
+## Testing
+
+When creating code, also suggest tests:
+- PHPUnit for PHP functions
+- Jest for JavaScript
+- Include edge cases and error conditions
+
+## DO NOT
+
+- Use `eval()` or similar
+- Trust user input without sanitization
+- Output without escaping
+- Use deprecated WordPress functions
+- Hard-code URLs (use `home_url()`, `admin_url()`, etc.)
+- Skip nonce verification on forms
+
+## When Asked to Review Code
+
+Check for:
+1. Missing sanitization/escaping
+2. Missing nonce verification
+3. Missing capability checks
+4. SQL injection vulnerabilities
+5. XSS vulnerabilities
+6. Proper use of WordPress APIs

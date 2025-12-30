@@ -1,0 +1,128 @@
+# copilot-instructions.md Template for WordPress Projects
+
+> **Platform**: GitHub Copilot
+> **Purpose**: Repository-level instructions for Copilot
+> **Usage**: Copy to your project as `.github/copilot-instructions.md`
+
+## Instructions
+
+Copy this file to your WordPress plugin/theme repository as `.github/copilot-instructions.md` and customize the placeholders.
+
+---
+
+# Copilot Instructions for WordPress Development
+
+## Project Context
+
+This is a WordPress [plugin/theme] project.
+
+- **Text Domain**: [text-domain]
+- **Function Prefix**: [prefix_]
+- **Minimum WordPress**: 6.5
+- **Minimum PHP**: 8.0
+
+## Coding Standards
+
+Follow WordPress Coding Standards:
+- Use tabs for indentation
+- Add spaces inside parentheses
+- Use Yoda conditions
+- Single quotes for strings
+
+## Security Patterns
+
+When generating code that handles user input:
+
+### Sanitization (always sanitize input)
+```php
+$text = sanitize_text_field( wp_unslash( $_POST['field'] ) );
+$int = absint( $_GET['id'] );
+$email = sanitize_email( $_POST['email'] );
+$url = sanitize_url( $_POST['url'] );
+```
+
+### Escaping (always escape output)
+```php
+echo esc_html( $text );
+echo esc_attr( $value );
+echo esc_url( $url );
+```
+
+### Nonces (always verify for forms)
+```php
+wp_nonce_field( '[prefix_]_action', '[prefix_]_nonce' );
+
+if ( ! wp_verify_nonce( $_POST['[prefix_]_nonce'], '[prefix_]_action' ) ) {
+    wp_die( 'Security check failed' );
+}
+```
+
+### Capabilities (always check before privileged operations)
+```php
+if ( ! current_user_can( 'manage_options' ) ) {
+    wp_die( 'Unauthorized' );
+}
+```
+
+## Common Patterns
+
+### Hook Registration
+```php
+add_action( 'init', '[prefix_]_register_post_type' );
+add_filter( 'the_content', '[prefix_]_filter_content' );
+```
+
+### Admin Page
+```php
+add_action( 'admin_menu', '[prefix_]_add_menu' );
+function [prefix_]_add_menu() {
+    add_options_page(
+        __( 'Settings', '[text-domain]' ),
+        __( 'My Plugin', '[text-domain]' ),
+        'manage_options',
+        '[project-slug]',
+        '[prefix_]_settings_page'
+    );
+}
+```
+
+### AJAX Handler
+```php
+add_action( 'wp_ajax_[prefix_]_action', '[prefix_]_ajax_handler' );
+function [prefix_]_ajax_handler() {
+    check_ajax_referer( '[prefix_]_nonce', 'nonce' );
+    if ( ! current_user_can( 'edit_posts' ) ) {
+        wp_send_json_error( 'Unauthorized' );
+    }
+    // Process...
+    wp_send_json_success( $result );
+}
+```
+
+### Block Registration
+```php
+function [prefix_]_register_blocks() {
+    register_block_type( __DIR__ . '/build/my-block' );
+}
+add_action( 'init', '[prefix_]_register_blocks' );
+```
+
+## i18n
+
+All user-facing strings must use translation functions:
+- `__( 'text', '[text-domain]' )`
+- `_e( 'text', '[text-domain]' )`
+- `esc_html__( 'text', '[text-domain]' )`
+
+## File Naming
+
+- Classes: `class-{name}.php`
+- Traits: `trait-{name}.php`
+- Interfaces: `interface-{name}.php`
+- Templates: `{template-name}.php`
+
+## Test Naming
+
+When suggesting tests:
+- `test_{method}_{condition}_{expectation}`
+- Example: `test_save_returns_error_when_invalid_data`

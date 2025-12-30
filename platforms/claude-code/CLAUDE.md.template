@@ -1,0 +1,132 @@
+# CLAUDE.md Template for WordPress Projects
+
+> **Platform**: Claude Code
+> **Purpose**: Project-specific instructions for Claude Code
+> **Usage**: Copy to your project root as `CLAUDE.md`
+
+## Instructions
+
+Copy this file to your WordPress plugin/theme project root and customize the placeholders.
+
+---
+
+# CLAUDE.md
+
+## Project Overview
+
+**Project**: [PROJECT_NAME]
+**Type**: WordPress [plugin/theme/block-theme]
+**Slug**: [project-slug]
+**Text Domain**: [text-domain]
+**Prefix**: [prefix_]
+
+## Development Standards
+
+### WordPress Coding Standards
+
+- Follow [WordPress PHP Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/)
+- Follow [WordPress JavaScript Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/javascript/)
+- Use tabs for indentation (PHP and JS)
+- Maximum line length: 100 characters (soft limit)
+
+### Naming Conventions
+
+- Functions: `[prefix_]function_name`
+- Classes: `[Prefix_]Class_Name` or `[Prefix]\Namespace\ClassName`
+- Constants: `[PREFIX_]CONSTANT_NAME`
+- Hooks: `[prefix_]/hook-name` or `[prefix_]_hook_name`
+
+### Security Requirements
+
+**Always:**
+- Sanitize all input: `sanitize_text_field()`, `absint()`, `sanitize_email()`, etc.
+- Escape all output: `esc_html()`, `esc_attr()`, `esc_url()`, etc.
+- Verify nonces AND check capabilities for all admin actions
+- Use `$wpdb->prepare()` for all database queries with user input
+
+**Never:**
+- Trust `$_GET`, `$_POST`, `$_REQUEST` without sanitization
+- Echo user input without escaping
+- Use `eval()` or similar dangerous functions
+
+### i18n Requirements
+
+- Wrap all user-facing strings in translation functions
+- Use text domain: `[text-domain]`
+- Include translator comments for complex strings
+
+```php
+__( 'Text', '[text-domain]' );
+_e( 'Text', '[text-domain]' );
+/* translators: %s: user name */
+sprintf( __( 'Hello, %s', '[text-domain]' ), $name );
+```
+
+## File Structure
+
+```
+[project-slug]/
+├── [project-slug].php      # Main plugin file
+├── includes/               # PHP classes
+├── src/                    # Block source files
+├── build/                  # Compiled assets
+├── assets/                 # Static assets
+├── languages/              # Translation files
+├── templates/              # Template files
+└── tests/                  # Test files
+```
+
+## Build Commands
+
+```bash
+# Install dependencies
+composer install
+npm install
+
+# Development
+npm run start           # Watch mode
+npm run build           # Production build
+
+# Testing
+composer test           # PHPUnit
+composer lint           # PHPCS
+composer analyze        # PHPStan
+npm run lint:js         # ESLint
+npm run lint:css        # Stylelint
+npm run test:unit       # Jest
+
+# WordPress environment
+npm run env:start       # Start wp-env
+npm run env:stop        # Stop wp-env
+```
+
+## Testing Requirements
+
+- PHPUnit tests for all public methods
+- PHPCS with WordPress-Extra ruleset
+- PHPStan level [5+]
+- Jest tests for JavaScript components
+- Playwright E2E tests for critical paths
+
+## Skills Reference
+
+When working on this project, reference these skills:
+
+- **Security**: skills/security/*.md
+- **Testing**: skills/testing/*.md
+- **WordPress**: skills/wordpress/*.md
+- **Performance**: skills/performance/*.md
+
+## Project-Specific Notes
+
+[Add any project-specific instructions, gotchas, or important context here]
+
+## External Dependencies
+
+[List any external services, APIs, or dependencies with relevant documentation links]
+
+## Related Resources
+
+- [WordPress Plugin Handbook](https://developer.wordpress.org/plugins/)
+- [Block Editor Handbook](https://developer.wordpress.org/block-editor/)
+- [wp-dev-prompts](https://github.com/courtneyr-dev/wp-dev-prompts)
