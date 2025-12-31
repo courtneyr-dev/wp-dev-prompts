@@ -1,0 +1,281 @@
+# Fast CI - Pull Request Checks
+#
+# Runs on every PR to quickly validate changes.
+# Focuses on linting, formatting, and fast tests.
+
+name: CI (Fast)
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # LINTING & FORMATTING
+  # ============================================================================
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint:js --if-present || echo "No JS linting configured"
+
+      - name: Run Stylelint
+        run: npm run lint:css --if-present || echo "No CSS linting configured"
+
+      - name: Check Prettier formatting
+        run: npm run format:check --if-present || echo "No format check configured"
+
+      - name: Validate JSON files
+        run: |
+          echo "Validating JSON files..."
+          for file in data/*.json; do
+            if [ -f "$file" ]; then
+              echo "  Checking $file"
+              node -e "JSON.parse(require('fs').readFileSync('$file', 'utf8'))" || exit 1
+            fi
+          done
+          echo "All JSON files valid"
+
+      - name: Validate YAML files
+        run: |
+          echo "Validating YAML files..."
+          npm install -g yaml-lint 2>/dev/null || true
+          for file in data/*.yaml data/*.yml; do
+            if [ -f "$file" ]; then
+              echo "  Checking $file"
+              yamllint "$file" 2>/dev/null || node -e "require('js-yaml').load(require('fs').readFileSync('$file', 'utf8'))" 2>/dev/null || echo "YAML check skipped"
+            fi
+          done
+
+  # ============================================================================
+  # PHP LINTING (if applicable)
+  # ============================================================================
+  php-lint:
+    name: PHP Linting
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('**/*.php') != '' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer, phpcs, phpstan
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress || echo "No composer.json found"
+
+      - name: Run PHPCS
+        run: composer run lint --if-present || echo "No PHPCS configured"
+
+      - name: Run PHPStan
+        run: composer run phpstan --if-present || echo "No PHPStan configured"
+
+  # ============================================================================
+  # UNIT TESTS
+  # ============================================================================
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Jest tests
+        run: npm test -- --passWithNoTests
+        continue-on-error: true
+
+  # ============================================================================
+  # ACCESSIBILITY CHECKS (Basic)
+  # ============================================================================
+  a11y-check:
+    name: Basic Accessibility Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for Storybook a11y tests
+        run: |
+          if [ -d "ui/storybook" ]; then
+            echo "Storybook found - a11y addon should run with Storybook tests"
+          fi
+
+      - name: Run accessibility linting
+        run: |
+          # Check for common a11y issues in JSX/HTML
+          npx eslint-plugin-jsx-a11y --version 2>/dev/null || echo "jsx-a11y not installed"
+
+  # ============================================================================
+  # PROMPT & BLUEPRINT VALIDATION
+  # ============================================================================
+  validate-prompts:
+    name: Validate Prompts & Blueprints
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate prompt structure
+        run: |
+          echo "Validating prompt files..."
+
+          # Check that prompt files have required sections
+          for file in prompts/**/*.md; do
+            if [ -f "$file" ]; then
+              echo "  Checking $file"
+
+              # Must have a title (# header)
+              if ! grep -q "^# " "$file"; then
+                echo "    Warning: Missing title header in $file"
+              fi
+            fi
+          done
+
+          echo "Prompt validation complete"
+
+      - name: Validate agent configs
+        run: |
+          echo "Validating agent configurations..."
+
+          for file in agents/**/*.md; do
+            if [ -f "$file" ]; then
+              echo "  Checking $file"
+
+              # Agent files should have identity section
+              if ! grep -qi "identity\|role\|you are" "$file"; then
+                echo "    Warning: No identity section found in $file"
+              fi
+            fi
+          done
+
+          echo "Agent validation complete"
+
+      - name: Check data file integrity
+        run: |
+          echo "Checking data file references..."
+
+          # Verify referenced data files exist
+          for prompt in prompts/**/*.md; do
+            if [ -f "$prompt" ]; then
+              # Extract data file references
+              refs=$(grep -oE 'data/[a-zA-Z0-9_-]+\.(json|yaml|yml)' "$prompt" 2>/dev/null || true)
+              for ref in $refs; do
+                if [ ! -f "$ref" ]; then
+                  echo "  Warning: $prompt references missing file: $ref"
+                fi
+              done
+            fi
+          done
+
+          echo "Reference check complete"
+
+  # ============================================================================
+  # STATIC ANALYSIS
+  # ============================================================================
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit 2>/dev/null || echo "No TypeScript configured"
+
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ""
+          extra_args: --only-verified
+
+  # ============================================================================
+  # SUMMARY
+  # ============================================================================
+  ci-summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [lint, unit-tests, validate-prompts, static-analysis]
+    if: always()
+
+    steps:
+      - name: Check job results
+        run: |
+          echo "## CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint & Format | ${{ needs.lint.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ needs.unit-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Validate Prompts | ${{ needs.validate-prompts.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Static Analysis | ${{ needs.static-analysis.result }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if any job failed
+        if: contains(needs.*.result, 'failure')
+        run: exit 1

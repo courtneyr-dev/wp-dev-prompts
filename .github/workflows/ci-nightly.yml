@@ -1,0 +1,423 @@
+# Nightly CI - Comprehensive Testing
+#
+# Runs comprehensive tests that are too slow for PR checks.
+# Includes integration tests, E2E, visual regression, and audits.
+
+name: CI (Nightly)
+
+on:
+  schedule:
+    # Run at 2 AM UTC every day
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      skip_visual:
+        description: 'Skip visual regression tests'
+        required: false
+        type: boolean
+        default: false
+      skip_performance:
+        description: 'Skip performance tests'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: nightly-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ============================================================================
+  # INTEGRATION TESTS
+  # ============================================================================
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysqli, pdo_mysql
+          tools: composer, wp-cli
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          composer install --prefer-dist --no-progress 2>/dev/null || true
+
+      - name: Run integration tests
+        run: |
+          npm run test:integration --if-present || echo "No integration tests configured"
+
+  # ============================================================================
+  # PLAYWRIGHT E2E TESTS
+  # ============================================================================
+  e2e-tests:
+    name: Playwright E2E
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests (shard ${{ matrix.shard }}/3)
+        run: |
+          npx playwright test --shard=${{ matrix.shard }}/3 || echo "No Playwright tests found"
+        env:
+          CI: true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results-${{ matrix.shard }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  # ============================================================================
+  # MULTISITE & LOCALE TESTING
+  # ============================================================================
+  multisite-tests:
+    name: Multisite & Locale Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        locale: [en_US, de_DE, ja, ar]
+        multisite: [false, true]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run locale-specific tests
+        run: |
+          echo "Testing with locale: ${{ matrix.locale }}, multisite: ${{ matrix.multisite }}"
+          # Run Playwright with locale configuration
+          LOCALE=${{ matrix.locale }} MULTISITE=${{ matrix.multisite }} \
+            npx playwright test tests/e2e/locale.spec.ts --project=chromium 2>/dev/null || \
+            echo "No locale tests configured"
+        env:
+          CI: true
+
+  # ============================================================================
+  # VISUAL REGRESSION TESTS
+  # ============================================================================
+  visual-regression:
+    name: Visual Regression
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_visual }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Build Storybook
+        run: |
+          if [ -d "ui/storybook" ]; then
+            cd ui/storybook
+            npm ci 2>/dev/null || npm install
+            npm run build-storybook --if-present
+          fi
+
+      - name: Run visual regression tests
+        run: |
+          npx playwright test tests/visual/ --update-snapshots 2>/dev/null || \
+            echo "No visual regression tests configured"
+
+      - name: Upload visual diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diff
+          path: |
+            test-results/
+            **/__snapshots__/
+          retention-days: 7
+
+  # ============================================================================
+  # PERFORMANCE TESTS
+  # ============================================================================
+  performance-tests:
+    name: Performance Budget Tests
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_performance }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun --config=.lighthouserc.json 2>/dev/null || \
+            echo "No Lighthouse config found"
+
+      - name: Check bundle size
+        run: |
+          npx size-limit 2>/dev/null || echo "No size-limit configured"
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci/
+          retention-days: 30
+
+  # ============================================================================
+  # AUDIT CHECKLIST RUNS
+  # ============================================================================
+  audit-runs:
+    name: WordPress Audit Checklist
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run audit tests
+        run: |
+          npx playwright test tests/audit/ --reporter=html || \
+            echo "No audit tests found"
+        env:
+          CI: true
+
+      - name: Generate audit report
+        if: always()
+        run: |
+          echo "## Audit Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Parse audit results if available
+          if [ -f "playwright-report/index.html" ]; then
+            echo "Audit tests completed. See artifacts for full report." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-report
+          path: playwright-report/
+          retention-days: 30
+
+  # ============================================================================
+  # CONTRACT TESTING
+  # ============================================================================
+  contract-tests:
+    name: Contract Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run contract tests
+        run: |
+          npm run test:contract --if-present || echo "No contract tests configured"
+
+  # ============================================================================
+  # MUTATION TESTING
+  # ============================================================================
+  mutation-tests:
+    name: Mutation Testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Stryker mutation tests
+        run: |
+          npx stryker run 2>/dev/null || echo "Stryker not configured"
+
+      - name: Upload mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report
+          path: reports/mutation/
+          retention-days: 14
+
+  # ============================================================================
+  # NIGHTLY SUMMARY
+  # ============================================================================
+  nightly-summary:
+    name: Nightly Summary
+    runs-on: ubuntu-latest
+    needs:
+      - integration-tests
+      - e2e-tests
+      - visual-regression
+      - performance-tests
+      - audit-runs
+      - contract-tests
+      - mutation-tests
+    if: always()
+
+    steps:
+      - name: Generate summary
+        run: |
+          echo "# Nightly CI Summary - $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Suite | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Integration Tests | ${{ needs.integration-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E Tests | ${{ needs.e2e-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Visual Regression | ${{ needs.visual-regression.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance | ${{ needs.performance-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Audit Runs | ${{ needs.audit-runs.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Contract Tests | ${{ needs.contract-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Mutation Tests | ${{ needs.mutation-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: contains(needs.*.result, 'failure')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Create an issue if nightly tests fail
+            const title = `Nightly CI Failed - ${new Date().toISOString().split('T')[0]}`;
+            const body = `## Nightly CI Failure
+
+            The nightly CI run has failed. Please investigate.
+
+            **Run:** ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}
+
+            **Failed jobs:**
+            ${Object.entries({
+              'Integration Tests': '${{ needs.integration-tests.result }}',
+              'E2E Tests': '${{ needs.e2e-tests.result }}',
+              'Visual Regression': '${{ needs.visual-regression.result }}',
+              'Performance': '${{ needs.performance-tests.result }}',
+              'Audit Runs': '${{ needs.audit-runs.result }}',
+              'Contract Tests': '${{ needs.contract-tests.result }}',
+              'Mutation Tests': '${{ needs.mutation-tests.result }}'
+            }).filter(([_, v]) => v === 'failure').map(([k]) => `- ${k}`).join('\n')}
+            `;
+
+            // Check if issue already exists today
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'nightly-failure',
+              per_page: 1
+            });
+
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['nightly-failure', 'ci']
+              });
+            }

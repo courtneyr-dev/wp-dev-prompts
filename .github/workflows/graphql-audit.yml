@@ -1,0 +1,454 @@
+# GraphQL Audit Workflow
+#
+# Runs GraphQL API audits for WordPress sites using WPGraphQL.
+# Can be triggered manually with a custom endpoint or run on schedule.
+
+name: GraphQL Audit
+
+on:
+  schedule:
+    # Run weekly on Mondays at 6 AM UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      endpoint:
+        description: 'GraphQL endpoint URL'
+        required: true
+        default: 'http://localhost:8888/graphql'
+        type: string
+      auth_token:
+        description: 'Authentication token (optional)'
+        required: false
+        type: string
+      run_security_tests:
+        description: 'Run security-focused tests'
+        required: false
+        type: boolean
+        default: true
+
+env:
+  GRAPHQL_ENDPOINT: ${{ inputs.endpoint || 'http://localhost:8888/graphql' }}
+
+jobs:
+  # ============================================================================
+  # SCHEMA VALIDATION
+  # ============================================================================
+  schema-validation:
+    name: Schema Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run schema validation tests
+        run: |
+          npx playwright test tests/audit/graphql.spec.ts \
+            --grep "Schema Validation" \
+            --reporter=json --reporter=html
+        env:
+          GRAPHQL_ENDPOINT: ${{ env.GRAPHQL_ENDPOINT }}
+          WP_AUTH_TOKEN: ${{ inputs.auth_token || secrets.WP_AUTH_TOKEN }}
+
+      - name: Introspection query
+        run: |
+          echo "## Schema Introspection" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Content-Type: application/json" \
+            -d '{"query":"{ __schema { queryType { name } mutationType { name } types { name kind } } }"}')
+
+          if echo "$response" | jq -e '.errors' > /dev/null 2>&1; then
+            echo "Introspection errors detected:" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            echo "$response" | jq '.errors' >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            type_count=$(echo "$response" | jq '.data.__schema.types | length')
+            echo "Schema loaded successfully with $type_count types" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload schema results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: schema-validation-results
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+  # ============================================================================
+  # QUERY FUNCTIONALITY
+  # ============================================================================
+  query-tests:
+    name: Query Functionality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run query functionality tests
+        run: |
+          npx playwright test tests/audit/graphql.spec.ts \
+            --grep "Query Functionality" \
+            --reporter=json --reporter=html
+        env:
+          GRAPHQL_ENDPOINT: ${{ env.GRAPHQL_ENDPOINT }}
+
+      - name: Test pagination
+        run: |
+          echo "## Pagination Test" >> $GITHUB_STEP_SUMMARY
+
+          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Content-Type: application/json" \
+            -d '{"query":"{ posts(first: 2) { pageInfo { hasNextPage endCursor } nodes { id } } }"}')
+
+          if echo "$response" | jq -e '.data.posts.pageInfo' > /dev/null 2>&1; then
+            echo "Pagination working correctly" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Pagination may have issues" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload query results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: query-test-results
+          path: playwright-report/
+          retention-days: 14
+
+  # ============================================================================
+  # AUTHENTICATION & AUTHORIZATION
+  # ============================================================================
+  auth-tests:
+    name: Auth & Authorization
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run auth tests
+        run: |
+          npx playwright test tests/audit/graphql.spec.ts \
+            --grep "Authentication" \
+            --reporter=json --reporter=html
+        env:
+          GRAPHQL_ENDPOINT: ${{ env.GRAPHQL_ENDPOINT }}
+          WP_AUTH_TOKEN: ${{ inputs.auth_token || secrets.WP_AUTH_TOKEN }}
+
+      - name: Check viewer protection
+        run: |
+          echo "## Authentication Checks" >> $GITHUB_STEP_SUMMARY
+
+          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Content-Type: application/json" \
+            -d '{"query":"{ viewer { id email capabilities } }"}')
+
+          viewer=$(echo "$response" | jq '.data.viewer')
+          if [ "$viewer" = "null" ]; then
+            echo "Viewer correctly returns null for unauthenticated requests" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "WARNING: Viewer returns data for unauthenticated requests" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check mutation protection
+        run: |
+          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Content-Type: application/json" \
+            -d '{"query":"mutation { createPost(input: { title: \"Test\", status: DRAFT, clientMutationId: \"test\" }) { post { id } } }"}')
+
+          if echo "$response" | jq -e '.errors' > /dev/null 2>&1; then
+            echo "Mutations correctly require authentication" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "WARNING: Mutations may not require authentication" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload auth results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: auth-test-results
+          path: playwright-report/
+          retention-days: 14
+
+  # ============================================================================
+  # SECURITY TESTS
+  # ============================================================================
+  security-tests:
+    name: Security Tests
+    runs-on: ubuntu-latest
+    if: ${{ inputs.run_security_tests != false }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run security tests
+        run: |
+          npx playwright test tests/audit/graphql.spec.ts \
+            --grep "Performance & Security" \
+            --reporter=json --reporter=html
+        env:
+          GRAPHQL_ENDPOINT: ${{ env.GRAPHQL_ENDPOINT }}
+
+      - name: Check CORS configuration
+        run: |
+          echo "## Security Checks" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### CORS Configuration" >> $GITHUB_STEP_SUMMARY
+          cors_response=$(curl -s -I -X OPTIONS "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Origin: https://malicious-site.com" \
+            -H "Access-Control-Request-Method: POST" 2>/dev/null || echo "CORS check failed")
+
+          allowed_origin=$(echo "$cors_response" | grep -i "access-control-allow-origin" || echo "Not found")
+          echo "Access-Control-Allow-Origin: $allowed_origin" >> $GITHUB_STEP_SUMMARY
+
+          if echo "$allowed_origin" | grep -q "\*"; then
+            echo "WARNING: CORS allows all origins (*)" >> $GITHUB_STEP_SUMMARY
+          elif echo "$allowed_origin" | grep -q "malicious-site.com"; then
+            echo "WARNING: CORS allows malicious origin" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "CORS appears properly configured" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check query depth limiting
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Query Depth Limiting" >> $GITHUB_STEP_SUMMARY
+
+          deep_query='{"query":"{ posts { nodes { categories { nodes { posts { nodes { categories { nodes { name } } } } } } } } }"}'
+
+          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Content-Type: application/json" \
+            -d "$deep_query")
+
+          if echo "$response" | jq -e '.errors' > /dev/null 2>&1; then
+            echo "Query depth limiting appears to be configured" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "WARNING: Deep queries may not be limited" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check introspection status
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Introspection Status" >> $GITHUB_STEP_SUMMARY
+
+          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Content-Type: application/json" \
+            -d '{"query":"{ __schema { types { name } } }"}')
+
+          if echo "$response" | jq -e '.errors' > /dev/null 2>&1; then
+            echo "Introspection is DISABLED (recommended for production)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Introspection is ENABLED - verify this is intentional" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check for information leakage
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Information Leakage Check" >> $GITHUB_STEP_SUMMARY
+
+          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Content-Type: application/json" \
+            -d '{"query":"{ posts { nodes { nonExistentField } } }"}')
+
+          if echo "$response" | grep -qi "\.php\|wp-content\|stack trace\|/var/www"; then
+            echo "WARNING: Error messages may leak sensitive information" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Error messages appear properly sanitized" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload security results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-test-results
+          path: playwright-report/
+          retention-days: 30
+
+  # ============================================================================
+  # WPGRAPHQL SPECIFIC TESTS
+  # ============================================================================
+  wpgraphql-tests:
+    name: WPGraphQL Specific
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run WPGraphQL tests
+        run: |
+          npx playwright test tests/audit/graphql.spec.ts \
+            --grep "WPGraphQL" \
+            --reporter=json --reporter=html
+        env:
+          GRAPHQL_ENDPOINT: ${{ env.GRAPHQL_ENDPOINT }}
+
+      - name: Test content nodes interface
+        run: |
+          echo "## WPGraphQL Specific Checks" >> $GITHUB_STEP_SUMMARY
+
+          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+            -H "Content-Type: application/json" \
+            -d '{"query":"{ contentNodes(first: 5) { nodes { __typename id } } }"}')
+
+          if echo "$response" | jq -e '.data.contentNodes' > /dev/null 2>&1; then
+            echo "ContentNodes interface working" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ContentNodes interface not available" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload WPGraphQL results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wpgraphql-test-results
+          path: playwright-report/
+          retention-days: 14
+
+  # ============================================================================
+  # GENERATE AUDIT REPORT
+  # ============================================================================
+  generate-report:
+    name: Generate Audit Report
+    runs-on: ubuntu-latest
+    needs:
+      - schema-validation
+      - query-tests
+      - auth-tests
+      - security-tests
+      - wpgraphql-tests
+    if: always()
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: audit-artifacts
+
+      - name: Generate combined report
+        run: |
+          echo "# GraphQL Audit Report" > AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+          echo "**Endpoint:** ${{ env.GRAPHQL_ENDPOINT }}" >> AUDIT_REPORT.md
+          echo "**Date:** $(date -u +%Y-%m-%d)" >> AUDIT_REPORT.md
+          echo "**Run ID:** ${{ github.run_id }}" >> AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+          echo "## Results Summary" >> AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+          echo "| Test Suite | Status |" >> AUDIT_REPORT.md
+          echo "|------------|--------|" >> AUDIT_REPORT.md
+          echo "| Schema Validation | ${{ needs.schema-validation.result }} |" >> AUDIT_REPORT.md
+          echo "| Query Functionality | ${{ needs.query-tests.result }} |" >> AUDIT_REPORT.md
+          echo "| Auth & Authorization | ${{ needs.auth-tests.result }} |" >> AUDIT_REPORT.md
+          echo "| Security Tests | ${{ needs.security-tests.result }} |" >> AUDIT_REPORT.md
+          echo "| WPGraphQL Specific | ${{ needs.wpgraphql-tests.result }} |" >> AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+
+          # Add security checklist
+          echo "## Security Checklist" >> AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+          echo "### Critical" >> AUDIT_REPORT.md
+          echo "- [ ] Unauthenticated users cannot access sensitive data" >> AUDIT_REPORT.md
+          echo "- [ ] Mutations require authentication" >> AUDIT_REPORT.md
+          echo "- [ ] User emails are not exposed publicly" >> AUDIT_REPORT.md
+          echo "- [ ] Error messages don't leak internal information" >> AUDIT_REPORT.md
+          echo "- [ ] CORS is properly configured" >> AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+          echo "### High Priority" >> AUDIT_REPORT.md
+          echo "- [ ] Query depth/complexity is limited" >> AUDIT_REPORT.md
+          echo "- [ ] Rate limiting is enabled" >> AUDIT_REPORT.md
+          echo "- [ ] Introspection is disabled in production (or intentionally enabled)" >> AUDIT_REPORT.md
+          echo "- [ ] Draft/private content is not exposed" >> AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+          echo "---" >> AUDIT_REPORT.md
+          echo "Generated by [wp-dev-prompts](https://github.com/your-org/wp-dev-prompts) GraphQL Audit" >> AUDIT_REPORT.md
+
+          cat AUDIT_REPORT.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@v4
+        with:
+          name: graphql-audit-report
+          path: |
+            AUDIT_REPORT.md
+            audit-artifacts/
+          retention-days: 30
+
+      - name: Fail if critical tests failed
+        if: |
+          needs.schema-validation.result == 'failure' ||
+          needs.auth-tests.result == 'failure' ||
+          needs.security-tests.result == 'failure'
+        run: |
+          echo "Critical audit tests failed!"
+          exit 1

@@ -1,0 +1,488 @@
+/**
+ * Aesthetic Style Languages
+ *
+ * CSS custom properties and base styles for each style language.
+ * Apply these to components via class names or Storybook themes.
+ *
+ * @package wp-dev-prompts
+ */
+
+/* ==========================================================================
+   Base / Light Theme
+   ========================================================================== */
+
+:root,
+.theme-light {
+  --color-primary: #0073aa;
+  --color-secondary: #23282d;
+  --color-accent: #00a0d2;
+  --color-success: #46b450;
+  --color-warning: #ffb900;
+  --color-error: #dc3232;
+
+  --color-background: #ffffff;
+  --color-surface: #f5f5f5;
+  --color-border: #dcdcde;
+
+  --color-text: #1e1e1e;
+  --color-text-muted: #757575;
+  --color-text-inverse: #ffffff;
+
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-serif: Georgia, "Times New Roman", serif;
+  --font-family-mono: SFMono-Regular, Consolas, monospace;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+}
+
+/* ==========================================================================
+   Dark Theme
+   ========================================================================== */
+
+.theme-dark {
+  --color-primary: #3db2ff;
+  --color-secondary: #d0d0d0;
+  --color-accent: #00d4ff;
+
+  --color-background: #1e1e1e;
+  --color-surface: #2d2d2d;
+  --color-border: #404040;
+
+  --color-text: #f0f0f0;
+  --color-text-muted: #a0a0a0;
+  --color-text-inverse: #1e1e1e;
+}
+
+/* ==========================================================================
+   Art Deco
+   ========================================================================== */
+
+.style-art-deco {
+  --color-primary: #c9a227;
+  --color-primary-light: #d4b854;
+  --color-primary-dark: #9e7b1e;
+  --color-secondary: #1a1a2e;
+  --color-accent: #b87333;
+  --color-accent-alt: #2d5a4e;
+
+  --color-background: #1a1a2e;
+  --color-surface: #252540;
+  --color-border: #c9a227;
+
+  --color-text: #f5f0e8;
+  --color-text-muted: #8a8aa3;
+
+  --font-family-display: "Playfair Display", "Times New Roman", serif;
+  --font-family-sans: "Raleway", "Helvetica Neue", sans-serif;
+
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-geometric: 0 24px 0 24px;
+
+  --border-decorative: 2px double var(--color-primary);
+  --shadow-gold: 0 0 20px rgba(201, 162, 39, 0.3);
+
+  --letter-spacing-wide: 0.15em;
+}
+
+.style-art-deco * {
+  font-family: var(--font-family-sans);
+}
+
+.style-art-deco h1,
+.style-art-deco h2,
+.style-art-deco h3,
+.style-art-deco h4 {
+  font-family: var(--font-family-display);
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   Art Nouveau
+   ========================================================================== */
+
+.style-art-nouveau {
+  --color-primary: #8b6914;
+  --color-secondary: #2e4a3e;
+  --color-accent: #a85c32;
+  --color-accent-alt: #614a7b;
+
+  --color-background: #f7f3e8;
+  --color-surface: #ede6d6;
+  --color-border: #c4b89a;
+
+  --color-text: #2d2a24;
+  --color-text-muted: #6b6459;
+
+  --font-family-display: "Cormorant Garamond", Georgia, serif;
+  --font-family-sans: "Lato", "Helvetica Neue", sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-organic: 60% 40% 60% 40% / 40% 60% 40% 60%;
+
+  --border-organic: 2px solid var(--color-border);
+}
+
+.style-art-nouveau * {
+  font-family: var(--font-family-sans);
+}
+
+.style-art-nouveau h1,
+.style-art-nouveau h2,
+.style-art-nouveau h3 {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Brutalist
+   ========================================================================== */
+
+.style-brutalist {
+  --color-primary: #000000;
+  --color-secondary: #ffffff;
+  --color-accent: #ff0000;
+  --color-accent-alt: #0000ff;
+
+  --color-background: #ffffff;
+  --color-surface: #f0f0f0;
+  --color-border: #000000;
+
+  --color-text: #000000;
+  --color-text-muted: #666666;
+
+  --font-family-sans: "IBM Plex Mono", "Courier New", monospace;
+  --font-family-mono: "IBM Plex Mono", monospace;
+
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-full: 0;
+
+  --border-brutal: 4px solid #000000;
+  --shadow-brutal: 8px 8px 0 #000000;
+}
+
+.style-brutalist * {
+  font-family: var(--font-family-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.style-brutalist button,
+.style-brutalist input {
+  border: var(--border-brutal);
+  box-shadow: var(--shadow-brutal);
+}
+
+.style-brutalist button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* ==========================================================================
+   Minimalist
+   ========================================================================== */
+
+.style-minimalist {
+  --color-primary: #1a1a1a;
+  --color-secondary: #666666;
+  --color-accent: #0066cc;
+
+  --color-background: #ffffff;
+  --color-surface: #fafafa;
+  --color-border: #e5e5e5;
+
+  --color-text: #1a1a1a;
+  --color-text-muted: #888888;
+
+  --font-family-sans: "Inter", -apple-system, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  --border-subtle: 1px solid var(--color-border);
+}
+
+.style-minimalist * {
+  font-family: var(--font-family-sans);
+}
+
+/* ==========================================================================
+   Bauhaus
+   ========================================================================== */
+
+.style-bauhaus {
+  --color-primary: #e53935;
+  --color-secondary: #1e88e5;
+  --color-accent: #fdd835;
+  --color-accent-alt: #000000;
+
+  --color-background: #fafafa;
+  --color-surface: #ffffff;
+  --color-border: #000000;
+
+  --color-text: #000000;
+  --color-text-muted: #424242;
+
+  --font-family-sans: "DM Sans", "Helvetica Neue", sans-serif;
+
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-circle: 50%;
+
+  --border-strong: 3px solid #000000;
+}
+
+.style-bauhaus * {
+  font-family: var(--font-family-sans);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Cyberpunk
+   ========================================================================== */
+
+.style-cyberpunk {
+  --color-primary: #00ff9f;
+  --color-secondary: #ff00ff;
+  --color-accent: #00d4ff;
+  --color-accent-alt: #ff6b00;
+
+  --color-background: #0a0a0f;
+  --color-surface: #1a1a2e;
+  --color-border: #00ff9f;
+
+  --color-text: #e0e0e0;
+  --color-text-muted: #808080;
+
+  --font-family-sans: "Orbitron", "Rajdhani", sans-serif;
+  --font-family-mono: "Fira Code", monospace;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 0;
+  --radius-cut: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+
+  --shadow-neon: 0 0 10px var(--color-primary), 0 0 20px var(--color-primary);
+  --shadow-neon-alt: 0 0 10px var(--color-secondary), 0 0 20px var(--color-secondary);
+}
+
+.style-cyberpunk * {
+  font-family: var(--font-family-sans);
+}
+
+.style-cyberpunk button {
+  clip-path: var(--radius-cut);
+  box-shadow: var(--shadow-neon);
+}
+
+/* ==========================================================================
+   Memphis
+   ========================================================================== */
+
+.style-memphis {
+  --color-primary: #ff6b6b;
+  --color-secondary: #4ecdc4;
+  --color-accent: #ffe66d;
+  --color-accent-alt: #95e1d3;
+
+  --color-background: #f7f7f7;
+  --color-surface: #ffffff;
+  --color-border: #1a1a1a;
+
+  --color-text: #1a1a1a;
+  --color-text-muted: #666666;
+
+  --font-family-sans: "Poppins", "Comic Sans MS", sans-serif;
+
+  --radius-sm: 0;
+  --radius-md: 20px;
+  --radius-lg: 40px;
+  --radius-blob: 60% 40% 30% 70% / 60% 30% 70% 40%;
+
+  --border-thick: 4px solid #1a1a1a;
+  --shadow-offset: 6px 6px 0 #1a1a1a;
+}
+
+.style-memphis * {
+  font-family: var(--font-family-sans);
+}
+
+/* ==========================================================================
+   Nordic
+   ========================================================================== */
+
+.style-nordic {
+  --color-primary: #5c7c8a;
+  --color-secondary: #8ba4a8;
+  --color-accent: #a3c4bc;
+  --color-accent-alt: #d4a574;
+
+  --color-background: #fafbfc;
+  --color-surface: #ffffff;
+  --color-border: #e8eaed;
+
+  --color-text: #2d3436;
+  --color-text-muted: #636e72;
+
+  --font-family-sans: "Nunito Sans", -apple-system, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.style-nordic * {
+  font-family: var(--font-family-sans);
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   Neumorphism
+   ========================================================================== */
+
+.style-neumorphism {
+  --color-primary: #6b5ce7;
+  --color-secondary: #a29bfe;
+  --color-accent: #fd79a8;
+
+  --color-background: #e0e5ec;
+  --color-surface: #e0e5ec;
+  --color-border: transparent;
+
+  --color-text: #2d3436;
+  --color-text-muted: #636e72;
+
+  --font-family-sans: "Quicksand", -apple-system, sans-serif;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-outset: 6px 6px 12px #b8bec7, -6px -6px 12px #ffffff;
+  --shadow-inset: inset 6px 6px 12px #b8bec7, inset -6px -6px 12px #ffffff;
+  --shadow-pressed: inset 4px 4px 8px #b8bec7, inset -4px -4px 8px #ffffff;
+}
+
+.style-neumorphism button,
+.style-neumorphism input,
+.style-neumorphism .card {
+  box-shadow: var(--shadow-outset);
+  border: none;
+  background: var(--color-surface);
+}
+
+.style-neumorphism button:active {
+  box-shadow: var(--shadow-pressed);
+}
+
+.style-neumorphism input:focus {
+  box-shadow: var(--shadow-inset);
+}
+
+/* ==========================================================================
+   Material Design
+   ========================================================================== */
+
+.style-material {
+  --color-primary: #6200ee;
+  --color-primary-variant: #3700b3;
+  --color-secondary: #03dac6;
+  --color-secondary-variant: #018786;
+  --color-error: #b00020;
+
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-border: rgba(0, 0, 0, 0.12);
+
+  --color-text: rgba(0, 0, 0, 0.87);
+  --color-text-muted: rgba(0, 0, 0, 0.6);
+  --color-text-disabled: rgba(0, 0, 0, 0.38);
+
+  --font-family-sans: "Roboto", -apple-system, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 16px;
+
+  --shadow-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  --shadow-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  --shadow-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  --shadow-4: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+
+  --transition-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --transition-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --transition-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+}
+
+.style-material button {
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 280ms var(--transition-standard);
+}
+
+.style-material button:hover {
+  box-shadow: var(--shadow-2);
+}
+
+.style-material button:active {
+  box-shadow: var(--shadow-4);
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+/* Reduced motion */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* RTL support */
+.is-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* High contrast overrides */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: currentColor;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+  }
+}

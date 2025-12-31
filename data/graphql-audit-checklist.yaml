@@ -1,0 +1,378 @@
+# GraphQL Audit Checklist
+# For WPGraphQL and similar WordPress GraphQL implementations
+
+_meta:
+  description: "GraphQL API audit checklist for WordPress sites"
+  source: "Best practices from GraphQL specification and WPGraphQL documentation"
+  categories: 6
+  totalChecks: 24
+
+categories:
+  - name: Schema Validation
+    id: schema
+    description: "Verify GraphQL schema integrity and structure"
+    checks:
+      - question: "Does the GraphQL schema support introspection without errors?"
+        why: "Introspection is essential for developer tools, IDE support, and API documentation"
+        severity: high
+        automated: true
+        testQuery: |
+          query IntrospectionQuery {
+            __schema {
+              queryType { name }
+              mutationType { name }
+              types { name kind }
+            }
+          }
+        expectedBehavior: "Returns complete schema with queryType, mutationType, and types array"
+
+      - question: "Are required fields present and non-nullable fields correctly enforced?"
+        why: "Proper nullability ensures data integrity and prevents null pointer issues"
+        severity: high
+        automated: true
+        testQuery: |
+          query TestNonNullable {
+            posts {
+              nodes {
+                id
+                title
+                date
+              }
+            }
+          }
+        expectedBehavior: "id should never be null; nullable fields should be documented"
+
+      - question: "Are custom types properly registered with descriptions?"
+        why: "Well-documented types improve API usability and reduce integration errors"
+        severity: medium
+        automated: true
+        testQuery: |
+          query TypeDocumentation {
+            __type(name: "Post") {
+              name
+              description
+              fields {
+                name
+                description
+                type { name kind }
+              }
+            }
+          }
+        expectedBehavior: "All fields should have descriptions; none should be empty strings"
+
+  - name: Query Functionality
+    id: queries
+    description: "Verify query operations work correctly"
+    checks:
+      - question: "Do basic queries return expected data structures?"
+        why: "Core query functionality is essential for API consumers"
+        severity: critical
+        automated: true
+        testQuery: |
+          query BasicPosts {
+            posts(first: 5) {
+              nodes {
+                id
+                title
+                date
+                author {
+                  node {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        expectedBehavior: "Returns array of posts with nested author data"
+
+      - question: "Does pagination work correctly with first/after and last/before?"
+        why: "Proper pagination is critical for performance and usability"
+        severity: high
+        automated: true
+        testQuery: |
+          query PaginatedPosts {
+            posts(first: 2) {
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+              nodes { id }
+            }
+          }
+        expectedBehavior: "Returns pageInfo with cursor and hasNextPage boolean"
+
+      - question: "Are filtering and ordering operations working?"
+        why: "Filtering reduces payload size and improves query efficiency"
+        severity: medium
+        automated: true
+        testQuery: |
+          query FilteredPosts {
+            posts(where: { status: PUBLISH, orderby: { field: DATE, order: DESC } }) {
+              nodes {
+                id
+                status
+                date
+              }
+            }
+          }
+        expectedBehavior: "Returns only published posts in descending date order"
+
+      - question: "Do nested queries resolve relationships correctly?"
+        why: "Relationship resolution is core to GraphQL's value proposition"
+        severity: high
+        automated: true
+        testQuery: |
+          query NestedQuery {
+            posts(first: 1) {
+              nodes {
+                categories {
+                  nodes {
+                    name
+                    posts(first: 3) {
+                      nodes { title }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        expectedBehavior: "Returns nested categories with their related posts"
+
+  - name: Mutation Functionality
+    id: mutations
+    description: "Verify mutation operations and data modification"
+    checks:
+      - question: "Do mutations return expected response structures?"
+        why: "Consistent mutation responses enable reliable client-side cache updates"
+        severity: high
+        automated: true
+        testMutation: |
+          mutation CreatePost($input: CreatePostInput!) {
+            createPost(input: $input) {
+              post {
+                id
+                title
+                status
+              }
+              clientMutationId
+            }
+          }
+        expectedBehavior: "Returns created post with id, or error with clear message"
+
+      - question: "Are mutations properly validating input data?"
+        why: "Input validation prevents data corruption and security issues"
+        severity: critical
+        automated: true
+        testMutation: |
+          mutation InvalidInput {
+            createPost(input: { title: "", status: INVALID }) {
+              post { id }
+            }
+          }
+        expectedBehavior: "Returns validation error with field-level details"
+
+      - question: "Do mutations enforce required fields appropriately?"
+        why: "Required field enforcement ensures data quality"
+        severity: high
+        automated: true
+        testMutation: |
+          mutation MissingRequired {
+            createPost(input: {}) {
+              post { id }
+            }
+          }
+        expectedBehavior: "Returns error indicating missing required fields"
+
+  - name: Authentication & Authorization
+    id: auth
+    description: "Verify security controls on GraphQL operations"
+    checks:
+      - question: "Do protected queries return appropriate errors for unauthenticated requests?"
+        why: "Proper authentication errors prevent information disclosure"
+        severity: critical
+        automated: true
+        testQuery: |
+          query PrivateData {
+            viewer {
+              email
+              capabilities
+            }
+          }
+        expectedBehavior: "Returns null or authentication error, not actual data"
+
+      - question: "Are mutations protected from unauthorized access?"
+        why: "Mutation protection prevents unauthorized data modification"
+        severity: critical
+        automated: true
+        testMutation: |
+          mutation UnauthorizedCreate {
+            createPost(input: { title: "Test", status: PUBLISH }) {
+              post { id }
+            }
+          }
+        expectedBehavior: "Returns authorization error without creating post"
+
+      - question: "Are role-based permissions correctly enforced?"
+        why: "Role-based access ensures users only access permitted data"
+        severity: high
+        automated: true
+        notes: "Test with subscriber, editor, and administrator tokens"
+        testQuery: |
+          query AdminOnlyData {
+            users {
+              nodes {
+                email
+                roles { nodes { name } }
+              }
+            }
+          }
+        expectedBehavior: "Subscribers see limited data; admins see full data"
+
+      - question: "Is sensitive data properly hidden from unauthorized users?"
+        why: "Data leakage through GraphQL is a common vulnerability"
+        severity: critical
+        automated: true
+        testQuery: |
+          query SensitiveFields {
+            users {
+              nodes {
+                email
+                registeredDate
+              }
+            }
+          }
+        expectedBehavior: "Sensitive fields return null for public/unauthorized requests"
+
+  - name: Error Handling
+    id: errors
+    description: "Verify proper error handling and messages"
+    checks:
+      - question: "Are malformed queries handled gracefully?"
+        why: "Graceful error handling improves developer experience"
+        severity: high
+        automated: true
+        testQuery: |
+          query MalformedQuery {
+            posts {
+              nonexistentField
+            }
+          }
+        expectedBehavior: "Returns clear error message about unknown field"
+
+      - question: "Do errors include appropriate detail without leaking sensitive info?"
+        why: "Error messages should help debugging without exposing internals"
+        severity: high
+        automated: true
+        testQuery: |
+          query TriggerServerError {
+            __deliberately_cause_error
+          }
+        expectedBehavior: "Returns generic error message, not stack trace or file paths"
+
+      - question: "Are syntax errors properly reported with location?"
+        why: "Location information helps developers fix queries quickly"
+        severity: medium
+        automated: true
+        testQuery: "query { posts { nodes { id } }"
+        expectedBehavior: "Returns error with line and column numbers"
+
+      - question: "Do partial failures return partial data with errors?"
+        why: "Partial response pattern allows resilient client implementations"
+        severity: medium
+        automated: true
+        testQuery: |
+          query PartialFailure {
+            posts(first: 1) {
+              nodes {
+                id
+                title
+              }
+            }
+            nonexistentQuery
+          }
+        expectedBehavior: "Returns posts data alongside error for unknown field"
+
+  - name: Performance & Security
+    id: performance
+    description: "Verify performance safeguards and security measures"
+    checks:
+      - question: "Is query complexity/depth limiting in place?"
+        why: "Prevents denial of service through deeply nested queries"
+        severity: high
+        automated: false
+        notes: "Check WPGraphQL settings or custom middleware"
+        testQuery: |
+          query DeeplyNested {
+            posts {
+              nodes {
+                categories {
+                  nodes {
+                    posts {
+                      nodes {
+                        categories {
+                          nodes {
+                            posts { nodes { id } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        expectedBehavior: "Returns error if exceeds depth limit, or executes if within limits"
+
+      - question: "Is rate limiting configured for the GraphQL endpoint?"
+        why: "Rate limiting prevents API abuse and ensures availability"
+        severity: high
+        automated: false
+        notes: "May require load testing tools"
+        expectedBehavior: "Returns 429 Too Many Requests after threshold"
+
+      - question: "Are batch queries appropriately limited?"
+        why: "Unlimited batching can be used for denial of service"
+        severity: medium
+        automated: true
+        testQuery: |
+          [
+            { "query": "{ posts { nodes { id } } }" },
+            { "query": "{ users { nodes { id } } }" },
+            { "query": "{ categories { nodes { id } } }" }
+          ]
+        expectedBehavior: "Either processes all or returns error about batch limit"
+
+      - question: "Is introspection disabled in production if not needed?"
+        why: "Introspection can reveal API structure to attackers"
+        severity: medium
+        automated: true
+        testQuery: |
+          query { __schema { types { name } } }
+        expectedBehavior: "If disabled: returns error. If enabled: ensure intentional."
+
+      - question: "Are persisted queries or query allowlisting available?"
+        why: "Query allowlisting prevents arbitrary query execution"
+        severity: low
+        automated: false
+        notes: "Check if WPGraphQL or custom implementation supports this"
+        expectedBehavior: "Unknown queries rejected if allowlisting enabled"
+
+      - question: "Is CORS properly configured for the GraphQL endpoint?"
+        why: "CORS misconfiguration can allow unauthorized cross-origin access"
+        severity: high
+        automated: true
+        testCommand: "curl -I -X OPTIONS https://example.com/graphql -H 'Origin: https://evil.com'"
+        expectedBehavior: "Should not include evil.com in Access-Control-Allow-Origin"
+
+automationMappings:
+  playwright:
+    - schema-introspection
+    - basic-queries
+    - error-handling
+    - auth-queries
+  curl:
+    - cors-check
+    - rate-limiting
+  jest:
+    - query-validation
+    - mutation-validation

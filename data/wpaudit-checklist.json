@@ -1,0 +1,398 @@
+{
+  "_meta": {
+    "source": "https://wpaudit.site/",
+    "description": "WordPress site audit checklist for production readiness",
+    "categories": 5,
+    "totalItems": 35,
+    "generatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "categories": [
+    {
+      "id": "formatting-seo",
+      "name": "Formatting & SEO",
+      "description": "Search engine optimization and meta configuration",
+      "items": [
+        {
+          "id": "language-declaration",
+          "name": "Declare Website Language",
+          "description": "Set language_attributes() in HTML for translation tools, search ranking, and accessibility",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["grep -r 'language_attributes' *.php", "curl -s URL | grep -o 'lang=\"[^\"]*\"'"],
+          "tools": ["WordPress language_attributes() docs"],
+          "wcagRelated": ["3.1.1"]
+        },
+        {
+          "id": "seo-plugin",
+          "name": "SEO Plugin Installation",
+          "description": "Install SEO plugin and complete open graph, title, description, and image fields",
+          "priority": "high",
+          "automated": false,
+          "tools": ["Yoast SEO", "All in One SEO", "The SEO Framework", "Rank Math"]
+        },
+        {
+          "id": "meta-tags",
+          "name": "Meta Tags Verification",
+          "description": "Validate meta tags are properly configured using online checkers",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["curl -s URL | grep '<meta'"],
+          "tools": ["Hey Meta", "Facebook Debugger", "Twitter Card Validator"]
+        },
+        {
+          "id": "broken-links",
+          "name": "Broken Links Check",
+          "description": "Identify and fix broken links, especially from slug changes",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["npx broken-link-checker URL"],
+          "tools": ["Redirection plugin", "W3C Link Checker", "Screaming Frog"]
+        },
+        {
+          "id": "favicon",
+          "name": "Favicon Configuration",
+          "description": "Set site icon via Appearance > Customize > Site Identity for favicon and app icons",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["curl -s URL | grep 'icon'"]
+        },
+        {
+          "id": "responsive-design",
+          "name": "Responsive Design Testing",
+          "description": "Ensure CSS media queries are used, zoom is enabled, and layout works on all devices",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["npx lighthouse URL --only-categories=performance"],
+          "tools": ["Google Mobile Friendly Test", "Browser Developer Tools"],
+          "wcagRelated": ["1.4.4", "1.4.10"]
+        },
+        {
+          "id": "search-indexing",
+          "name": "Search Engine Indexing",
+          "description": "Verify WordPress isn't set to discourage search engine indexing",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["curl -s URL/robots.txt", "curl -s URL | grep 'noindex'"]
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "name": "Performance",
+      "description": "Site speed and optimization",
+      "items": [
+        {
+          "id": "gzip",
+          "name": "GZip Compression",
+          "description": "Enable data compression to improve load times",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["curl -s -H 'Accept-Encoding: gzip' -I URL | grep 'Content-Encoding'"],
+          "tools": ["Gzip Compression checker"]
+        },
+        {
+          "id": "valid-html",
+          "name": "Valid HTML Code",
+          "description": "Run code through HTML validator and address significant errors",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["npx html-validate URL"],
+          "tools": ["W3C Markup Validation Service"]
+        },
+        {
+          "id": "image-optimization",
+          "name": "Image Optimization",
+          "description": "Compress images, use WebP format, implement lazy loading",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["npx lighthouse URL --only-audits=uses-webp-images,offscreen-images"],
+          "tools": ["WebP Express", "Autoptimizer", "TinyPNG", "ImageOptim"]
+        },
+        {
+          "id": "webfont-optimization",
+          "name": "Webfont Optimization",
+          "description": "Minimize font file sizes, use only needed styles, apply preconnect",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["curl -s URL | grep -E 'fonts\\.(googleapis|gstatic)\\.com'"],
+          "tools": ["WebFont Loader", "Font Subsetting Tools"]
+        },
+        {
+          "id": "caching",
+          "name": "Caching Implementation",
+          "description": "Enable caching at server or plugin level",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["curl -s -I URL | grep -E 'Cache-Control|Expires|ETag'"],
+          "tools": ["Autoptimize", "WP Rocket", "W3 Total Cache"]
+        },
+        {
+          "id": "cdn",
+          "name": "CDN Deployment",
+          "description": "Distribute content globally from nearest server",
+          "priority": "medium",
+          "automated": false,
+          "tools": ["Cloudflare", "KeyCDN", "BunnyCDN"]
+        },
+        {
+          "id": "http-requests",
+          "name": "HTTP Request Minimization",
+          "description": "Reduce file quantity and size to lower request volume",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["npx lighthouse URL --only-audits=network-requests"]
+        },
+        {
+          "id": "speed-testing",
+          "name": "Speed Testing",
+          "description": "Run comprehensive speed audit to catch remaining issues",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["npx lighthouse URL --output=json"],
+          "tools": ["GTmetrix", "Pingdom", "WebPageTest"]
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "name": "Accessibility",
+      "description": "WCAG compliance and inclusive design",
+      "items": [
+        {
+          "id": "sitemap",
+          "name": "Sitemap Verification",
+          "description": "Confirm XML sitemap exists at yourdomain.com/sitemap.xml",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["curl -s -o /dev/null -w '%{http_code}' URL/sitemap.xml"]
+        },
+        {
+          "id": "404-page",
+          "name": "404 Error Template",
+          "description": "Design useful 404 page with search form, popular content, contact info",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["curl -s URL/nonexistent-page-12345 | grep -E 'search|contact'"]
+        },
+        {
+          "id": "search-page",
+          "name": "Search Page Creation",
+          "description": "Build custom search template with /search slug",
+          "priority": "low",
+          "automated": true,
+          "testCommands": ["curl -s -o /dev/null -w '%{http_code}' URL/?s=test"]
+        },
+        {
+          "id": "color-contrast",
+          "name": "Color Contrast Verification",
+          "description": "Test color combinations for accessibility and colorblind users",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["npx pa11y URL", "npx axe URL"],
+          "tools": ["High Contrast Chrome extension", "WebAIM Contrast Checker"],
+          "wcagRelated": ["1.4.3", "1.4.6", "1.4.11"]
+        },
+        {
+          "id": "keyboard-navigation",
+          "name": "Keyboard Navigation",
+          "description": "Verify all interactive elements are accessible via keyboard tabbing",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["npx playwright test tests/a11y/keyboard.spec.ts"],
+          "wcagRelated": ["2.1.1", "2.1.2", "2.4.3", "2.4.7"]
+        },
+        {
+          "id": "custom-form-a11y",
+          "name": "Custom Form Element Accessibility",
+          "description": "Ensure styled checkboxes/radio buttons remain keyboard accessible",
+          "priority": "high",
+          "automated": true,
+          "wcagRelated": ["4.1.2"]
+        },
+        {
+          "id": "link-distinction",
+          "name": "Link Visual Distinction",
+          "description": "Make links visually identifiable with underline or clear styling",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["npx axe URL"],
+          "wcagRelated": ["1.4.1"]
+        },
+        {
+          "id": "skip-link",
+          "name": "Skip to Content Link",
+          "description": "Implement skip-to-content link that displays on focus",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["curl -s URL | grep -i 'skip'"],
+          "wcagRelated": ["2.4.1"]
+        },
+        {
+          "id": "alt-text",
+          "name": "Image Alt Text",
+          "description": "Add descriptive alt attributes with context to all images",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["npx axe URL", "curl -s URL | grep -E '<img[^>]*alt=\"\"'"],
+          "wcagRelated": ["1.1.1"]
+        },
+        {
+          "id": "a11y-statement",
+          "name": "Accessibility Statement",
+          "description": "Create statement explaining accessibility features and support options",
+          "priority": "medium",
+          "automated": false,
+          "wcagRelated": []
+        },
+        {
+          "id": "lighthouse-audit",
+          "name": "Lighthouse Audit",
+          "description": "Run comprehensive accessibility and performance audit",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["npx lighthouse URL --only-categories=accessibility"]
+        },
+        {
+          "id": "email-deliverability",
+          "name": "Email Deliverability Testing",
+          "description": "Verify password reset and user registration emails send correctly",
+          "priority": "high",
+          "automated": false
+        },
+        {
+          "id": "form-functionality",
+          "name": "Form Functionality Testing",
+          "description": "Confirm forms capture and submit data properly",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["npx playwright test tests/e2e/forms.spec.ts"]
+        }
+      ]
+    },
+    {
+      "id": "privacy-data",
+      "name": "Privacy & Data",
+      "description": "GDPR compliance and data protection",
+      "items": [
+        {
+          "id": "analytics",
+          "name": "Analytics Implementation",
+          "description": "Set up website traffic tracking with GDPR/legal compliance",
+          "priority": "medium",
+          "automated": false,
+          "tools": ["Fathom Analytics", "Plausible", "Google Analytics", "Matomo"]
+        },
+        {
+          "id": "privacy-policy",
+          "name": "Privacy Policy Creation",
+          "description": "Document what data is tracked, why, and user options",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["curl -s URL/privacy-policy/ -o /dev/null -w '%{http_code}'"]
+        },
+        {
+          "id": "search-tracking",
+          "name": "Search Tracking Setup",
+          "description": "Monitor keywords and phrases driving visitors to site",
+          "priority": "low",
+          "automated": false,
+          "tools": ["Google Search Console", "Ahrefs", "SEMrush"]
+        },
+        {
+          "id": "local-fonts",
+          "name": "Local Font Hosting",
+          "description": "Host fonts locally to avoid sharing visitor IP with external services",
+          "priority": "medium",
+          "automated": true,
+          "testCommands": ["curl -s URL | grep -c 'fonts.googleapis.com'"],
+          "tools": ["Custom Fonts plugin", "OMGF plugin"]
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "description": "Site hardening and protection",
+      "items": [
+        {
+          "id": "ssl",
+          "name": "SSL Certificate",
+          "description": "Enable HTTPS encryption for site security",
+          "priority": "critical",
+          "automated": true,
+          "testCommands": ["curl -s -I https://URL | grep 'HTTP/2'", "openssl s_client -connect URL:443"]
+        },
+        {
+          "id": "backups",
+          "name": "Regular Backups",
+          "description": "Maintain scheduled backups stored off-site",
+          "priority": "critical",
+          "automated": false,
+          "tools": ["UpdraftPlus", "BlogVault", "BackWPup"]
+        },
+        {
+          "id": "wp-updates",
+          "name": "WordPress Version Updates",
+          "description": "Keep WordPress core updated to latest stable release",
+          "priority": "critical",
+          "automated": true,
+          "testCommands": ["wp core check-update"]
+        },
+        {
+          "id": "admin-username",
+          "name": "Admin Username Removal",
+          "description": "Don't use 'admin' as username to prevent brute force attacks",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["wp user list --field=user_login | grep -c '^admin$'"]
+        },
+        {
+          "id": "unused-cleanup",
+          "name": "Unused Theme/Plugin Deletion",
+          "description": "Remove all inactive themes except one default and unused plugins",
+          "priority": "high",
+          "automated": true,
+          "testCommands": ["wp theme list --status=inactive --format=count", "wp plugin list --status=inactive --format=count"]
+        },
+        {
+          "id": "theme-plugin-updates",
+          "name": "Theme & Plugin Updates",
+          "description": "Keep all installed themes and plugins current",
+          "priority": "critical",
+          "automated": true,
+          "testCommands": ["wp plugin list --update=available --format=count", "wp theme list --update=available --format=count"]
+        },
+        {
+          "id": "strong-passwords",
+          "name": "Strong Password Requirements",
+          "description": "Use and enforce strong passwords for all user accounts",
+          "priority": "high",
+          "automated": false
+        },
+        {
+          "id": "login-limiting",
+          "name": "Login Attempt Limiting",
+          "description": "Implement rate limiting on login attempts",
+          "priority": "high",
+          "automated": false,
+          "tools": ["Limit Login Attempts Reloaded", "Wordfence", "iThemes Security"]
+        },
+        {
+          "id": "security-plugin",
+          "name": "Security Plugin Consideration",
+          "description": "Evaluate need for dedicated security plugin",
+          "priority": "medium",
+          "automated": false,
+          "tools": ["iThemes Security", "Wordfence", "Sucuri Security", "All In One WP Security"]
+        }
+      ]
+    }
+  ],
+  "automationMappings": {
+    "playwright": ["keyboard-navigation", "form-functionality", "404-page"],
+    "lighthouse": ["speed-testing", "image-optimization", "lighthouse-audit", "responsive-design"],
+    "axe": ["color-contrast", "alt-text", "link-distinction", "custom-form-a11y"],
+    "wpcli": ["wp-updates", "admin-username", "unused-cleanup", "theme-plugin-updates"],
+    "curl": ["ssl", "gzip", "sitemap", "meta-tags", "favicon", "broken-links"]
+  }
+}

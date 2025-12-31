@@ -1,0 +1,173 @@
+{
+  "_meta": {
+    "source": "https://wphelpers.dev/icons",
+    "package": "@wordpress/icons",
+    "description": "WordPress core icons from the Gutenberg project",
+    "count": 400,
+    "generatedAt": "2024-01-01T00:00:00.000Z",
+    "note": "Run scripts/fetch-wphelpers-data.js to update from live API"
+  },
+  "categories": {
+    "alignment": {
+      "label": "Alignment & Layout",
+      "icons": [
+        "alignCenter", "alignJustify", "alignLeft", "alignNone", "alignRight",
+        "justifyCenter", "justifyLeft", "justifyRight", "justifySpaceBetween", "justifyStretch",
+        "positionCenter", "positionLeft", "positionRight",
+        "stretchFullWidth", "stretchWide"
+      ]
+    },
+    "arrows": {
+      "label": "Arrows & Navigation",
+      "icons": [
+        "arrowDown", "arrowLeft", "arrowRight", "arrowUp",
+        "chevronDown", "chevronLeft", "chevronRight", "chevronUp",
+        "chevronDownSmall", "chevronUpSmall",
+        "next", "previous",
+        "navigation", "menu"
+      ]
+    },
+    "formatting": {
+      "label": "Text Formatting",
+      "icons": [
+        "formatBold", "formatItalic", "formatUnderline", "formatStrikethrough",
+        "formatUppercase", "formatLowercase", "formatCapitalize",
+        "formatListBullets", "formatListBulletsRTL", "formatListNumbered", "formatListNumberedRTL",
+        "formatIndent", "formatIndentRTL", "formatOutdent", "formatOutdentRTL",
+        "formatLtr", "formatRtl",
+        "textColor", "paragraph", "heading"
+      ]
+    },
+    "media": {
+      "label": "Media",
+      "icons": [
+        "image", "gallery", "video", "audio", "file",
+        "media", "mediaAndText",
+        "upload", "cloudUpload", "download",
+        "cover", "overlayText",
+        "capturePhoto", "captureVideo",
+        "crop", "rotateLeft", "rotateRight", "flipHorizontal", "flipVertical"
+      ]
+    },
+    "blocks": {
+      "label": "Block Types",
+      "icons": [
+        "paragraph", "heading", "quote", "pullquote",
+        "list", "listView", "table",
+        "button", "buttons",
+        "columns", "column", "group", "row", "stack",
+        "separator", "spacer", "code", "html", "preformatted",
+        "more", "pageBreak",
+        "widgetGroup", "widget"
+      ]
+    },
+    "post": {
+      "label": "Post Elements",
+      "icons": [
+        "post", "postAuthor", "postCategories", "postComments",
+        "postCommentsCount", "postCommentsForm",
+        "postContent", "postDate", "postExcerpt",
+        "postFeaturedImage", "postList", "postTerms", "postTitle",
+        "customPostType"
+      ]
+    },
+    "site": {
+      "label": "Site Elements",
+      "icons": [
+        "home", "page", "pages",
+        "siteLogo", "siteTagline", "siteTitle",
+        "queryLoop", "loop",
+        "archive", "category", "tag",
+        "templatePart", "layout", "grid"
+      ]
+    },
+    "actions": {
+      "label": "Actions",
+      "icons": [
+        "plus", "plusCircle", "plusCircleFilled",
+        "minus", "close", "closeSmall",
+        "check", "published",
+        "edit", "pencil", "update",
+        "trash", "backup", "redo", "undo",
+        "copy", "dragHandle", "handle",
+        "external", "link", "linkOff",
+        "search", "seen"
+      ]
+    },
+    "status": {
+      "label": "Status & Indicators",
+      "icons": [
+        "info", "warning", "help", "tip",
+        "lock", "unlock",
+        "shield", "key",
+        "scheduled", "pending", "draft",
+        "star", "starEmpty", "starFilled", "starHalf",
+        "desktop", "mobile", "tablet", "aspectRatio"
+      ]
+    },
+    "ui": {
+      "label": "UI Controls",
+      "icons": [
+        "settings", "cog", "tool", "plugins",
+        "moreHorizontal", "moreHorizontalMobile", "moreVertical",
+        "customizer", "brush", "color", "styles",
+        "fullscreen", "maximize", "minimize",
+        "resizeCornerNE", "shadow", "filter",
+        "sidebar", "sidebarRight", "blockDefault"
+      ]
+    },
+    "commerce": {
+      "label": "Commerce",
+      "icons": [
+        "cart", "payment", "shipping", "store",
+        "currencyDollar", "currencyEuro", "currencyPound"
+      ]
+    },
+    "social": {
+      "label": "Social",
+      "icons": [
+        "share", "comment", "commentAuthorAvatar", "commentAuthorName", "commentContent",
+        "people", "person", "login", "addSubmenu"
+      ]
+    },
+    "wordpress": {
+      "label": "WordPress",
+      "icons": [
+        "wordpress", "wordpressLogo",
+        "blockDefault", "blockMeta", "blockTable",
+        "classic", "customLink",
+        "globe", "language",
+        "reusableBlock", "symbol"
+      ]
+    }
+  },
+  "usage": {
+    "import": "import { iconName } from '@wordpress/icons';",
+    "component": "<Icon icon={iconName} />",
+    "size": "Default size is 24x24, customizable via size prop",
+    "color": "Inherits currentColor, customizable via style prop"
+  },
+  "accessibilityLabels": {
+    "alignCenter": "Align center",
+    "alignLeft": "Align left",
+    "alignRight": "Align right",
+    "arrowDown": "Arrow down",
+    "arrowUp": "Arrow up",
+    "check": "Checked",
+    "close": "Close",
+    "copy": "Copy",
+    "edit": "Edit",
+    "external": "External link (opens in new tab)",
+    "help": "Help",
+    "info": "Information",
+    "link": "Link",
+    "lock": "Locked",
+    "menu": "Menu",
+    "plus": "Add",
+    "search": "Search",
+    "settings": "Settings",
+    "trash": "Delete",
+    "unlock": "Unlocked",
+    "warning": "Warning"
+  }
+}

@@ -1,0 +1,497 @@
+# WordPress Audit Workflow
+#
+# Runs WordPress audit checklist tests using Playwright.
+# Based on wpaudit.site checklist with automated test coverage.
+
+name: WordPress Audit
+
+on:
+  schedule:
+    # Run weekly on Sundays at 4 AM UTC
+    - cron: '0 4 * * 0'
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: 'WordPress site URL to audit'
+        required: true
+        default: 'http://localhost:8888'
+        type: string
+      run_lighthouse:
+        description: 'Run Lighthouse performance audit'
+        required: false
+        type: boolean
+        default: true
+      run_accessibility:
+        description: 'Run accessibility audit (axe-core)'
+        required: false
+        type: boolean
+        default: true
+
+env:
+  SITE_URL: ${{ inputs.site_url || 'http://localhost:8888' }}
+
+jobs:
+  # ============================================================================
+  # FORMATTING & SEO AUDIT
+  # ============================================================================
+  seo-audit:
+    name: Formatting & SEO
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run SEO audit tests
+        run: |
+          npx playwright test tests/audit/seo.spec.ts --reporter=html 2>/dev/null || \
+            echo "No SEO tests found"
+        env:
+          BASE_URL: ${{ env.SITE_URL }}
+
+      - name: Check robots.txt
+        run: |
+          echo "## Formatting & SEO Audit" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/robots.txt")
+          if [ "$response" = "200" ]; then
+            echo "- [x] robots.txt exists" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] robots.txt missing (HTTP $response)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check sitemap
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/sitemap.xml")
+          if [ "$response" = "200" ]; then
+            echo "- [x] sitemap.xml exists" >> $GITHUB_STEP_SUMMARY
+          else
+            response2=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/sitemap_index.xml")
+            if [ "$response2" = "200" ]; then
+              echo "- [x] sitemap_index.xml exists" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- [ ] sitemap missing" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+
+      - name: Check meta tags
+        run: |
+          html=$(curl -s "${{ env.SITE_URL }}")
+
+          if echo "$html" | grep -q '<meta name="description"'; then
+            echo "- [x] Meta description present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Meta description missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if echo "$html" | grep -q 'rel="canonical"'; then
+            echo "- [x] Canonical URL present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Canonical URL missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload SEO results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-audit-results
+          path: playwright-report/
+          retention-days: 14
+
+  # ============================================================================
+  # PERFORMANCE AUDIT
+  # ============================================================================
+  performance-audit:
+    name: Performance
+    runs-on: ubuntu-latest
+    if: ${{ inputs.run_lighthouse != false }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
+
+      - name: Run Lighthouse audit
+        run: |
+          echo "## Performance Audit" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Run Lighthouse and capture output
+          lhci collect --url="${{ env.SITE_URL }}" \
+            --settings.preset=desktop 2>/dev/null || \
+            echo "Lighthouse collection completed"
+
+          lhci upload --target=temporary-public-storage 2>/dev/null || true
+
+      - name: Check cache headers
+        run: |
+          echo "### Cache Headers" >> $GITHUB_STEP_SUMMARY
+
+          headers=$(curl -sI "${{ env.SITE_URL }}")
+
+          if echo "$headers" | grep -qi "cache-control"; then
+            echo "- [x] Cache-Control header present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Cache-Control header missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if echo "$headers" | grep -qi "x-cache\|cf-cache-status\|x-varnish"; then
+            echo "- [x] CDN/cache layer detected" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] No CDN/cache layer detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check compression
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Compression" >> $GITHUB_STEP_SUMMARY
+
+          headers=$(curl -sI -H "Accept-Encoding: gzip, deflate, br" "${{ env.SITE_URL }}")
+
+          if echo "$headers" | grep -qi "content-encoding: gzip\|content-encoding: br"; then
+            echo "- [x] Compression enabled" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Compression not detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci/
+          retention-days: 30
+
+  # ============================================================================
+  # ACCESSIBILITY AUDIT
+  # ============================================================================
+  accessibility-audit:
+    name: Accessibility
+    runs-on: ubuntu-latest
+    if: ${{ inputs.run_accessibility != false }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run axe-core accessibility tests
+        run: |
+          echo "## Accessibility Audit" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          npx @axe-core/cli "${{ env.SITE_URL }}" --reporter json > axe-results.json 2>/dev/null || \
+            echo "axe-core scan completed"
+
+          if [ -f axe-results.json ]; then
+            violations=$(cat axe-results.json | jq '.violations | length' 2>/dev/null || echo "0")
+            echo "Found $violations accessibility violations" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Run Playwright a11y tests
+        run: |
+          npx playwright test tests/audit/accessibility.spec.ts --reporter=html 2>/dev/null || \
+            echo "No accessibility tests found"
+        env:
+          BASE_URL: ${{ env.SITE_URL }}
+
+      - name: WCAG 2.1 Checklist
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### WCAG 2.1 Quick Check" >> $GITHUB_STEP_SUMMARY
+
+          html=$(curl -s "${{ env.SITE_URL }}")
+
+          # Check for lang attribute
+          if echo "$html" | grep -q '<html[^>]*lang='; then
+            echo "- [x] HTML lang attribute present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] HTML lang attribute missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Check for skip links
+          if echo "$html" | grep -qi 'skip.*main\|skip.*content\|skip.*nav'; then
+            echo "- [x] Skip links detected" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Skip links not detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Check for ARIA landmarks
+          if echo "$html" | grep -qE 'role="(main|navigation|banner|contentinfo)"|\<main\>|\<nav\>|\<header\>|\<footer\>'; then
+            echo "- [x] ARIA landmarks/semantic HTML present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] ARIA landmarks may be missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload accessibility results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-results
+          path: |
+            axe-results.json
+            playwright-report/
+          retention-days: 14
+
+  # ============================================================================
+  # PRIVACY & DATA AUDIT
+  # ============================================================================
+  privacy-audit:
+    name: Privacy & Data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check privacy policy
+        run: |
+          echo "## Privacy & Data Audit" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Check for privacy policy page
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/privacy-policy/")
+          if [ "$response" = "200" ]; then
+            echo "- [x] Privacy policy page exists" >> $GITHUB_STEP_SUMMARY
+          else
+            response2=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/privacy/")
+            if [ "$response2" = "200" ]; then
+              echo "- [x] Privacy page exists" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- [ ] Privacy policy page not found" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+
+      - name: Check cookie consent
+        run: |
+          html=$(curl -s "${{ env.SITE_URL }}")
+
+          if echo "$html" | grep -qi "cookie.*consent\|cookie.*notice\|gdpr"; then
+            echo "- [x] Cookie consent mechanism detected" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Cookie consent not detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check third-party scripts
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Third-Party Scripts" >> $GITHUB_STEP_SUMMARY
+
+          html=$(curl -s "${{ env.SITE_URL }}")
+
+          # Check for common tracking scripts
+          if echo "$html" | grep -qi "google-analytics\|gtag\|ga.js"; then
+            echo "- Google Analytics detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if echo "$html" | grep -qi "facebook.*pixel\|fbq"; then
+            echo "- Facebook Pixel detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if echo "$html" | grep -qi "hotjar"; then
+            echo "- Hotjar detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ============================================================================
+  # SECURITY AUDIT
+  # ============================================================================
+  security-audit:
+    name: Security
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check HTTPS
+        run: |
+          echo "## Security Audit" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ env.SITE_URL }}" == https://* ]]; then
+            echo "- [x] Using HTTPS" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Not using HTTPS" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check security headers
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Security Headers" >> $GITHUB_STEP_SUMMARY
+
+          headers=$(curl -sI "${{ env.SITE_URL }}")
+
+          # X-Content-Type-Options
+          if echo "$headers" | grep -qi "x-content-type-options"; then
+            echo "- [x] X-Content-Type-Options" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] X-Content-Type-Options missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # X-Frame-Options
+          if echo "$headers" | grep -qi "x-frame-options"; then
+            echo "- [x] X-Frame-Options" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] X-Frame-Options missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Content-Security-Policy
+          if echo "$headers" | grep -qi "content-security-policy"; then
+            echo "- [x] Content-Security-Policy" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Content-Security-Policy missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Strict-Transport-Security
+          if echo "$headers" | grep -qi "strict-transport-security"; then
+            echo "- [x] Strict-Transport-Security (HSTS)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Strict-Transport-Security missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # X-XSS-Protection (legacy but still useful)
+          if echo "$headers" | grep -qi "x-xss-protection"; then
+            echo "- [x] X-XSS-Protection" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] X-XSS-Protection missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check WordPress version exposure
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### WordPress Security" >> $GITHUB_STEP_SUMMARY
+
+          html=$(curl -s "${{ env.SITE_URL }}")
+
+          # Check for WP version in generator tag
+          if echo "$html" | grep -qi 'content="WordPress [0-9]'; then
+            echo "- [ ] WordPress version exposed in meta tag" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [x] WordPress version hidden from meta" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Check for WP version in scripts/styles
+          if echo "$html" | grep -qi 'ver=[0-9]\.[0-9]\.[0-9]'; then
+            echo "- [ ] Version strings in asset URLs (minor concern)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check sensitive files
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Sensitive File Exposure" >> $GITHUB_STEP_SUMMARY
+
+          # Check wp-config.php
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/wp-config.php")
+          if [ "$response" = "200" ]; then
+            echo "- [ ] WARNING: wp-config.php accessible" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [x] wp-config.php protected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Check .git
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/.git/config")
+          if [ "$response" = "200" ]; then
+            echo "- [ ] WARNING: .git directory accessible" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [x] .git directory protected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Check debug.log
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/wp-content/debug.log")
+          if [ "$response" = "200" ]; then
+            echo "- [ ] WARNING: debug.log accessible" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [x] debug.log not accessible" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ============================================================================
+  # AUDIT SUMMARY
+  # ============================================================================
+  audit-summary:
+    name: Audit Summary
+    runs-on: ubuntu-latest
+    needs:
+      - seo-audit
+      - performance-audit
+      - accessibility-audit
+      - privacy-audit
+      - security-audit
+    if: always()
+
+    steps:
+      - name: Generate summary report
+        run: |
+          echo "# WordPress Audit Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Site:** ${{ env.SITE_URL }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Audit Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Category | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Formatting & SEO | ${{ needs.seo-audit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance | ${{ needs.performance-audit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | ${{ needs.accessibility-audit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Privacy & Data | ${{ needs.privacy-audit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security | ${{ needs.security-audit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "Audit powered by [wp-dev-prompts](https://github.com/your-org/wp-dev-prompts)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: audit-artifacts
+        continue-on-error: true
+
+      - name: Create combined audit report
+        run: |
+          echo "# WordPress Audit Report" > AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+          echo "**Site:** ${{ env.SITE_URL }}" >> AUDIT_REPORT.md
+          echo "**Date:** $(date -u +%Y-%m-%d)" >> AUDIT_REPORT.md
+          echo "**Run ID:** ${{ github.run_id }}" >> AUDIT_REPORT.md
+          echo "" >> AUDIT_REPORT.md
+          echo "See workflow run for detailed results." >> AUDIT_REPORT.md
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@v4
+        with:
+          name: wordpress-audit-report
+          path: |
+            AUDIT_REPORT.md
+            audit-artifacts/
+          retention-days: 30

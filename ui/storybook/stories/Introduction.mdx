@@ -1,0 +1,76 @@
+{/* Introduction.mdx */}
+
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Introduction" />
+
+# WordPress Dev Prompts UI Library
+
+Welcome to the UI component library for WordPress plugin and theme development.
+
+## Style Languages
+
+This library supports multiple aesthetic style languages that can be applied to any component. Use the theme selector in the toolbar to preview components in different styles:
+
+| Style | Description | Best For |
+|-------|-------------|----------|
+| **Art Deco** | Geometric, elegant, metallic accents | Premium/luxury products |
+| **Art Nouveau** | Organic, flowing lines, nature-inspired | Creative/artistic sites |
+| **Brutalist** | Raw, stark, high contrast, blocky | Developer tools |
+| **Minimalist** | Whitespace, restraint, clean | Business, productivity |
+| **Bauhaus** | Functional, grid-based, primary colors | Utilitarian interfaces |
+| **Cyberpunk** | Neon, dark, glitch effects | Gaming, entertainment |
+| **Memphis** | Bold shapes, playful, clashing colors | Creative tools |
+| **Nordic** | Cool tones, light, simple | Wellness, lifestyle |
+| **Neumorphism** | Soft shadows, embedded look | Subtle interactions |
+| **Material** | Depth, motion, bold color | Enterprise apps |
+
+## Accessibility
+
+All components are designed with accessibility in mind:
+
+- **WCAG 2.1 AA** compliant
+- **Keyboard navigable** with visible focus states
+- **Screen reader** compatible with proper ARIA
+- **Reduced motion** supported
+- **High contrast mode** supported
+- **RTL** support for international audiences
+
+Use the toolbar toggles to test:
+- 🌍 Direction (LTR/RTL)
+- ⚡ Reduced motion
+- 🌐 Locale
+
+## WordPress Integration
+
+Components use WordPress CSS custom property naming conventions:
+
+```css
+/* Colors */
+--wp--preset--color--primary
+--wp--preset--color--secondary
+
+/* Typography */
+--wp--preset--font-family--body
+--wp--preset--font-size--medium
+
+/* Spacing */
+--wp--preset--spacing--20
+--wp--preset--spacing--40
+```
+
+This ensures seamless integration with theme.json and block editor styles.
+
+## Getting Started
+
+1. Browse components in the sidebar
+2. Select a style language from the theme picker
+3. Toggle RTL/reduced motion as needed
+4. View component code and props in the Docs tab
+5. Run accessibility checks with the A11y addon
+
+## Resources
+
+- [WordPress Block Editor Handbook](https://developer.wordpress.org/block-editor/)
+- [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
+- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)

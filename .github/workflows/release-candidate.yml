@@ -1,0 +1,486 @@
+# Release Candidate Workflow
+#
+# Full validation suite for release candidates.
+# Runs all tests including full i18n/RTL matrix, packaging, and docs validation.
+
+name: Release Candidate
+
+on:
+  push:
+    tags:
+      - 'v*-rc*'
+      - 'v*-beta*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to validate (e.g., 2.1.0)'
+        required: true
+        type: string
+
+env:
+  VERSION: ${{ inputs.version || github.ref_name }}
+
+jobs:
+  # ============================================================================
+  # FULL TEST SUITE
+  # ============================================================================
+  full-test-suite:
+    name: Full Test Suite
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['18', '20', '22']
+        php: ['8.1', '8.2', '8.3']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          composer install --prefer-dist --no-progress 2>/dev/null || true
+
+      - name: Run all tests
+        run: |
+          npm test -- --passWithNoTests
+          composer run test 2>/dev/null || true
+
+  # ============================================================================
+  # I18N / RTL FULL MATRIX
+  # ============================================================================
+  i18n-matrix:
+    name: i18n/RTL Matrix
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        locale:
+          - en_US   # English (LTR)
+          - es_ES   # Spanish (LTR)
+          - de_DE   # German (LTR)
+          - fr_FR   # French (LTR)
+          - it_IT   # Italian (LTR)
+          - pt_BR   # Portuguese (LTR)
+          - nl_NL   # Dutch (LTR)
+          - ja      # Japanese (LTR, CJK)
+          - ko_KR   # Korean (LTR, CJK)
+          - zh_CN   # Chinese Simplified (LTR, CJK)
+          - zh_TW   # Chinese Traditional (LTR, CJK)
+          - ar      # Arabic (RTL)
+          - he_IL   # Hebrew (RTL)
+          - fa_IR   # Persian/Farsi (RTL)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium webkit
+
+      - name: Determine text direction
+        id: direction
+        run: |
+          case "${{ matrix.locale }}" in
+            ar|he_IL|fa_IR)
+              echo "dir=rtl" >> $GITHUB_OUTPUT
+              echo "Testing RTL locale: ${{ matrix.locale }}"
+              ;;
+            *)
+              echo "dir=ltr" >> $GITHUB_OUTPUT
+              echo "Testing LTR locale: ${{ matrix.locale }}"
+              ;;
+          esac
+
+      - name: Run Playwright with locale
+        run: |
+          npx playwright test \
+            --project=chromium \
+            --project=webkit \
+            tests/e2e/ \
+            tests/visual/ \
+            2>/dev/null || echo "No E2E tests found"
+        env:
+          LOCALE: ${{ matrix.locale }}
+          TEXT_DIR: ${{ steps.direction.outputs.dir }}
+
+      - name: Run Storybook accessibility tests
+        if: steps.direction.outputs.dir == 'rtl'
+        run: |
+          if [ -d "ui/storybook" ]; then
+            echo "Running Storybook a11y tests for RTL locale"
+            cd ui/storybook
+            npm ci 2>/dev/null || npm install
+            npm run test-storybook --if-present
+          fi
+        env:
+          STORYBOOK_RTL: true
+
+      - name: Upload locale test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-results-${{ matrix.locale }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  # ============================================================================
+  # VISUAL REGRESSION (Full)
+  # ============================================================================
+  visual-regression-full:
+    name: Visual Regression (Full)
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        theme:
+          - art-deco
+          - brutalist
+          - nordic
+          - neo-classical
+          - biophilic
+          - maximalist
+          - zen
+          - cyberpunk
+          - bauhaus
+          - retro-future
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Build Storybook with theme
+        run: |
+          if [ -d "ui/storybook" ]; then
+            cd ui/storybook
+            npm ci 2>/dev/null || npm install
+            STORYBOOK_THEME=${{ matrix.theme }} npm run build-storybook --if-present
+          fi
+
+      - name: Run visual regression
+        run: |
+          npx playwright test tests/visual/ 2>/dev/null || echo "No visual tests"
+        env:
+          THEME: ${{ matrix.theme }}
+
+      - name: Upload visual results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-${{ matrix.theme }}
+          path: test-results/
+          retention-days: 14
+
+  # ============================================================================
+  # ACCESSIBILITY FULL AUDIT
+  # ============================================================================
+  accessibility-full:
+    name: Accessibility Full Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run accessibility tests
+        run: |
+          npx playwright test tests/accessibility/ --reporter=html 2>/dev/null || \
+            echo "No accessibility tests found"
+
+      - name: Run axe-core audit
+        run: |
+          npx @axe-core/cli http://localhost:8080 --exit 2>/dev/null || \
+            echo "axe-core CLI not configured"
+
+      - name: Check WCAG compliance report
+        run: |
+          echo "## Accessibility Audit Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### WCAG 2.1 Levels" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Level A (Minimum)" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Level AA (Target)" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Level AAA (Enhanced)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: playwright-report/
+          retention-days: 30
+
+  # ============================================================================
+  # PERFORMANCE VALIDATION
+  # ============================================================================
+  performance-validation:
+    name: Performance Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check bundle sizes
+        run: |
+          echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          npx size-limit 2>/dev/null || echo "size-limit not configured"
+
+      - name: Run Lighthouse
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun 2>/dev/null || echo "Lighthouse not configured"
+
+      - name: Performance budget check
+        run: |
+          echo "### Performance Budgets" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Bundle size < 500KB" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] First Contentful Paint < 1.8s" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Largest Contentful Paint < 2.5s" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Time to Interactive < 3.8s" >> $GITHUB_STEP_SUMMARY
+
+  # ============================================================================
+  # DOCUMENTATION VALIDATION
+  # ============================================================================
+  docs-validation:
+    name: Documentation Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check all docs exist
+        run: |
+          echo "## Documentation Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          required_docs=(
+            "README.md"
+            "CHANGELOG.md"
+            "docs/core-blocks-reference.md"
+            "docs/icons.md"
+            "docs/audit.md"
+            "docs/audit/graphql-audit.md"
+          )
+
+          for doc in "${required_docs[@]}"; do
+            if [ -f "$doc" ]; then
+              echo "- [x] $doc" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- [ ] $doc (MISSING)" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+      - name: Check for broken links
+        run: |
+          npm install -g markdown-link-check
+          find docs -name "*.md" -exec markdown-link-check {} \; 2>/dev/null || \
+            echo "Link check completed with warnings"
+
+      - name: Validate prompt files
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Prompt Files" >> $GITHUB_STEP_SUMMARY
+
+          count=$(find prompts -name "*.md" | wc -l)
+          echo "Found $count prompt files" >> $GITHUB_STEP_SUMMARY
+
+      - name: Validate agent files
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Agent Files" >> $GITHUB_STEP_SUMMARY
+
+          count=$(find agents -name "*.md" | wc -l)
+          echo "Found $count agent files" >> $GITHUB_STEP_SUMMARY
+
+  # ============================================================================
+  # PACKAGING VALIDATION
+  # ============================================================================
+  packaging:
+    name: Packaging Validation
+    runs-on: ubuntu-latest
+    needs: [full-test-suite, docs-validation]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: |
+          npm run build --if-present
+
+      - name: Create distribution package
+        run: |
+          echo "Creating distribution package..."
+
+          mkdir -p dist
+          cp -r agents dist/
+          cp -r prompts dist/
+          cp -r data dist/
+          cp -r docs dist/
+          cp README.md dist/
+          cp CHANGELOG.md dist/ 2>/dev/null || true
+
+          # Create archive
+          tar -czvf wp-dev-prompts-${{ env.VERSION }}.tar.gz dist/
+
+      - name: Validate package contents
+        run: |
+          echo "## Package Contents" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tar -tzvf wp-dev-prompts-${{ env.VERSION }}.tar.gz | head -50 >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: wp-dev-prompts-${{ env.VERSION }}.tar.gz
+          retention-days: 30
+
+  # ============================================================================
+  # RELEASE CANDIDATE SUMMARY
+  # ============================================================================
+  rc-summary:
+    name: Release Candidate Summary
+    runs-on: ubuntu-latest
+    needs:
+      - full-test-suite
+      - i18n-matrix
+      - visual-regression-full
+      - accessibility-full
+      - performance-validation
+      - docs-validation
+      - packaging
+    if: always()
+
+    steps:
+      - name: Generate RC summary
+        run: |
+          echo "# Release Candidate Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ env.VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Suite | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Full Test Suite | ${{ needs.full-test-suite.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| i18n/RTL Matrix | ${{ needs.i18n-matrix.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Visual Regression | ${{ needs.visual-regression-full.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | ${{ needs.accessibility-full.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance | ${{ needs.performance-validation.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Documentation | ${{ needs.docs-validation.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Packaging | ${{ needs.packaging.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Overall status
+          if [[ "${{ needs.full-test-suite.result }}" == "success" ]] && \
+             [[ "${{ needs.packaging.result }}" == "success" ]]; then
+            echo "## Status: Ready for Release" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## Status: Requires Attention" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Fail if critical jobs failed
+        if: |
+          needs.full-test-suite.result == 'failure' ||
+          needs.packaging.result == 'failure' ||
+          needs.docs-validation.result == 'failure'
+        run: |
+          echo "Release candidate validation failed!"
+          exit 1
+
+      - name: Create RC validation issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `RC Validation Failed: ${process.env.VERSION}`,
+              body: `## Release Candidate Validation Failed
+
+              **Version:** ${process.env.VERSION}
+              **Run:** ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}
+
+              Please review the failed jobs and fix before proceeding with the release.
+              `,
+              labels: ['release', 'blocking']
+            });

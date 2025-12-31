@@ -1,0 +1,104 @@
+/**
+ * WordPress Compatibility Styles
+ *
+ * Maps custom properties to WordPress theme.json presets.
+ *
+ * @package wp-dev-prompts
+ */
+
+/* Map our tokens to WordPress preset format */
+:root {
+  /* Colors */
+  --wp--preset--color--primary: var(--color-primary);
+  --wp--preset--color--secondary: var(--color-secondary);
+  --wp--preset--color--accent: var(--color-accent);
+  --wp--preset--color--background: var(--color-background);
+  --wp--preset--color--foreground: var(--color-text);
+  --wp--preset--color--surface: var(--color-surface);
+
+  /* Typography */
+  --wp--preset--font-family--body: var(--font-family-sans);
+  --wp--preset--font-family--heading: var(--font-family-sans);
+  --wp--preset--font-family--mono: var(--font-family-mono);
+
+  /* Font Sizes */
+  --wp--preset--font-size--small: 0.875rem;
+  --wp--preset--font-size--medium: 1rem;
+  --wp--preset--font-size--large: 1.25rem;
+  --wp--preset--font-size--x-large: 1.5rem;
+
+  /* Spacing */
+  --wp--preset--spacing--20: var(--spacing-sm);
+  --wp--preset--spacing--30: var(--spacing-md);
+  --wp--preset--spacing--40: var(--spacing-lg);
+  --wp--preset--spacing--50: var(--spacing-xl);
+  --wp--preset--spacing--60: var(--spacing-2xl);
+
+  /* Border Radius */
+  --wp--custom--border-radius--small: var(--radius-sm);
+  --wp--custom--border-radius--medium: var(--radius-md);
+  --wp--custom--border-radius--large: var(--radius-lg);
+}
+
+/* WordPress Admin Color Scheme Compatibility */
+.wp-admin-scheme {
+  --color-primary: var(--wp-admin-theme-color, #2271b1);
+  --color-accent: var(--wp-admin-theme-color-darker-10, #135e96);
+}
+
+/* Block Editor Styles */
+.editor-styles-wrapper {
+  font-family: var(--wp--preset--font-family--body);
+  font-size: var(--wp--preset--font-size--medium);
+  color: var(--wp--preset--color--foreground);
+  background: var(--wp--preset--color--background);
+}
+
+/* Common WordPress Component Styles */
+.components-button {
+  font-family: var(--font-family-sans);
+}
+
+.components-button.is-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.components-button.is-secondary {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* WordPress Block Styles */
+.wp-block {
+  font-family: var(--wp--preset--font-family--body);
+}
+
+.wp-block-heading {
+  font-family: var(--font-family-display, var(--font-family-sans));
+}
+
+.wp-block-button__link {
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.wp-block-quote {
+  border-left-color: var(--color-primary);
+}
+
+/* Focus States (WordPress Standard) */
+:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
