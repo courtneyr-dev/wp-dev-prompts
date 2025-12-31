@@ -24,6 +24,21 @@ prompts/
 │   └── site-review/
 │       └── DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md
 │
+├── blocks/                      # Block-specific prompts (Extended)
+│   ├── core-blocks-assistant.md
+│   ├── block-pattern-recommender.md
+│   └── icon-assistant.md
+│
+├── frontend-design/             # UI/UX design prompts (Extended)
+│   ├── component-design.md
+│   ├── style-language.md
+│   ├── theme-vs-plugin-styles.md
+│   ├── responsive-behavior.md
+│   └── accessibility-presets.md
+│
+├── audit/                       # Audit & testing prompts (Extended)
+│   └── graphql-audit.md
+│
 └── legacy/                      # Backward compatibility symlinks
     └── [symlinks to extended/]
 ```
@@ -71,6 +86,12 @@ prompts/
 | Security review | `core/security/input-validation.md` | See skills/security/ |
 | Write README | `core/documentation/readme-github.md` | `extended/COMMUNITY-FILES-PROMPTS.md` |
 | Full project setup | N/A | `extended/PROJECT-KICKSTART-PROMPT.md` |
+| Choose blocks for UI | N/A | `blocks/core-blocks-assistant.md` |
+| Create block patterns | N/A | `blocks/block-pattern-recommender.md` |
+| Find WordPress icons | N/A | `blocks/icon-assistant.md` |
+| Design UI components | N/A | `frontend-design/component-design.md` |
+| Define style language | N/A | `frontend-design/style-language.md` |
+| Audit GraphQL API | N/A | `audit/graphql-audit.md` |
 
 ### Using Core Prompts
 

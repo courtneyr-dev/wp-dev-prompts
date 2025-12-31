@@ -75,6 +75,19 @@ This repository provides everything you need for professional WordPress developm
 - **RACI ownership model**: Clear accountability for all review findings
 - **Integration with WordPress development**: Use findings to inform plugin/theme projects
 
+### 🎨 Frontend Design System
+- **10 aesthetic style languages**: Art Deco, Brutalist, Nordic, Cyberpunk, and more
+- **Component design prompts**: Generate accessible, responsive UI components
+- **Storybook integration**: Preview components across all style themes
+- **WordPress compatibility**: CSS custom properties map to theme.json presets
+- **Accessibility-first**: WCAG 2.1 AA compliance built into all components
+
+### 🔌 WPHelpers & Data Integration
+- **Core blocks reference**: Structured data for all WordPress core blocks
+- **Icon library**: 400+ icons with accessibility labels
+- **Audit checklists**: Machine-readable WordPress and GraphQL audit items
+- **CI automation**: GitHub Actions workflows for automated auditing
+
 ---
 
 ## 🚀 Quick Start Options
@@ -235,8 +248,25 @@ wp-dev-prompts/
 ├── 📚 guides/                            # Development guides
 ├── 📑 templates/                         # Ready-to-use templates
 ├── 🔧 scripts/                           # Automation scripts
-├── ⚙️ github-workflows/                  # GitHub Actions
+├── ⚙️ github-workflows/                  # GitHub Actions templates
 ├── 📖 docs/                              # Additional documentation
+│
+├── 📊 data/                              # Reference Data (NEW)
+│   ├── core-blocks.json                 # WordPress core blocks metadata
+│   ├── core-icons.json                  # 400+ icons with a11y labels
+│   ├── wpaudit-checklist.json           # 35 audit items from WPAudit
+│   └── graphql-audit-checklist.yaml     # 24 GraphQL security checks
+│
+├── 🎨 ui/                                # UI Components (NEW)
+│   └── storybook/                       # Storybook with 10 style themes
+│       ├── .storybook/                  # Config (a11y, themes, viewports)
+│       ├── stories/                     # Example component stories
+│       └── styles/                      # Style language CSS
+│
+├── 🧪 tests/                             # Automated Tests (NEW)
+│   └── audit/                           # Audit test suites
+│       └── graphql.spec.ts              # GraphQL API tests
+│
 └── 📁 archive/                           # Previous versions
     └── v1.3-original/                   # Complete v1.3 backup
 ```
@@ -450,6 +480,42 @@ Use templates/workflows/USER-STORY-TEMPLATE.md
    - Content Marketing, User Research, Competitive Intelligence
 4. **Integration:** Use findings to inform WordPress plugin/theme development decisions
 
+### 🔌 I Need to Audit a GraphQL API
+
+**WPGraphQL security and functionality testing:**
+
+1. 📋 **[prompts/audit/graphql-audit.md](prompts/audit/graphql-audit.md)** - GraphQL audit prompt
+2. 🧪 **[tests/audit/graphql.spec.ts](tests/audit/graphql.spec.ts)** - Playwright test suite
+3. ⚙️ **[.github/workflows/graphql-audit.yml](.github/workflows/graphql-audit.yml)** - CI workflow
+4. 📊 **[data/graphql-audit-checklist.yaml](data/graphql-audit-checklist.yaml)** - 24 security checks
+
+**Run manually:**
+```bash
+GRAPHQL_ENDPOINT=https://example.com/graphql npx playwright test tests/audit/
+```
+
+### 🎨 I'm Designing UI Components
+
+**Frontend design with accessibility and style themes:**
+
+1. 🎯 **[prompts/frontend-design/component-design.md](prompts/frontend-design/component-design.md)** - Generate components
+2. 🎨 **[prompts/frontend-design/style-language.md](prompts/frontend-design/style-language.md)** - Define visual style
+3. 📱 **[prompts/frontend-design/responsive-behavior.md](prompts/frontend-design/responsive-behavior.md)** - Mobile-first patterns
+4. ♿ **[prompts/frontend-design/accessibility-presets.md](prompts/frontend-design/accessibility-presets.md)** - WCAG compliance
+5. 🔮 **[ui/storybook/](ui/storybook/)** - Preview with 10 style themes
+
+**Style themes available:** Art Deco, Brutalist, Nordic, Neo-Classical, Biophilic, Maximalist, Zen, Cyberpunk, Bauhaus, Retro-Futurism
+
+### 🧱 I'm Working with WordPress Blocks
+
+**Block selection, patterns, and icons:**
+
+1. 🧱 **[prompts/blocks/core-blocks-assistant.md](prompts/blocks/core-blocks-assistant.md)** - Choose optimal blocks
+2. 🎭 **[prompts/blocks/block-pattern-recommender.md](prompts/blocks/block-pattern-recommender.md)** - Create reusable patterns
+3. 🎯 **[prompts/blocks/icon-assistant.md](prompts/blocks/icon-assistant.md)** - Find WordPress icons
+4. 📊 **[data/core-blocks.json](data/core-blocks.json)** - Block metadata reference
+5. 📊 **[data/core-icons.json](data/core-icons.json)** - 400+ icons with labels
+
 ---
 
 ## 🌟 Key Concepts
@@ -614,10 +680,15 @@ Built for the WordPress community with ❤️
 ### ✅ Completed (v2.0.0 - December 2024)
 - **Cross-platform AI compatibility** - Works with Claude Code, Cursor, Cline, Copilot, ChatGPT, Gemini
 - **Modular agent architecture** - Orchestrators, specialists, and compositions
-- **Skill-based knowledge modules** - 17 focused skills across 5 domains
+- **Skill-based knowledge modules** - 54 focused skills across 5 domains
 - **Platform configuration templates** - CLAUDE.md, .cursorrules, .clinerules, copilot-instructions.md
 - **Universal prompt specification** - XML-style tags for all platforms
 - **Legacy compatibility** - Symlinks preserve existing paths
+- **WPHelpers data integration** - Core blocks and icons reference data
+- **Audit system** - WPAudit and GraphQL security checklists with CI workflows
+- **Frontend design prompts** - Component design, style languages, accessibility presets
+- **Storybook starter** - 10 aesthetic themes with a11y testing
+- **CI workflow suite** - Fast PR, nightly, audit, release candidate workflows
 
 ### 🔮 Planned
 
