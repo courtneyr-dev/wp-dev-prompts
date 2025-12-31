@@ -39,6 +39,12 @@ prompts/
 ├── audit/                       # Audit & testing prompts (Extended)
 │   └── graphql-audit.md
 │
+├── testing/                     # UI/UX testing prompts (Extended)
+│   ├── ui-ux-audit.md
+│   ├── navigation-flow-tests.md
+│   ├── responsive-tests.md
+│   └── heuristic-evaluation.md
+│
 └── legacy/                      # Backward compatibility symlinks
     └── [symlinks to extended/]
 ```
@@ -92,6 +98,10 @@ prompts/
 | Design UI components | N/A | `frontend-design/component-design.md` |
 | Define style language | N/A | `frontend-design/style-language.md` |
 | Audit GraphQL API | N/A | `audit/graphql-audit.md` |
+| Full UI/UX audit | N/A | `testing/ui-ux-audit.md` |
+| Navigation testing | N/A | `testing/navigation-flow-tests.md` |
+| Responsive testing | N/A | `testing/responsive-tests.md` |
+| Heuristic evaluation | N/A | `testing/heuristic-evaluation.md` |
 
 ### Using Core Prompts
 
@@ -158,7 +168,8 @@ All prompts use the [Universal Prompt Specification](../platforms/universal/prom
 | **Planning** | User Story templates, Architecture prompts |
 | **Setup** | `core/testing/*` or `extended/TESTING-AUTOMATION-PROMPTS.md` |
 | **Development** | `core/blocks/*`, `core/security/*` |
-| **Testing** | `extended/TESTING-AUTOMATION-PROMPTS.md` |
+| **Testing** | `extended/TESTING-AUTOMATION-PROMPTS.md`, `testing/*` |
+| **UI/UX Audit** | `testing/ui-ux-audit.md` |
 | **Documentation** | `core/documentation/*` or `extended/COMMUNITY-FILES-PROMPTS.md` |
 | **Pre-Launch** | QA checklists, Performance prompts |
 | **Launch** | `core/marketing/*` or `extended/PLUGIN-MARKETING-PROMPTS.md` |

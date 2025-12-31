@@ -176,16 +176,21 @@ wp-dev-prompts/
 ├── 📋 prompts/                           # AI Prompts
 │   ├── README.md                        # Prompt structure guide
 │   ├── core/                            # Portable prompts (<2000 tokens)
-│   │   ├── testing/
-│   │   ├── blocks/
-│   │   ├── security/
-│   │   └── documentation/
+│   │   └── (coming in v2.1)
 │   ├── extended/                        # Full-featured prompts
 │   │   ├── PROJECT-KICKSTART-PROMPT.md  # 👈 Main entry point
 │   │   ├── TESTING-AUTOMATION-PROMPTS.md
 │   │   ├── BLOCK-DEVELOPMENT-PROMPTS.md
 │   │   ├── COMMUNITY-FILES-PROMPTS.md
 │   │   └── PLUGIN-MARKETING-PROMPTS.md
+│   ├── testing/                         # UI/UX testing prompts (NEW)
+│   │   ├── ui-ux-audit.md
+│   │   ├── navigation-flow-tests.md
+│   │   ├── responsive-tests.md
+│   │   └── heuristic-evaluation.md
+│   ├── blocks/                          # Block development prompts
+│   ├── frontend-design/                 # UI/UX design prompts
+│   ├── audit/                           # Security audit prompts
 │   └── legacy/                          # Backward compatibility symlinks
 │
 ├── 🤖 agents/                            # Modular AI Agents
@@ -258,11 +263,12 @@ wp-dev-prompts/
 ├── ⚙️ github-workflows/                  # GitHub Actions templates
 ├── 📖 docs/                              # Additional documentation
 │
-├── 📊 data/                              # Reference Data (NEW)
+├── 📊 data/                              # Reference Data
 │   ├── core-blocks.json                 # WordPress core blocks metadata
 │   ├── core-icons.json                  # 400+ icons with a11y labels
 │   ├── wpaudit-checklist.json           # 35 audit items from WPAudit
-│   └── graphql-audit-checklist.yaml     # 24 GraphQL security checks
+│   ├── graphql-audit-checklist.yaml     # 24 GraphQL security checks
+│   └── ui-ux-audit-checklist.yaml       # 50+ UI/UX audit checks
 │
 ├── 🎨 ui/                                # UI Components (NEW)
 │   └── storybook/                       # Storybook with 10 style themes

@@ -17,6 +17,7 @@ Machine-readable reference data for AI prompts and automation. These files provi
 |------|-------------|--------|
 | `wpaudit-checklist.json` | 35-item WordPress audit checklist with automation mappings | [WPAudit](https://wpaudit.site/) |
 | `graphql-audit-checklist.yaml` | 24 GraphQL/WPGraphQL security checks | Custom |
+| `ui-ux-audit-checklist.yaml` | 50+ UI/UX checks based on Nielsen's heuristics | Custom |
 
 ## Usage
 
@@ -130,11 +131,40 @@ categories:
       severity: critical
 ```
 
+### ui-ux-audit-checklist.yaml
+
+```yaml
+categories:
+  - visual-hierarchy
+  - navigation
+  - responsive
+  - feedback-affordance
+  - accessibility
+  - heuristic-evaluation
+  - forms
+  - content
+  - performance-perception
+
+checks:
+  - name: primary-cta-prominence
+    category: visual-hierarchy
+    severity: high
+    automated: true
+    checks:
+      - question: Does the primary CTA have stronger visual weight?
+        why: Users need a clear focal point
+        test_hint: Compare computed styles of primary vs secondary buttons
+```
+
 ## Related Resources
 
 - **Prompts**: [../prompts/blocks/](../prompts/blocks/) - Block assistant prompts using this data
 - **Prompts**: [../prompts/audit/](../prompts/audit/) - Audit prompts using checklists
+- **Prompts**: [../prompts/testing/](../prompts/testing/) - UI/UX audit prompts
+- **Tests**: [../tests/ui-ux/](../tests/ui-ux/) - Playwright UI/UX test suites
 - **Docs**: [../docs/core-blocks-reference.md](../docs/core-blocks-reference.md) - Human-readable block reference
 - **Docs**: [../docs/icons.md](../docs/icons.md) - Icon usage guide
 - **Docs**: [../docs/audit.md](../docs/audit.md) - Audit documentation
+- **Docs**: [../docs/ui-ux-audit.md](../docs/ui-ux-audit.md) - UI/UX audit guide
 - **CI**: [../.github/workflows/audit.yml](../.github/workflows/audit.yml) - Automated audit workflow
+- **CI**: [../.github/workflows/ui-ux-audit.yml](../.github/workflows/ui-ux-audit.yml) - UI/UX audit workflow

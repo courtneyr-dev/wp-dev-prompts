@@ -14,40 +14,48 @@ Skills are concise knowledge files that:
 
 ```
 skills/
-├── wordpress/           # Core WordPress development
+├── wordpress/           # Core WordPress development (6 skills)
 │   ├── plugin-architecture.md
-│   ├── theme-architecture.md
 │   ├── block-development.md
 │   ├── interactivity-api.md
-│   ├── rest-api.md
-│   └── wp-cli.md
+│   ├── block-themes.md
+│   ├── wp-cli.md
+│   └── playground.md
 │
-├── security/            # Security best practices
+├── security/            # Security best practices (4 skills)
 │   ├── input-sanitization.md
 │   ├── output-escaping.md
-│   ├── nonces-csrf.md
-│   ├── capabilities.md
-│   └── sql-injection.md
+│   ├── nonces-capabilities.md
+│   └── database-queries.md
 │
-├── testing/             # Testing setup and patterns
-│   ├── phpunit.md
-│   ├── phpcs-wpcs.md
-│   ├── phpstan.md
-│   ├── eslint.md
-│   ├── jest.md
-│   └── playwright.md
+├── testing/             # Testing setup and patterns (25 skills)
+│   ├── phpunit-wordpress.md
+│   ├── phpcs-wordpress.md
+│   ├── phpstan-wordpress.md
+│   ├── playwright-wordpress.md
+│   ├── unit-testing.md
+│   ├── integration-testing.md
+│   ├── visual-regression.md
+│   ├── multisite-testing.md
+│   ├── locale-rtl-testing.md
+│   └── ... (15 more)
 │
-├── performance/         # Performance optimization
-│   ├── profiling.md
-│   ├── caching.md
+├── performance/         # Performance optimization (5 skills)
+│   ├── core-web-vitals.md
+│   ├── wp-profiling.md
+│   ├── asset-optimization.md
 │   ├── database-optimization.md
-│   └── asset-loading.md
+│   └── caching-strategies.md
 │
-└── accessibility/       # Accessibility compliance
-    ├── wcag-basics.md
+└── accessibility/       # Accessibility compliance (5 skills)
+    ├── wcag-checklist.md
+    ├── keyboard-navigation.md
     ├── aria-patterns.md
-    └── testing-tools.md
+    ├── screen-reader-testing.md
+    └── a11y-automation.md
 ```
+
+**Total: 45 skills across 5 categories**
 
 ## Skill Format
 

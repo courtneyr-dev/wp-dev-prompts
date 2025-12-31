@@ -28,7 +28,11 @@ ui/storybook/
 ├── stories/
 │   ├── Introduction.mdx   # Welcome documentation
 │   ├── Button.stories.jsx # Button component examples
-│   └── Icons.stories.jsx  # WordPress icon gallery
+│   ├── Icons.stories.jsx  # WordPress icon gallery
+│   └── ui-ux/             # UI/UX testing stories
+│       ├── VisualHierarchy.stories.tsx
+│       ├── ResponsiveCheck.stories.tsx
+│       └── InteractiveStates.stories.tsx
 └── styles/
     ├── style-languages.css    # 10 aesthetic themes
     └── wordpress-compat.css   # WordPress custom property mapping
@@ -238,9 +242,14 @@ npm run test:visual -- --update-snapshots
 
 - **Prompts**: [../../prompts/frontend-design/](../../prompts/frontend-design/) - Component design prompts
 - **Prompts**: [../../prompts/frontend-design/style-language.md](../../prompts/frontend-design/style-language.md) - Style language definitions
+- **Prompts**: [../../prompts/testing/](../../prompts/testing/) - UI/UX testing prompts
+- **Tests**: [../../tests/ui-ux/](../../tests/ui-ux/) - Playwright UI/UX tests
+- **Docs**: [../../docs/ui-ux-audit.md](../../docs/ui-ux-audit.md) - UI/UX audit guide
+- **Docs**: [../../docs/ui-ux-guidelines.md](../../docs/ui-ux-guidelines.md) - Design principles
 - **Skills**: [../../skills/accessibility/](../../skills/accessibility/) - Accessibility knowledge
 - **Agents**: [../../agents/specialists/accessibility.md](../../agents/specialists/accessibility.md) - A11y specialist
 - **CI**: [../../.github/workflows/ci-nightly.yml](../../.github/workflows/ci-nightly.yml) - Visual regression tests
+- **CI**: [../../.github/workflows/ui-ux-audit.yml](../../.github/workflows/ui-ux-audit.yml) - UI/UX audit workflow
 
 ## Adding New Themes
 
