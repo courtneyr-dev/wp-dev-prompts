@@ -11,6 +11,12 @@ Additional documentation, implementation plans, and reference materials.
 | `core-blocks-reference.md` | WordPress core block categories, supports, and usage patterns |
 | `icons.md` | WordPress icon library usage guide with React examples |
 
+### Design
+
+| File | Description |
+|------|-------------|
+| `design-style-guide.md` | **Start here if new to design!** Browse 20+ styles by vibe, get example prompts |
+
 ### Auditing
 
 | File | Description |
@@ -41,6 +47,9 @@ Additional documentation, implementation plans, and reference materials.
 ### For Auditing
 - **[audit.md](audit.md)** - Full WordPress audit workflow
 - **[audit/graphql-audit.md](audit/graphql-audit.md)** - GraphQL security testing
+
+### For Design (Vibe Coders)
+- **[design-style-guide.md](design-style-guide.md)** - Pick a style by feeling, not by name
 
 ## Related Resources
 

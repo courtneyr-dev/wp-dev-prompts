@@ -504,6 +504,8 @@ GRAPHQL_ENDPOINT=https://example.com/graphql npx playwright test tests/audit/
 4. ♿ **[prompts/frontend-design/accessibility-presets.md](prompts/frontend-design/accessibility-presets.md)** - WCAG compliance
 5. 🔮 **[ui/storybook/](ui/storybook/)** - Preview with 10 style themes
 
+**New to design?** → **[docs/design-style-guide.md](docs/design-style-guide.md)** - Browse 20+ styles by vibe ("I want it to feel calm"), see examples, get copy-paste prompts
+
 **Style themes available:** Art Deco, Brutalist, Nordic, Neo-Classical, Biophilic, Maximalist, Zen, Cyberpunk, Bauhaus, Retro-Futurism
 
 ### 🧱 I'm Working with WordPress Blocks
