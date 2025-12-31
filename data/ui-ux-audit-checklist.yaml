@@ -1,0 +1,748 @@
+# UI/UX Audit Checklist
+# Comprehensive design-driven audit questions, heuristics, and checks
+# Based on Nielsen heuristics, WCAG, and modern UX best practices
+#
+# Schema:
+#   - name: string (short identifier)
+#     category: string (grouping)
+#     description: string (what this checks)
+#     severity: low|medium|high|critical
+#     automated: boolean (can be tested programmatically)
+#     checks:
+#       - question: string (the audit question)
+#         why: string (rationale)
+#         test_hint: string (how to verify)
+
+version: "1.0.0"
+last_updated: "2024-12-30"
+
+categories:
+  - id: visual-hierarchy
+    name: Visual Hierarchy
+    description: How effectively the design guides user attention
+
+  - id: navigation
+    name: Navigation & Flow
+    description: How users move through the interface
+
+  - id: responsive
+    name: Responsive Behavior
+    description: Adaptation across devices and viewports
+
+  - id: feedback-affordance
+    name: Feedback & Affordance
+    description: How the UI communicates state and possibilities
+
+  - id: accessibility
+    name: Accessibility
+    description: Inclusive design for all users
+
+  - id: heuristic-evaluation
+    name: Heuristic Evaluation
+    description: Nielsen's usability heuristics
+
+  - id: forms
+    name: Forms & Input
+    description: Data entry and validation
+
+  - id: content
+    name: Content & Copy
+    description: Text clarity and helpfulness
+
+  - id: performance-perception
+    name: Perceived Performance
+    description: How fast the UI feels to users
+
+# =============================================================================
+# VISUAL HIERARCHY
+# =============================================================================
+
+checks:
+
+  - name: primary-cta-prominence
+    category: visual-hierarchy
+    description: Primary call-to-action should visually stand out through size, contrast, color, and placement
+    severity: high
+    automated: true
+    checks:
+      - question: Does the primary CTA have stronger visual weight than secondary actions?
+        why: Users need a clear focal point to complete key actions without hesitation
+        test_hint: Compare computed styles (size, color, contrast) of primary vs secondary buttons
+      - question: Is the primary CTA positioned in a predictable, scannable location?
+        why: F-pattern and Z-pattern scanning means top-right or end-of-content CTAs perform better
+        test_hint: Check CTA position relative to viewport and content flow
+      - question: Does the CTA use action-oriented, specific language?
+        why: "Get Started" converts better than "Submit" - specificity builds confidence
+        test_hint: Analyze button text content for action verbs
+
+  - name: typography-hierarchy
+    category: visual-hierarchy
+    description: Headings, subheadings, body text, and labels have consistent size/weight patterns
+    severity: medium
+    automated: true
+    checks:
+      - question: Are heading sizes visually distinct and semantically consistent (h1 > h2 > h3)?
+        why: Clear hierarchy improves scannability and helps users find information quickly
+        test_hint: Extract font-size of h1-h6 elements and verify descending scale
+      - question: Is there adequate contrast between heading and body text sizes?
+        why: Minimum 1.25x ratio between levels ensures visual distinction
+        test_hint: Calculate ratio between adjacent heading levels
+      - question: Are font weights used consistently to indicate importance?
+        why: Random bolding confuses hierarchy; consistent weight patterns guide the eye
+        test_hint: Audit font-weight usage across element types
+
+  - name: color-contrast-compliance
+    category: visual-hierarchy
+    description: Text and important UI elements meet WCAG contrast standards
+    severity: critical
+    automated: true
+    checks:
+      - question: Does body text meet WCAG AA contrast ratio (4.5:1)?
+        why: Low contrast makes text unreadable for users with vision impairments
+        test_hint: Use axe-core or similar to check contrast ratios
+      - question: Do large text elements meet minimum 3:1 contrast?
+        why: Larger text is more legible at lower contrast but still needs adequate ratio
+        test_hint: Check text 18pt+ or 14pt bold against backgrounds
+      - question: Do UI controls and graphics meet 3:1 contrast against backgrounds?
+        why: Buttons, icons, and form controls must be distinguishable
+        test_hint: Measure icon/border colors against their backgrounds
+
+  - name: information-grouping
+    category: visual-hierarchy
+    description: Related content is visually grouped with consistent spacing and alignment
+    severity: medium
+    automated: true
+    checks:
+      - question: Are related elements grouped with smaller internal spacing than external spacing?
+        why: Gestalt principle of proximity - closer items appear related
+        test_hint: Compare padding within groups vs margin between groups
+      - question: Is alignment consistent within content sections?
+        why: Mixed alignment creates visual chaos and slows comprehension
+        test_hint: Check text-align and element positioning within containers
+      - question: Do cards and containers use consistent border, shadow, and background patterns?
+        why: Consistent containers help users understand content relationships
+        test_hint: Audit border-radius, box-shadow, background across card components
+
+  - name: content-legibility
+    category: visual-hierarchy
+    description: Text sizes, line lengths, and spacing support comfortable reading
+    severity: medium
+    automated: true
+    checks:
+      - question: Is body text at least 16px (1rem) on desktop?
+        why: Smaller text causes eye strain; 16px is browser default for good reason
+        test_hint: Check computed font-size of paragraph elements
+      - question: Are line lengths between 45-75 characters for readability?
+        why: Lines too long lose the reader; too short create choppy reading
+        test_hint: Measure character count of typical paragraph lines
+      - question: Is line-height at least 1.5 for body text?
+        why: Adequate leading improves readability and reduces visual fatigue
+        test_hint: Check line-height property on body text
+
+  - name: cta-placement-consistency
+    category: visual-hierarchy
+    description: Important actions are placed consistently across similar screens
+    severity: medium
+    automated: false
+    checks:
+      - question: Are primary CTAs in the same relative position on similar page types?
+        why: Predictable layouts reduce cognitive load and speed task completion
+        test_hint: Compare CTA positions across listing pages, detail pages, forms
+      - question: Do modal CTAs follow a consistent order (Cancel/Confirm or Confirm/Cancel)?
+        why: Inconsistent button order causes misclicks and frustration
+        test_hint: Audit modal button order across the application
+
+# =============================================================================
+# NAVIGATION & FLOW
+# =============================================================================
+
+  - name: consistent-navigation
+    category: navigation
+    description: Navigation menus and links remain consistent across pages
+    severity: high
+    automated: true
+    checks:
+      - question: Does the main navigation retain position, order, and labels across screens?
+        why: Consistency reduces cognitive load; users shouldn't relearn navigation
+        test_hint: Compare nav element position and content across multiple pages
+      - question: Is the current page/section clearly indicated in navigation?
+        why: Users need to know where they are in the site structure
+        test_hint: Check for active/current state styling on nav items
+      - question: Are navigation labels clear and jargon-free?
+        why: Users scan quickly; unclear labels cause hesitation and wrong clicks
+        test_hint: Review nav text for plain language
+
+  - name: task-flow-completion
+    category: navigation
+    description: Critical user tasks can be completed in predictable, efficient flows
+    severity: high
+    automated: false
+    checks:
+      - question: Can users complete key tasks (sign up, purchase, submit) in minimal steps?
+        why: Every extra step loses users; streamlined flows increase conversion
+        test_hint: Count clicks/steps required for primary user journeys
+      - question: Is progress clearly communicated in multi-step flows?
+        why: Users need to know how much is left to maintain motivation
+        test_hint: Check for step indicators, progress bars in wizards
+      - question: Can users go back without losing data?
+        why: Punishing backtracking causes abandonment and frustration
+        test_hint: Test form persistence when navigating back
+
+  - name: breadcrumb-usage
+    category: navigation
+    description: Breadcrumbs help users understand and navigate hierarchy
+    severity: medium
+    automated: true
+    checks:
+      - question: Are breadcrumbs present on pages more than 2 levels deep?
+        why: Breadcrumbs improve orientation and provide escape hatches
+        test_hint: Check for breadcrumb elements on nested pages
+      - question: Do breadcrumb links work correctly and lead to parent pages?
+        why: Broken breadcrumbs are worse than no breadcrumbs
+        test_hint: Click each breadcrumb segment and verify destination
+      - question: Is the current page shown but not linked in breadcrumbs?
+        why: Linking to current page is confusing and wastes a click
+        test_hint: Verify last breadcrumb item is not a link
+
+  - name: back-forward-behavior
+    category: navigation
+    description: Browser back/forward buttons work predictably
+    severity: high
+    automated: true
+    checks:
+      - question: Does the back button return to the previous view, not a broken state?
+        why: SPAs often break back button; users expect it to work
+        test_hint: Navigate through app, press back, verify correct page
+      - question: Is browser history updated appropriately for significant view changes?
+        why: Modals and filters shouldn't always create history entries
+        test_hint: Check history.pushState usage patterns
+      - question: Are deep links shareable and bookmarkable?
+        why: Users share URLs; broken deep links hurt trust and usability
+        test_hint: Copy URL from various states, paste in new tab, verify
+
+  - name: redundant-navigation-avoidance
+    category: navigation
+    description: Navigation options are not duplicated in confusing ways
+    severity: low
+    automated: false
+    checks:
+      - question: Are there multiple different-looking links leading to the same destination?
+        why: Redundancy wastes attention and can confuse users
+        test_hint: Audit links pointing to same href but appearing different
+      - question: Is the primary path to key pages clear?
+        why: Too many options cause decision paralysis
+        test_hint: Count ways to reach key pages; primary should be obvious
+
+# =============================================================================
+# RESPONSIVE BEHAVIOR
+# =============================================================================
+
+  - name: responsive-layout-stability
+    category: responsive
+    description: Layouts adapt without overflow, clipping, or breaking at common viewports
+    severity: high
+    automated: true
+    checks:
+      - question: Does layout avoid horizontal scroll at mobile (320-480px)?
+        why: Horizontal scrolling on mobile is a severe usability issue
+        test_hint: Check document.documentElement.scrollWidth vs clientWidth
+      - question: Does content remain readable without zooming on mobile?
+        why: Pinch-zoom requirements indicate poor responsive design
+        test_hint: Verify viewport meta and readable font sizes
+      - question: Do images and media scale without breaking layout?
+        why: Fixed-width images cause overflow; max-width:100% is essential
+        test_hint: Check image sizing at narrow viewports
+
+  - name: touch-target-adequacy
+    category: responsive
+    description: Interactive targets meet minimum touch size guidelines
+    severity: high
+    automated: true
+    checks:
+      - question: Are touch targets at least 44x44px on mobile (iOS) or 48x48dp (Android)?
+        why: Small targets are hard to tap accurately, causing errors and frustration
+        test_hint: Measure clickable element dimensions at mobile viewports
+      - question: Is there adequate spacing between adjacent touch targets?
+        why: Cramped targets cause accidental taps on wrong elements
+        test_hint: Check margin/padding between interactive elements
+      - question: Are hover-only interactions accessible via tap on touch devices?
+        why: Hover doesn't exist on touch; critical info can't be hover-only
+        test_hint: Test dropdown menus and tooltips on touch devices
+
+  - name: mobile-input-optimization
+    category: responsive
+    description: Mobile inputs trigger appropriate keyboards and are easy to use
+    severity: medium
+    automated: true
+    checks:
+      - question: Do inputs use correct input types (email, tel, number) on mobile?
+        why: Correct input types show optimized keyboards, reducing friction
+        test_hint: Check input type attributes on form fields
+      - question: Are date/time pickers mobile-friendly?
+        why: Native pickers are often better than custom ones on mobile
+        test_hint: Test date inputs on actual mobile devices
+      - question: Is autocomplete enabled for appropriate fields?
+        why: Autocomplete saves typing; friction reduction improves completion
+        test_hint: Check autocomplete attributes on name, email, address fields
+
+  - name: viewport-breakpoint-coverage
+    category: responsive
+    description: Design handles all common viewport sizes gracefully
+    severity: medium
+    automated: true
+    checks:
+      - question: Does the design work at 320px (small mobile)?
+        why: iPhone SE and older devices still exist; minimum viable width
+        test_hint: Test at 320px viewport width
+      - question: Does the design handle tablet portrait (768px)?
+        why: Common iPad width; often an awkward in-between size
+        test_hint: Test at 768px viewport width
+      - question: Does the design work on large desktops (1920px+)?
+        why: Content shouldn't stretch uncomfortably or leave huge margins
+        test_hint: Test at 1920px and 2560px widths
+
+# =============================================================================
+# FEEDBACK & AFFORDANCE
+# =============================================================================
+
+  - name: interaction-feedback
+    category: feedback-affordance
+    description: Interactive elements provide immediate visual feedback for all states
+    severity: medium
+    automated: true
+    checks:
+      - question: Do buttons show distinct hover, focus, active, and disabled states?
+        why: Feedback confirms the interface is responsive and actions register
+        test_hint: Check :hover, :focus, :active, :disabled styles on buttons
+      - question: Do links have visible hover and focus states?
+        why: Users need confirmation they're targeting the right element
+        test_hint: Verify link state changes on hover/focus
+      - question: Are loading states shown during async operations?
+        why: Users need to know something is happening to avoid repeated clicks
+        test_hint: Check for loading indicators on form submissions
+
+  - name: error-messaging-clarity
+    category: feedback-affordance
+    description: Error messages are clear, context-specific, and provide guidance
+    severity: high
+    automated: false
+    checks:
+      - question: Are form errors described in plain language with corrective hints?
+        why: "Invalid input" is useless; "Email must include @" is actionable
+        test_hint: Trigger errors and review message text
+      - question: Are errors positioned near the relevant field, not just at top/bottom?
+        why: Inline errors are easier to connect to the problem field
+        test_hint: Check error message placement relative to fields
+      - question: Are error messages persistent until the issue is fixed?
+        why: Disappearing errors force users to remember what was wrong
+        test_hint: Verify errors remain visible while field is invalid
+      - question: Do errors use color plus icon/text (not color alone)?
+        why: Color-blind users can't rely on red; need additional indicators
+        test_hint: Check for error icons or text labels alongside color
+
+  - name: loading-progress-indicators
+    category: feedback-affordance
+    description: Asynchronous actions show clear loading or progress feedback
+    severity: medium
+    automated: true
+    checks:
+      - question: Is there a spinner or skeleton during data loading?
+        why: Users know the app is working, not frozen
+        test_hint: Throttle network and observe loading states
+      - question: Do long operations show progress (percentage, steps)?
+        why: Determinate progress reduces perceived wait time
+        test_hint: Test file uploads and multi-step processes
+      - question: Are loading states accessible (announced to screen readers)?
+        why: Visual-only loading indicators exclude blind users
+        test_hint: Check for aria-live or aria-busy attributes
+
+  - name: success-confirmation
+    category: feedback-affordance
+    description: Successful actions are clearly confirmed
+    severity: medium
+    automated: false
+    checks:
+      - question: Do form submissions show clear success messages?
+        why: Users need confirmation their action completed
+        test_hint: Submit forms and verify success feedback
+      - question: Are success states visually distinct from errors and neutral states?
+        why: Green checkmarks and success colors communicate completion
+        test_hint: Compare success vs error styling
+      - question: Do destructive actions require confirmation?
+        why: Prevent accidental deletion; confirm irreversible actions
+        test_hint: Test delete/remove actions for confirmation dialogs
+
+# =============================================================================
+# ACCESSIBILITY
+# =============================================================================
+
+  - name: keyboard-navigation
+    category: accessibility
+    description: Users can navigate all interactive elements via keyboard
+    severity: critical
+    automated: true
+    checks:
+      - question: Can all interactive elements receive keyboard focus?
+        why: Keyboard users must be able to reach every control
+        test_hint: Tab through page; verify all controls are reachable
+      - question: Is focus order logical and matches visual order?
+        why: Focus jumping around confuses users and breaks mental models
+        test_hint: Tab through and verify order matches reading order
+      - question: Are custom components keyboard accessible (Enter, Space, Arrows)?
+        why: Custom dropdowns/tabs need proper keyboard interaction
+        test_hint: Test custom widgets with keyboard only
+
+  - name: focus-visibility
+    category: accessibility
+    description: Focused elements have clear visible indicators
+    severity: high
+    automated: true
+    checks:
+      - question: Is focus visible on all interactive elements?
+        why: Without visible focus, keyboard users are lost
+        test_hint: Tab through and verify each element shows focus ring
+      - question: Does focus indicator have sufficient contrast?
+        why: Low-contrast focus rings are invisible to many users
+        test_hint: Check focus ring color against backgrounds
+      - question: Is default browser focus outline preserved or replaced with equivalent?
+        why: outline:none without replacement removes accessibility
+        test_hint: Search CSS for outline:none and verify replacement
+
+  - name: form-label-association
+    category: accessibility
+    description: Form elements have proper labels and descriptions
+    severity: critical
+    automated: true
+    checks:
+      - question: Do all form controls have associated <label> elements?
+        why: Screen readers need labels to announce field purpose
+        test_hint: Check for label[for] matching input[id]
+      - question: Are placeholder texts NOT used as the only label?
+        why: Placeholders disappear on input; not a label replacement
+        test_hint: Verify labels exist independent of placeholders
+      - question: Are required fields indicated accessibly?
+        why: "(required)" or aria-required, not just asterisk
+        test_hint: Check required field announcements with screen reader
+
+  - name: modal-dialog-accessibility
+    category: accessibility
+    description: Modals trap focus correctly and are properly announced
+    severity: high
+    automated: true
+    checks:
+      - question: Do modals trap focus within while open?
+        why: Focus escaping to background content is confusing
+        test_hint: Tab through open modal; verify focus stays inside
+      - question: Is focus returned to trigger element on modal close?
+        why: Losing focus position after modal is disorienting
+        test_hint: Close modal and verify focus returns to opener
+      - question: Do modals have role="dialog" and aria-modal="true"?
+        why: Screen readers need semantic information about dialogs
+        test_hint: Inspect modal element attributes
+      - question: Can modals be closed with Escape key?
+        why: Standard modal behavior users expect
+        test_hint: Open modal and press Escape
+
+  - name: image-alt-text
+    category: accessibility
+    description: Images have appropriate alternative text
+    severity: high
+    automated: true
+    checks:
+      - question: Do informative images have descriptive alt text?
+        why: Screen reader users need image content described
+        test_hint: Check alt attributes are present and descriptive
+      - question: Do decorative images have empty alt="" (not missing)?
+        why: Decorative images should be skipped, but need empty alt
+        test_hint: Verify decorative images have alt="" not missing alt
+      - question: Do complex images have extended descriptions?
+        why: Charts and infographics need more than brief alt text
+        test_hint: Check for aria-describedby or longdesc on complex images
+
+  - name: heading-structure
+    category: accessibility
+    description: Page has logical heading hierarchy
+    severity: medium
+    automated: true
+    checks:
+      - question: Is there exactly one h1 per page?
+        why: Multiple h1s or no h1 confuses document structure
+        test_hint: Count h1 elements per page
+      - question: Do headings follow sequential order (no skipping levels)?
+        why: Jumping from h2 to h4 breaks outline and navigation
+        test_hint: Extract heading levels and verify sequence
+      - question: Are headings used for structure, not just styling?
+        why: Headings are for document outline, not making text big
+        test_hint: Verify heading content represents sections
+
+# =============================================================================
+# HEURISTIC EVALUATION (Nielsen's 10)
+# =============================================================================
+
+  - name: system-status-visibility
+    category: heuristic-evaluation
+    description: "Heuristic #1: The system keeps users informed about what's happening"
+    severity: medium
+    automated: false
+    checks:
+      - question: Does the UI show current state (logged in/out, current page, selections)?
+        why: Users should never wonder "what's happening now"
+        test_hint: Review state indicators throughout the interface
+      - question: Are system processes (saving, syncing, processing) visible?
+        why: Background operations should be surfaced to user awareness
+        test_hint: Check for status indicators during operations
+      - question: Is there feedback within 100ms of user actions?
+        why: Delays over 100ms feel sluggish; immediate feedback expected
+        test_hint: Measure response time of UI interactions
+
+  - name: real-world-match
+    category: heuristic-evaluation
+    description: "Heuristic #2: System uses user's language, not system language"
+    severity: medium
+    automated: false
+    checks:
+      - question: Is technical jargon avoided in user-facing text?
+        why: Users shouldn't need to know implementation details
+        test_hint: Review copy for technical terms; simplify or explain
+      - question: Do icons and metaphors match real-world conventions?
+        why: Floppy disk for save works; obscure icons confuse
+        test_hint: Review iconography for recognizability
+      - question: Is information organized in user-logical, not system-logical, order?
+        why: Database structure shouldn't dictate UI organization
+        test_hint: Compare information architecture to user mental models
+
+  - name: user-control-freedom
+    category: heuristic-evaluation
+    description: "Heuristic #3: Users can undo, redo, and escape from actions"
+    severity: high
+    automated: false
+    checks:
+      - question: Can accidental actions be undone?
+        why: Mistakes happen; undo reduces fear of exploration
+        test_hint: Test undo capability for edits and deletions
+      - question: Are there clear "cancel" or "back" options in flows?
+        why: Users need exit paths without completing unwanted actions
+        test_hint: Verify escape routes in all multi-step flows
+      - question: Can bulk/destructive actions be reverted or require confirmation?
+        why: High-risk actions need safety nets
+        test_hint: Test delete, bulk edit, and similar actions
+
+  - name: consistency-standards
+    category: heuristic-evaluation
+    description: "Heuristic #4: UI follows platform and internal conventions"
+    severity: medium
+    automated: false
+    checks:
+      - question: Do UI elements behave consistently across the application?
+        why: Learning transfers when patterns are consistent
+        test_hint: Compare similar components across different areas
+      - question: Are platform conventions respected (OS, browser)?
+        why: Users expect platform-native behaviors (right-click, keyboard shortcuts)
+        test_hint: Test standard shortcuts and gestures
+      - question: Is terminology consistent throughout the interface?
+        why: "Settings" vs "Preferences" vs "Options" confuses
+        test_hint: Audit vocabulary for consistency
+
+  - name: error-prevention
+    category: heuristic-evaluation
+    description: "Heuristic #5: Design prevents errors before they occur"
+    severity: high
+    automated: false
+    checks:
+      - question: Do forms validate input before submission where possible?
+        why: Catching errors early is better than after submit
+        test_hint: Test inline validation on form fields
+      - question: Are dangerous actions disabled when inappropriate?
+        why: Grayed-out buttons prevent invalid actions
+        test_hint: Check if destructive actions have appropriate guards
+      - question: Are smart defaults provided to reduce input errors?
+        why: Good defaults reduce mistakes and speed completion
+        test_hint: Review form defaults for usefulness
+
+  - name: recognition-over-recall
+    category: heuristic-evaluation
+    description: "Heuristic #6: Minimize memory load with visible options"
+    severity: medium
+    automated: false
+    checks:
+      - question: Are options visible rather than requiring recall?
+        why: Showing choices is easier than remembering them
+        test_hint: Check for visible menus, dropdowns, suggestions
+      - question: Is contextual help available where needed?
+        why: Users shouldn't have to remember instructions
+        test_hint: Look for tooltips, help text, inline guidance
+      - question: Are recent/frequent items surfaced for quick access?
+        why: Reduces need to remember exact locations
+        test_hint: Check for recent items, favorites, shortcuts
+
+  - name: flexibility-efficiency
+    category: heuristic-evaluation
+    description: "Heuristic #7: Support both novice and expert users"
+    severity: low
+    automated: false
+    checks:
+      - question: Are keyboard shortcuts available for frequent actions?
+        why: Power users expect shortcuts for efficiency
+        test_hint: Document and test keyboard shortcuts
+      - question: Can users customize or personalize their experience?
+        why: Personalization increases efficiency for regular users
+        test_hint: Look for settings, preferences, customization options
+      - question: Are there multiple ways to accomplish tasks?
+        why: Different users prefer different approaches
+        test_hint: Test multiple paths to common goals
+
+  - name: aesthetic-minimalist-design
+    category: heuristic-evaluation
+    description: "Heuristic #8: Remove unnecessary elements"
+    severity: medium
+    automated: false
+    checks:
+      - question: Does every element serve a purpose?
+        why: Extra elements compete for attention and slow users
+        test_hint: Review UI for elements that could be removed
+      - question: Is visual noise minimized (excessive colors, animations)?
+        why: Clutter overwhelms and fatigues users
+        test_hint: Evaluate overall visual simplicity
+      - question: Is progressive disclosure used for complex features?
+        why: Show basics first; advanced options on demand
+        test_hint: Check for expandable sections, "advanced" options
+
+  - name: error-recovery
+    category: heuristic-evaluation
+    description: "Heuristic #9: Help users recognize, diagnose, and recover from errors"
+    severity: high
+    automated: false
+    checks:
+      - question: Do error messages explain what went wrong in plain language?
+        why: Technical error codes don't help users fix problems
+        test_hint: Trigger errors and evaluate message clarity
+      - question: Do error messages suggest how to fix the problem?
+        why: Diagnosis without cure leaves users stuck
+        test_hint: Check for actionable recovery suggestions
+      - question: Is it clear how to get help if self-recovery fails?
+        why: Escalation path prevents user abandonment
+        test_hint: Verify support contact or help is accessible from errors
+
+  - name: help-documentation
+    category: heuristic-evaluation
+    description: "Heuristic #10: Provide help and documentation when needed"
+    severity: low
+    automated: false
+    checks:
+      - question: Is contextual help available for complex features?
+        why: Users shouldn't need to leave context to get help
+        test_hint: Look for inline help, tooltips, "?" icons
+      - question: Is documentation searchable and task-focused?
+        why: Users seek answers to specific questions
+        test_hint: Test documentation search with user questions
+      - question: Are tutorials or onboarding available for new users?
+        why: First experience shapes long-term usage
+        test_hint: Check for onboarding flows, feature tours
+
+# =============================================================================
+# FORMS & INPUT
+# =============================================================================
+
+  - name: form-usability
+    category: forms
+    description: Forms are easy to complete with minimal friction
+    severity: high
+    automated: false
+    checks:
+      - question: Are only necessary fields required?
+        why: Every required field is a potential abandonment point
+        test_hint: Review which fields are required vs optional
+      - question: Is the number of fields minimized?
+        why: Shorter forms convert better; combine or remove fields
+        test_hint: Count fields and consider reduction opportunities
+      - question: Are related fields grouped logically?
+        why: Logical grouping speeds completion and reduces errors
+        test_hint: Review form section organization
+      - question: Is tab order logical and efficient?
+        why: Keyboard users need sensible navigation flow
+        test_hint: Tab through form and verify logical order
+
+  - name: form-validation
+    category: forms
+    description: Validation helps users succeed, not punish mistakes
+    severity: medium
+    automated: false
+    checks:
+      - question: Is validation timing appropriate (on blur, not just submit)?
+        why: Immediate feedback catches errors early
+        test_hint: Test when validation triggers for each field
+      - question: Are validation requirements shown before errors occur?
+        why: Password requirements shown upfront prevent frustration
+        test_hint: Check for visible format hints and requirements
+      - question: Does validation use appropriate strictness?
+        why: Rejecting valid phone formats or names is hostile
+        test_hint: Test with varied valid inputs (international formats)
+
+# =============================================================================
+# CONTENT & COPY
+# =============================================================================
+
+  - name: content-clarity
+    category: content
+    description: Text content is clear, scannable, and helpful
+    severity: medium
+    automated: false
+    checks:
+      - question: Is copy written at appropriate reading level (grade 8 or lower)?
+        why: Complex language excludes users and slows comprehension
+        test_hint: Run readability analysis on key pages
+      - question: Are important terms explained or avoided?
+        why: Jargon creates barriers; define or replace
+        test_hint: Review for industry/technical jargon
+      - question: Is content scannable with headings, bullets, short paragraphs?
+        why: Users scan before reading; support their behavior
+        test_hint: Evaluate text formatting patterns
+
+  - name: button-label-clarity
+    category: content
+    description: Button and link labels clearly describe their action
+    severity: medium
+    automated: true
+    checks:
+      - question: Do buttons use specific action verbs (not "Click Here" or "Submit")?
+        why: "Download Report" is clearer than "Submit"
+        test_hint: Audit button text for specific, descriptive language
+      - question: Are destructive actions labeled clearly (Delete, Remove, Cancel)?
+        why: Ambiguous labels on dangerous actions cause mistakes
+        test_hint: Review destructive action labeling
+      - question: Do links describe their destination (not "Read More" without context)?
+        why: "Read More" requires context; standalone links need description
+        test_hint: Check link text out of context for clarity
+
+# =============================================================================
+# PERCEIVED PERFORMANCE
+# =============================================================================
+
+  - name: perceived-speed
+    category: performance-perception
+    description: Interface feels fast and responsive to users
+    severity: medium
+    automated: true
+    checks:
+      - question: Do interactions respond within 100ms?
+        why: Delays over 100ms feel sluggish; 300ms+ breaks flow
+        test_hint: Measure time from click to visual response
+      - question: Is meaningful content visible within 1 second?
+        why: First contentful paint affects perceived speed
+        test_hint: Measure LCP (Largest Contentful Paint)
+      - question: Are skeleton screens used instead of spinners for content?
+        why: Skeleton screens feel faster than generic spinners
+        test_hint: Check loading state patterns
+
+  - name: optimistic-ui
+    category: performance-perception
+    description: UI updates optimistically to feel instant
+    severity: low
+    automated: false
+    checks:
+      - question: Do low-risk actions update UI before server confirmation?
+        why: Like buttons, toggles can feel instant with optimistic updates
+        test_hint: Check if UI updates before network round-trip
+      - question: Is there graceful rollback if optimistic update fails?
+        why: Optimistic UI needs error handling for failed operations
+        test_hint: Test network failures during optimistic operations

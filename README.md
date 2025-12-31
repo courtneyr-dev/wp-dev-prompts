@@ -82,6 +82,13 @@ This repository provides everything you need for professional WordPress developm
 - **WordPress compatibility**: CSS custom properties map to theme.json presets
 - **Accessibility-first**: WCAG 2.1 AA compliance built into all components
 
+### 🔍 UI/UX Audit System
+- **Comprehensive audit checklist**: 50+ checks across 9 categories
+- **Nielsen's 10 heuristics**: Automated usability evaluation
+- **Playwright test suites**: Visual hierarchy, navigation, responsive, accessibility
+- **Storybook stories**: Visual regression testing components
+- **CI workflow**: Automated UI/UX audits on pull requests
+
 ### 🔌 WPHelpers & Data Integration
 - **Core blocks reference**: Structured data for all WordPress core blocks
 - **Icon library**: 400+ icons with accessibility labels
@@ -263,9 +270,16 @@ wp-dev-prompts/
 │       ├── stories/                     # Example component stories
 │       └── styles/                      # Style language CSS
 │
-├── 🧪 tests/                             # Automated Tests (NEW)
-│   └── audit/                           # Audit test suites
-│       └── graphql.spec.ts              # GraphQL API tests
+├── 🧪 tests/                             # Automated Tests
+│   ├── audit/                           # Audit test suites
+│   │   └── graphql.spec.ts              # GraphQL API tests
+│   └── ui-ux/                           # UI/UX test suites (NEW)
+│       ├── visual-hierarchy.spec.ts     # CTA, typography, contrast
+│       ├── navigation.spec.ts           # Navigation consistency
+│       ├── responsive.spec.ts           # Breakpoint behavior
+│       ├── feedback-affordance.spec.ts  # Interaction feedback
+│       ├── accessibility.spec.ts        # Keyboard, focus, ARIA
+│       └── heuristic-evaluation.spec.ts # Nielsen's 10 heuristics
 │
 └── 📁 archive/                           # Previous versions
     └── v1.3-original/                   # Complete v1.3 backup
@@ -517,6 +531,23 @@ GRAPHQL_ENDPOINT=https://example.com/graphql npx playwright test tests/audit/
 3. 🎯 **[prompts/blocks/icon-assistant.md](prompts/blocks/icon-assistant.md)** - Find WordPress icons
 4. 📊 **[data/core-blocks.json](data/core-blocks.json)** - Block metadata reference
 5. 📊 **[data/core-icons.json](data/core-icons.json)** - 400+ icons with labels
+
+### 🔍 I Need to Audit UI/UX
+
+**Comprehensive usability and design testing:**
+
+1. 📋 **[prompts/testing/ui-ux-audit.md](prompts/testing/ui-ux-audit.md)** - Full UI/UX audit prompt
+2. 🧭 **[prompts/testing/navigation-flow-tests.md](prompts/testing/navigation-flow-tests.md)** - Navigation testing
+3. 📱 **[prompts/testing/responsive-tests.md](prompts/testing/responsive-tests.md)** - Responsive design validation
+4. 🎯 **[prompts/testing/heuristic-evaluation.md](prompts/testing/heuristic-evaluation.md)** - Nielsen's heuristics
+5. 📖 **[docs/ui-ux-audit.md](docs/ui-ux-audit.md)** - Audit methodology guide
+6. 📐 **[docs/ui-ux-guidelines.md](docs/ui-ux-guidelines.md)** - Design principles
+7. 📊 **[data/ui-ux-audit-checklist.yaml](data/ui-ux-audit-checklist.yaml)** - 50+ audit checks
+
+**Run automated tests:**
+```bash
+npx playwright test tests/ui-ux/
+```
 
 ---
 

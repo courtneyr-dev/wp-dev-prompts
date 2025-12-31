@@ -6,9 +6,16 @@ Automated tests for auditing, validation, and quality assurance.
 
 ```
 tests/
-├── README.md           # This file
-└── audit/              # Audit-related tests
-    └── graphql.spec.ts # GraphQL API audit tests
+├── README.md                    # This file
+├── audit/                       # Audit-related tests
+│   └── graphql.spec.ts         # GraphQL API audit tests
+└── ui-ux/                       # UI/UX testing (NEW)
+    ├── visual-hierarchy.spec.ts # CTA prominence, typography, contrast
+    ├── navigation.spec.ts       # Navigation consistency, breadcrumbs
+    ├── responsive.spec.ts       # Breakpoint behavior, touch targets
+    ├── feedback-affordance.spec.ts # Interaction feedback, loading states
+    ├── accessibility.spec.ts    # Keyboard nav, focus, ARIA, forms
+    └── heuristic-evaluation.spec.ts # Nielsen's 10 heuristics
 ```
 
 ## Test Types
@@ -20,6 +27,19 @@ Playwright tests for automated site and API auditing.
 | Test File | Description |
 |-----------|-------------|
 | `graphql.spec.ts` | WPGraphQL endpoint security and functionality testing |
+
+### UI/UX Tests (`ui-ux/`)
+
+Playwright tests for UI/UX validation based on established usability principles.
+
+| Test File | Description |
+|-----------|-------------|
+| `visual-hierarchy.spec.ts` | CTA prominence, typography scale, color contrast, content grouping |
+| `navigation.spec.ts` | Navigation consistency, breadcrumbs, back/forward, skip links |
+| `responsive.spec.ts` | Breakpoint behavior, touch targets, content reflow, mobile inputs |
+| `feedback-affordance.spec.ts` | Hover/focus/active states, loading indicators, error messages |
+| `accessibility.spec.ts` | Keyboard navigation, focus visibility, form labels, ARIA |
+| `heuristic-evaluation.spec.ts` | All 10 Nielsen usability heuristics |
 
 ## Running Tests
 
@@ -47,6 +67,14 @@ npx playwright test tests/audit/graphql.spec.ts
 
 # With specific endpoint
 GRAPHQL_ENDPOINT=https://example.com/graphql npx playwright test tests/audit/
+
+# UI/UX tests - all
+npx playwright test tests/ui-ux/
+
+# UI/UX tests - specific categories
+npx playwright test tests/ui-ux/visual-hierarchy.spec.ts
+npx playwright test tests/ui-ux/responsive.spec.ts
+npx playwright test tests/ui-ux/heuristic-evaluation.spec.ts
 ```
 
 ### Run with Reporters
@@ -102,6 +130,7 @@ Tests are integrated into GitHub Actions:
 
 - `.github/workflows/graphql-audit.yml` - GraphQL-specific workflow
 - `.github/workflows/audit.yml` - General WordPress audit workflow
+- `.github/workflows/ui-ux-audit.yml` - UI/UX testing workflow
 - `.github/workflows/ci-nightly.yml` - Nightly comprehensive tests
 
 ### Workflow Inputs
