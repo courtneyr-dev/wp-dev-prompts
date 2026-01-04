@@ -86,7 +86,37 @@ Search for the latest WordPress 6.9 block deprecation patterns.
 
 ### MCP Servers
 
-If you have MCP servers configured, Claude Code can use them for extended capabilities like database access or API integrations.
+Claude Code supports MCP (Model Context Protocol) servers for extended capabilities.
+
+#### WordPress Trac MCP Server
+
+**Highly recommended**: [trac-mcp](https://github.com/Jameswlepage/trac-mcp) provides AI access to WordPress.org Trac data—60,000+ tickets, changesets with diffs, and development activity.
+
+**Setup** (add to `claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "wordpress-trac": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://mcp-server-wporg-trac-staging.a8cai.workers.dev/mcp"]
+    }
+  }
+}
+```
+
+**Use cases**:
+- Research existing tickets before creating new ones
+- Find related changesets when debugging
+- Track WordPress core development activity
+- Understand how core handles specific features
+
+**Example queries**:
+```
+Search Trac for tickets about block editor performance.
+Get ticket #59166 with comments to understand the discussion.
+Show me recent changesets related to the REST API.
+```
 
 ### Git Operations
 

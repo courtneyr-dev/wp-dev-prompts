@@ -787,13 +787,19 @@ This framework incorporates best practices and guidance from:
   - Automated "Tested up to" updates
   - Multi-plugin batch operations
 
+- **[Jameswlepage/trac-mcp](https://github.com/Jameswlepage/trac-mcp)** - MCP server for WordPress.org Trac access
+  - Search 60,000+ WordPress tickets
+  - Retrieve changesets with diffs
+  - Track WordPress core development activity
+  - Research existing issues before creating tickets
+
 ---
 
 **Last Updated**: January 4, 2025
 **Framework Version**: 2.0.0
 **WordPress**: 6.5+
 **PHP**: 8.0+
-**Enhanced With**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills), [richtabor/skills](https://github.com/richtabor/skills), [@felixarntz/wp-plugins-cli](https://www.npmjs.com/package/@felixarntz/wp-plugins-cli)
+**Enhanced With**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills), [richtabor/skills](https://github.com/richtabor/skills), [@felixarntz/wp-plugins-cli](https://www.npmjs.com/package/@felixarntz/wp-plugins-cli), [trac-mcp](https://github.com/Jameswlepage/trac-mcp)
 **Platforms**: Claude Code, Cursor, Cline, GitHub Copilot, ChatGPT, Gemini
 
 ---

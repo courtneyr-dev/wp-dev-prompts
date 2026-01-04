@@ -79,6 +79,52 @@ gh api repos/WordPress/WordPress-Documentation-Style-Guide/commits --jq '.[0] | 
 
 ---
 
+### 4. Jameswlepage/trac-mcp
+
+**Repository**: [github.com/Jameswlepage/trac-mcp](https://github.com/Jameswlepage/trac-mcp)
+**License**: GPLv2+
+**Last Synced**: 2025-01-04
+
+**What we use:**
+- MCP server configuration for WordPress.org Trac access
+- Tool documentation and usage examples
+
+**Files affected:**
+- `platforms/claude-code/mcp-servers.md`
+- `platforms/claude-code/README.md`
+
+**Sync command:**
+```bash
+# Check for updates
+gh api repos/Jameswlepage/trac-mcp/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
+### 5. felixarntz/packages (wp-plugins-cli)
+
+**Repository**: [github.com/felixarntz/packages](https://github.com/felixarntz/packages)
+**NPM Package**: [@felixarntz/wp-plugins-cli](https://www.npmjs.com/package/@felixarntz/wp-plugins-cli)
+**License**: MIT
+**Last Synced**: 2025-01-04
+
+**What we use:**
+- CLI tool documentation for plugin maintenance
+- Workflow integration for version management
+
+**Files affected:**
+- `skills/wordpress/wp-plugins-cli.md`
+- `workflows/plugin-maintenance/`
+
+**Sync command:**
+```bash
+# Check for updates
+npm view @felixarntz/wp-plugins-cli version
+gh api repos/felixarntz/packages/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
 ## Monitoring Strategy
 
 ### Automated (GitHub Actions)
@@ -99,7 +145,11 @@ gh api repos/Automattic/agent-skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]
 echo "\n=== richtabor/skills ===" && \
 gh api repos/richtabor/skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
 echo "\n=== WordPress/WordPress-Documentation-Style-Guide ===" && \
-gh api repos/WordPress/WordPress-Documentation-Style-Guide/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"'
+gh api repos/WordPress/WordPress-Documentation-Style-Guide/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
+echo "\n=== Jameswlepage/trac-mcp ===" && \
+gh api repos/Jameswlepage/trac-mcp/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
+echo "\n=== felixarntz/packages ===" && \
+gh api repos/felixarntz/packages/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"'
 ```
 
 ---
