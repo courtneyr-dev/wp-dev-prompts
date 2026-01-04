@@ -219,6 +219,7 @@ wp-dev-prompts/
 │   │   ├── interactivity-api.md
 │   │   ├── block-themes.md
 │   │   ├── wp-cli.md
+│   │   ├── wp-plugins-cli.md
 │   │   └── playground.md
 │   ├── security/                        # Security skills
 │   │   ├── input-sanitization.md
@@ -255,7 +256,13 @@ wp-dev-prompts/
 │       └── copilot-instructions.template
 │
 ├── 📖 workflows/                         # Multi-step Guides
-│   └── README.md                        # Workflow structure
+│   ├── README.md                        # Workflow structure
+│   └── plugin-maintenance/              # Plugin maintenance workflow
+│       ├── overview.md
+│       ├── wordpress-update.md
+│       ├── release-prep.md
+│       ├── multi-plugin.md
+│       └── ci-integration.md
 │
 ├── 📚 guides/                            # Development guides
 ├── 📑 templates/                         # Ready-to-use templates
@@ -719,7 +726,7 @@ Built for the WordPress community with ❤️
 ### ✅ Completed (v2.0.0 - December 2024)
 - **Cross-platform AI compatibility** - Works with Claude Code, Cursor, Cline, Copilot, ChatGPT, Gemini
 - **Modular agent architecture** - Orchestrators, specialists, and compositions
-- **Skill-based knowledge modules** - 54 focused skills across 5 domains
+- **Skill-based knowledge modules** - 51 focused skills across 6 domains
 - **Platform configuration templates** - CLAUDE.md, .cursorrules, .clinerules, copilot-instructions.md
 - **Universal prompt specification** - XML-style tags for all platforms
 - **Legacy compatibility** - Symlinks preserve existing paths
@@ -769,13 +776,24 @@ This framework incorporates best practices and guidance from:
   - wp-abilities-api - Permission-based functionality (WP 6.9+)
   - wp-project-triage - Repository detection and tooling identification
 
+- **[richtabor/skills](https://github.com/richtabor/skills)** - Technical writing skill for AI-assisted blog post drafting
+  - Anti-pattern detection for AI-generated prose
+  - Style guide for natural, human writing
+  - WordPress publishing integration
+
+- **[@felixarntz/wp-plugins-cli](https://www.npmjs.com/package/@felixarntz/wp-plugins-cli)** - CLI tools for WordPress plugin maintenance
+  - Version verification and consistency checks
+  - Changelog generation from commits
+  - Automated "Tested up to" updates
+  - Multi-plugin batch operations
+
 ---
 
-**Last Updated**: December 30, 2024
+**Last Updated**: January 4, 2025
 **Framework Version**: 2.0.0
 **WordPress**: 6.5+
 **PHP**: 8.0+
-**Enhanced With**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills)
+**Enhanced With**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills), [richtabor/skills](https://github.com/richtabor/skills), [@felixarntz/wp-plugins-cli](https://www.npmjs.com/package/@felixarntz/wp-plugins-cli)
 **Platforms**: Claude Code, Cursor, Cline, GitHub Copilot, ChatGPT, Gemini
 
 ---
