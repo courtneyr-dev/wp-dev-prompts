@@ -29,7 +29,7 @@ skills/
 │   ├── nonces-capabilities.md
 │   └── database-queries.md
 │
-├── testing/             # Testing setup and patterns (25 skills)
+├── testing/             # Testing setup and patterns (29 skills)
 │   ├── phpunit-wordpress.md
 │   ├── phpcs-wordpress.md
 │   ├── phpstan-wordpress.md
@@ -66,7 +66,7 @@ skills/
         └── publish-to-wordpress.py
 ```
 
-**Total: 47 skills across 6 categories**
+**Total: 51 skills across 6 categories**
 
 ## Skill Format
 

@@ -53,18 +53,14 @@ prompts/
 
 ### Core Prompts (`core/`)
 
+> **Status**: Coming in v2.1 - See `core/README.md`
+
 **Portable, self-contained prompts under 2000 tokens.**
 
 - Work on **all platforms** (ChatGPT, Gemini, Claude, Copilot, etc.)
 - **No external references** - everything needed is in the prompt
 - **Single task focus** - one specific action per prompt
 - Perfect for **quick tasks** and **context-limited platforms**
-
-**Use core prompts when:**
-- Using ChatGPT, Gemini, or other web AI
-- Need a quick, focused task done
-- Working with limited context windows
-- Sharing prompts with others
 
 ### Extended Prompts (`extended/`)
 
@@ -85,30 +81,24 @@ prompts/
 
 ### Find the Right Prompt
 
-| Task | Core Prompt | Extended Prompt |
-|------|-------------|-----------------|
-| Set up PHPUnit | `core/testing/phpunit-setup.md` | `extended/TESTING-AUTOMATION-PROMPTS.md` |
-| Create a block | `core/blocks/static-block.md` | `extended/BLOCK-DEVELOPMENT-PROMPTS.md` |
-| Security review | `core/security/input-validation.md` | See skills/security/ |
-| Write README | `core/documentation/readme-github.md` | `extended/COMMUNITY-FILES-PROMPTS.md` |
-| Full project setup | N/A | `extended/PROJECT-KICKSTART-PROMPT.md` |
-| Choose blocks for UI | N/A | `blocks/core-blocks-assistant.md` |
-| Create block patterns | N/A | `blocks/block-pattern-recommender.md` |
-| Find WordPress icons | N/A | `blocks/icon-assistant.md` |
-| Design UI components | N/A | `frontend-design/component-design.md` |
-| Define style language | N/A | `frontend-design/style-language.md` |
-| Audit GraphQL API | N/A | `audit/graphql-audit.md` |
-| Full UI/UX audit | N/A | `testing/ui-ux-audit.md` |
-| Navigation testing | N/A | `testing/navigation-flow-tests.md` |
-| Responsive testing | N/A | `testing/responsive-tests.md` |
-| Heuristic evaluation | N/A | `testing/heuristic-evaluation.md` |
-
-### Using Core Prompts
-
-1. Open the prompt file
-2. Copy the content inside `<prompt>` tags
-3. Replace `[PLACEHOLDERS]` with your values
-4. Paste into any AI assistant
+| Task | Prompt |
+|------|--------|
+| Full project setup | `extended/PROJECT-KICKSTART-PROMPT.md` |
+| Set up testing | `extended/TESTING-AUTOMATION-PROMPTS.md` |
+| Create blocks | `extended/BLOCK-DEVELOPMENT-PROMPTS.md` |
+| Community files | `extended/COMMUNITY-FILES-PROMPTS.md` |
+| Marketing content | `extended/PLUGIN-MARKETING-PROMPTS.md` |
+| Choose blocks for UI | `blocks/core-blocks-assistant.md` |
+| Create block patterns | `blocks/block-pattern-recommender.md` |
+| Find WordPress icons | `blocks/icon-assistant.md` |
+| Design UI components | `frontend-design/component-design.md` |
+| Define style language | `frontend-design/style-language.md` |
+| Audit GraphQL API | `audit/graphql-audit.md` |
+| Full UI/UX audit | `testing/ui-ux-audit.md` |
+| Navigation testing | `testing/navigation-flow-tests.md` |
+| Responsive testing | `testing/responsive-tests.md` |
+| Heuristic evaluation | `testing/heuristic-evaluation.md` |
+| Security patterns | See `skills/security/` |
 
 ### Using Extended Prompts
 
@@ -166,24 +156,18 @@ All prompts use the [Universal Prompt Specification](../platforms/universal/prom
 |-------|----------------|
 | **Brainstorming** | `extended/PROJECT-KICKSTART-PROMPT.md` (Phase 1) |
 | **Planning** | User Story templates, Architecture prompts |
-| **Setup** | `core/testing/*` or `extended/TESTING-AUTOMATION-PROMPTS.md` |
-| **Development** | `core/blocks/*`, `core/security/*` |
+| **Setup** | `extended/TESTING-AUTOMATION-PROMPTS.md` |
+| **Development** | `extended/BLOCK-DEVELOPMENT-PROMPTS.md`, `skills/security/*` |
 | **Testing** | `extended/TESTING-AUTOMATION-PROMPTS.md`, `testing/*` |
 | **UI/UX Audit** | `testing/ui-ux-audit.md` |
-| **Documentation** | `core/documentation/*` or `extended/COMMUNITY-FILES-PROMPTS.md` |
+| **Documentation** | `extended/COMMUNITY-FILES-PROMPTS.md` |
 | **Pre-Launch** | QA checklists, Performance prompts |
-| **Launch** | `core/marketing/*` or `extended/PLUGIN-MARKETING-PROMPTS.md` |
-| **Maintenance** | Site review agents |
+| **Launch** | `extended/PLUGIN-MARKETING-PROMPTS.md` |
+| **Maintenance** | Site review agents, `workflows/plugin-maintenance/` |
 
 ## Legacy Compatibility
 
-The `legacy/` directory contains symlinks to maintain backward compatibility:
-
-```
-legacy/PROJECT-KICKSTART-PROMPT.md → ../extended/PROJECT-KICKSTART-PROMPT.md
-```
-
-**Old paths still work** - if you have bookmarks or scripts referencing the old structure, they'll redirect to the new locations.
+The `legacy/` directory contains copies of the original v1.x prompts for backward compatibility. See `legacy/README.md` for details.
 
 ## Creating New Prompts
 
