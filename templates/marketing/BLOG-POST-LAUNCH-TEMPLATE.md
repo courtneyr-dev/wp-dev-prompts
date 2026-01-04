@@ -2,6 +2,11 @@
 
 Use this template to announce your WordPress plugin launch. Replace all [BRACKETED] sections with your specific information.
 
+> **Style Guides**: Before writing, review [STYLE-REFERENCES.md](./STYLE-REFERENCES.md) and load:
+> - `skills/technical-writing/references/anti-patterns.md`
+> - `skills/technical-writing/references/wordpress-docs-style-guide.md`
+> - `skills/technical-writing/references/style-guide.md`
+
 ---
 
 ## Meta Information
@@ -295,3 +300,29 @@ After publishing, complete these tasks:
 **Links:** 3-5 internal, 2-3 external, multiple CTAs
 
 **Remember:** This post should make readers excited to try your plugin while providing genuine value even if they don't. Focus on solving their problem, and the promotion will feel natural.
+
+---
+
+## Style Guide Quick Checks
+
+Before publishing, verify:
+
+### Anti-Pattern Check
+- [ ] No AI indicator words (delve, seamless, leverage, tapestry)
+- [ ] No clichéd openings ("In today's fast-paced world...")
+- [ ] Varied sentence and paragraph lengths
+- [ ] Contractions used naturally
+- [ ] No formal transitions (furthermore, moreover)
+
+### WordPress Standards Check
+- [ ] American English spelling
+- [ ] Second person ("you") throughout
+- [ ] Present tense for current features
+- [ ] Active voice preferred
+- [ ] Sentence case headings
+
+### Voice Check
+- [ ] Sounds human, not generated
+- [ ] Personal perspective evident
+- [ ] Specific examples before abstractions
+- [ ] Strong, declarative ending

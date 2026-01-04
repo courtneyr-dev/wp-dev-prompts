@@ -2,6 +2,8 @@
 
 Use this template to pitch your WordPress plugin story to podcast hosts. Personalize heavily for each podcast.
 
+> **Style Guides**: Before writing, review [STYLE-REFERENCES.md](./STYLE-REFERENCES.md) and apply anti-patterns, WordPress docs style, and voice guidelines.
+
 ---
 
 ## Research Checklist (Complete Before Pitching)

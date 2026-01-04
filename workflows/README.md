@@ -50,6 +50,16 @@ Create new Gutenberg blocks step by step.
 2. Dynamic Block - Server-rendered block
 3. Interactive Block - Interactivity API integration
 
+### Plugin Maintenance (`plugin-maintenance/`)
+
+Routine maintenance tasks using [@felixarntz/wp-plugins-cli](https://www.npmjs.com/package/@felixarntz/wp-plugins-cli).
+
+**Phases**:
+1. WordPress Update - Bump "Tested up to" version
+2. Release Prep - Verify versions, update @since tags, generate changelog
+3. Multi-Plugin - Batch operations across plugin portfolios
+4. CI Integration - Automate in GitHub Actions
+
 ## Directory Structure
 
 ```
@@ -76,11 +86,18 @@ workflows/
 │   ├── quick-audit.md
 │   └── full-assessment.md
 │
-└── block-creation/
+├── block-creation/
+│   ├── overview.md
+│   ├── static-block.md
+│   ├── dynamic-block.md
+│   └── interactive-block.md
+│
+└── plugin-maintenance/
     ├── overview.md
-    ├── static-block.md
-    ├── dynamic-block.md
-    └── interactive-block.md
+    ├── wordpress-update.md
+    ├── release-prep.md
+    ├── multi-plugin.md
+    └── ci-integration.md
 ```
 
 ## Using Workflows

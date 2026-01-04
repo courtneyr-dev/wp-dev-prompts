@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": {
+          "tool": ["Write", "Edit"],
+          "filePath": "*.md"
+        },
+        "command": "npx prettier --write \"$CLAUDE_FILE_PATH\" 2>/dev/null || true",
+        "description": "Format markdown files with Prettier after editing"
+      }
+    ],
+    "PreCommit": [
+      {
+        "command": "echo 'Running pre-commit verification...' && grep -r -q 'delve\\|tapestry\\|myriad' --include='*.md' . && echo 'WARNING: AI indicator words detected' || true",
+        "description": "Check for AI indicator words before commit"
+      }
+    ]
+  }
+}

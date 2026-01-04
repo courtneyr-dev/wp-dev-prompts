@@ -14,12 +14,13 @@ Skills are concise knowledge files that:
 
 ```
 skills/
-├── wordpress/           # Core WordPress development (6 skills)
+├── wordpress/           # Core WordPress development (7 skills)
 │   ├── plugin-architecture.md
 │   ├── block-development.md
 │   ├── interactivity-api.md
 │   ├── block-themes.md
 │   ├── wp-cli.md
+│   ├── wp-plugins-cli.md
 │   └── playground.md
 │
 ├── security/            # Security best practices (4 skills)
@@ -47,15 +48,25 @@ skills/
 │   ├── database-optimization.md
 │   └── caching-strategies.md
 │
-└── accessibility/       # Accessibility compliance (5 skills)
-    ├── wcag-checklist.md
-    ├── keyboard-navigation.md
-    ├── aria-patterns.md
-    ├── screen-reader-testing.md
-    └── a11y-automation.md
+├── accessibility/       # Accessibility compliance (5 skills)
+│   ├── wcag-checklist.md
+│   ├── keyboard-navigation.md
+│   ├── aria-patterns.md
+│   ├── screen-reader-testing.md
+│   └── a11y-automation.md
+│
+└── technical-writing/   # Blog post drafting (1 skill)
+    ├── SKILL.md
+    ├── references/
+    │   ├── anti-patterns.md
+    │   ├── style-guide.md
+    │   ├── wordpress-docs-style-guide.md
+    │   └── wordpress-publishing.md
+    └── scripts/
+        └── publish-to-wordpress.py
 ```
 
-**Total: 45 skills across 5 categories**
+**Total: 47 skills across 6 categories**
 
 ## Skill Format
 
@@ -178,6 +189,7 @@ Core WordPress development patterns:
 - Interactivity API
 - REST API
 - WP-CLI operations
+- wp-plugins-cli for maintenance
 
 ### Security (`skills/security/`)
 
@@ -213,10 +225,21 @@ Accessibility compliance:
 - ARIA patterns
 - Testing tools
 
+### Technical Writing (`skills/technical-writing/`)
+
+Blog post drafting from [richtabor/skills](https://github.com/richtabor/skills/tree/main/technical-writing):
+- Draft posts directly from your repo while implementation is fresh
+- Anti-pattern guide to avoid AI-sounding prose
+- [WordPress Documentation Style Guide](https://make.wordpress.org/docs/style-guide/) for official standards
+- Personal style guide for voice consistency
+- WordPress REST API publishing to drafts
+
 ## Sources
 
 Skills are extracted from:
 
 1. **[Automattic/agent-skills](https://github.com/Automattic/agent-skills)** - WordPress Agent Skills (MIT License)
-2. **wp-dev-prompts** existing prompts and guides
-3. **WordPress Developer Documentation**
+2. **[richtabor/skills](https://github.com/richtabor/skills)** - Technical Writing skill for drafting blog posts from repos
+3. **[WordPress/WordPress-Documentation-Style-Guide](https://github.com/WordPress/WordPress-Documentation-Style-Guide)** - Official WordPress documentation standards (GPLv2+)
+4. **wp-dev-prompts** existing prompts and guides
+5. **WordPress Developer Documentation**

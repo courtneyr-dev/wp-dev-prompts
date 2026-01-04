@@ -2,6 +2,8 @@
 
 Professional press release template for WordPress plugin launches and major announcements.
 
+> **Style Guides**: Before writing, review [STYLE-REFERENCES.md](./STYLE-REFERENCES.md) and apply anti-patterns, WordPress docs style, and voice guidelines.
+
 ---
 
 ## Press Release Best Practices

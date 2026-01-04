@@ -2,6 +2,8 @@
 
 30-day social media content plan for WordPress plugin marketing. Customize for your specific plugin and audience.
 
+> **Style Guides**: Before writing, review [STYLE-REFERENCES.md](./STYLE-REFERENCES.md) and apply anti-patterns, WordPress docs style, and voice guidelines.
+
 ---
 
 ## Calendar Overview
