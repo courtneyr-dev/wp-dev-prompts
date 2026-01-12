@@ -4,27 +4,29 @@ Configuration files and guides for using wp-dev-prompts across different AI plat
 
 ## Supported Platforms
 
-| Platform | Type | Configuration |
-|----------|------|---------------|
-| Claude Code | IDE/Terminal | CLAUDE.md, MCP servers |
-| Cursor | IDE | .cursorrules, .cursor/rules/ |
-| Cline | IDE Extension | .clinerules |
-| GitHub Copilot | IDE Extension | copilot-instructions.md |
-| ChatGPT | Web/API | Custom GPT configuration |
-| Gemini | Web/API | System instructions |
+| Platform | Type | Tier | Configuration |
+|----------|------|------|---------------|
+| Claude Code | IDE/Terminal | T3 | CLAUDE.md, MCP servers |
+| Cursor | IDE | T2 | .cursorrules, .cursor/rules/ |
+| Cline | IDE Extension | T2/T3 | .clinerules |
+| GitHub Copilot | IDE Extension | T1 | copilot-instructions.md |
+| ChatGPT | Web/API | T2 | Custom GPT configuration |
+| Gemini | Web/API | T2 | System instructions |
+| n8n | Workflow Automation | — | JSON workflows |
 
 ## Quick Start
 
 ### Which Platform Should I Use?
 
-| Your Task | Recommended | Why |
-|-----------|-------------|-----|
-| Full development workflow | Claude Code | File access, commands, MCP |
-| Quick code edits | Cursor | Fast, inline editing |
-| Autonomous coding | Cline | Plan/Act modes |
-| Code completion | Copilot | Inline suggestions |
-| Planning/brainstorming | ChatGPT or Gemini | No setup needed |
-| Large code review | Gemini | Massive context window |
+| Your Task | Recommended | Tier | Why |
+|-----------|-------------|------|-----|
+| Full development workflow | Claude Code | T3 | File access, commands, MCP |
+| Quick code edits | Cursor | T2 | Fast, inline editing |
+| Autonomous coding | Cline | T2/T3 | Plan/Act modes |
+| Code completion | Copilot | T1 | Inline suggestions |
+| Planning/brainstorming | ChatGPT or Gemini | T2 | No setup needed |
+| Large code review | Gemini | T2 | Massive context window |
+| Task routing automation | n8n | — | Webhook-based workflows |
 
 ### Setup by Platform
 
@@ -72,6 +74,18 @@ cp platforms/copilot/copilot-instructions.md /path/to/your/project/.github/
 2. Paste when starting conversation or use in API
 ```
 
+#### n8n
+```bash
+# 1. Import workflow templates
+# See platforms/n8n/getting-started.md for setup
+
+# 2. Copy workflow templates
+cp templates/n8n/*.json /path/to/n8n/workflows/
+
+# 3. Configure webhooks and AI integrations
+# See platforms/n8n/README.md for configuration
+```
+
 ## Directory Structure
 
 ```
@@ -106,9 +120,13 @@ platforms/
 │   ├── custom-gpt-config.md    # GPT configuration
 │   └── knowledge-base.md       # What to upload
 │
-└── gemini/                      # Google Gemini
-    ├── system-instructions.md  # System prompt
-    └── context-placement.md    # Gemini-specific tips
+├── gemini/                      # Google Gemini
+│   ├── system-instructions.md  # System prompt
+│   └── context-placement.md    # Gemini-specific tips
+│
+└── n8n/                         # n8n workflow automation
+    ├── README.md               # Platform overview
+    └── getting-started.md      # Setup guide
 ```
 
 ## Platform Comparison
@@ -117,13 +135,14 @@ See [capability-matrix.md](universal/capability-matrix.md) for detailed comparis
 
 ### Summary
 
-| Feature | Claude Code | Cursor | Cline | Copilot | ChatGPT | Gemini |
-|---------|-------------|--------|-------|---------|---------|--------|
-| File read/write | ✅ | ✅ | ✅ | Limited | ❌ | ❌ |
-| Run commands | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
-| Project context | ✅ | ✅ | ✅ | ✅ | Upload | Upload |
-| Custom rules | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Best for | Full workflow | Editing | Autonomous | Completion | Planning | Large context |
+| Feature | Claude Code | Cursor | Cline | Copilot | ChatGPT | Gemini | n8n |
+|---------|-------------|--------|-------|---------|---------|--------|-----|
+| File read/write | ✅ | ✅ | ✅ | Limited | ❌ | ❌ | ❌ |
+| Run commands | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
+| Project context | ✅ | ✅ | ✅ | ✅ | Upload | Upload | Webhook |
+| Custom rules | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | JSON |
+| Best for | Full workflow | Editing | Autonomous | Completion | Planning | Large context | Routing |
+| Tier | T3 | T2 | T2/T3 | T1 | T2 | T2 | — |
 
 ## Using with wp-dev-prompts
 

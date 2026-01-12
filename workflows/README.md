@@ -60,6 +60,25 @@ Routine maintenance tasks using [@felixarntz/wp-plugins-cli](https://www.npmjs.c
 3. Multi-Plugin - Batch operations across plugin portfolios
 4. CI Integration - Automate in GitHub Actions
 
+### Tiered Agents (`tiered-agents/`)
+
+Route tasks to the appropriate AI tool based on complexity.
+
+**Tiers**:
+- **T1 (Routine)** - Copilot for single-file, constrained tasks
+- **T2 (Analytical)** - Cursor/ChatGPT for multi-file review
+- **T3 (Complex)** - Claude Code for architecture decisions
+
+**Files**:
+- `TIER_SYSTEM.md` - Complete classification framework
+- `overview.md` - Quick reference guide
+- `escalation-guide.md` - When to move between tiers
+- `tier-1-routine.md` - T1 task patterns and prompts
+- `tier-2-analytical.md` - T2 task patterns and prompts
+- `tier-3-complex.md` - T3 task patterns and prompts
+
+**Automation**: See [platforms/n8n/](../platforms/n8n/) and [templates/n8n/](../templates/n8n/) for automated task routing.
+
 ## Directory Structure
 
 ```
@@ -92,12 +111,20 @@ workflows/
 │   ├── dynamic-block.md
 │   └── interactive-block.md
 │
-└── plugin-maintenance/
+├── plugin-maintenance/
+│   ├── overview.md
+│   ├── wordpress-update.md
+│   ├── release-prep.md
+│   ├── multi-plugin.md
+│   └── ci-integration.md
+│
+└── tiered-agents/
+    ├── TIER_SYSTEM.md
     ├── overview.md
-    ├── wordpress-update.md
-    ├── release-prep.md
-    ├── multi-plugin.md
-    └── ci-integration.md
+    ├── escalation-guide.md
+    ├── tier-1-routine.md
+    ├── tier-2-analytical.md
+    └── tier-3-complex.md
 ```
 
 ## Using Workflows

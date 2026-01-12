@@ -10,6 +10,7 @@ templates/
 ├── community/            # Community and contribution files
 ├── github/               # GitHub-specific templates
 ├── marketing/            # Marketing content templates
+├── n8n/                  # n8n workflow automation templates
 └── workflows/            # Development workflow templates
 ```
 
@@ -47,6 +48,16 @@ templates/
 | `SOCIAL-MEDIA-CALENDAR-TEMPLATE.md` | 30-day social content plan |
 | `PODCAST-PITCH-TEMPLATE.md` | Podcast guest pitch template |
 | `PRESS-RELEASE-TEMPLATE.md` | Professional press release format |
+
+### n8n (`n8n/`)
+
+| Template | Description |
+|----------|-------------|
+| `task-router.json` | Route tasks to appropriate AI tier (T1/T2/T3) |
+| `github-issue-triage.json` | Classify and route GitHub issues |
+| `daily-maintenance.json` | Automated daily maintenance checks |
+
+See [platforms/n8n/](../platforms/n8n/) for n8n setup and configuration.
 
 ### Workflows (`workflows/`)
 

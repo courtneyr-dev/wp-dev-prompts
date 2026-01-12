@@ -213,6 +213,24 @@ This index serves as the central router for the wp-dev-prompts agent library. It
 
 ## 🧾 Routing Algorithm
 
+### Step 0: Determine Complexity Tier
+
+Before selecting agents, classify the task:
+
+| Signal | T1 | T2 | T3 |
+|--------|----|----|----|
+| Files | 1-2 | 3-5 | 6+ |
+| Existing tests | Yes | Partial | No |
+| Risk | Low | Medium | High |
+| Architecture change | No | Minor | Yes |
+
+**Tool Assignment**:
+- **T1 (Routine)**: Copilot — inline suggestions, constrained scope
+- **T2 (Analytical)**: Cursor/ChatGPT — code review, refactoring analysis
+- **T3 (Complex)**: Claude Code — full-context, architecture decisions
+
+Then proceed to Step 1.
+
 ### Step 1: Identify Request Type
 - **Code**: New features, bug fixes, refactoring
 - **Tests**: Test creation, test infrastructure

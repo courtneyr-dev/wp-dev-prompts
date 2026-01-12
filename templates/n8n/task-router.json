@@ -1,0 +1,114 @@
+{
+  "name": "Task Router - Tiered Agent System",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "task-router",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Task Router Classification Logic\n// Classifies incoming tasks into T1/T2/T3 tiers\n\nconst task = $input.first().json;\n\n// Initialize complexity score\nlet score = 0;\n\n// Signal 1: File count\nconst fileCount = task.files?.length || 1;\nif (fileCount <= 2) {\n  score += 1;\n} else if (fileCount <= 5) {\n  score += 2;\n} else {\n  score += 3;\n}\n\n// Signal 2: Risk indicators in description\nconst description = (task.description || '').toLowerCase();\nif (description.includes('security')) score += 1;\nif (description.includes('architecture')) score += 1;\nif (description.includes('refactor')) score += 1;\nif (description.includes('migration')) score += 2;\nif (description.includes('database')) score += 1;\nif (description.includes('api')) score += 1;\n\n// Signal 3: Test coverage status\nif (task.has_tests === false) score += 1;\n\n// Signal 4: Priority indicator\nif (task.priority === 'critical') score += 1;\nif (task.priority === 'high') score += 1;\n\n// Determine tier based on score\nlet tier, label, tool, color;\nif (score <= 2) {\n  tier = 'T1';\n  label = 'routine';\n  tool = 'Copilot';\n  color = 'green';\n} else if (score <= 4) {\n  tier = 'T2';\n  label = 'analytical';\n  tool = 'Cursor/ChatGPT';\n  color = 'yellow';\n} else {\n  tier = 'T3';\n  label = 'complex';\n  tool = 'Claude Code';\n  color = 'red';\n}\n\nreturn {\n  json: {\n    ...task,\n    classification: {\n      tier,\n      label,\n      tool,\n      score,\n      color\n    },\n    github_label: tier.toLowerCase(),\n    classified_at: new Date().toISOString()\n  }\n};"
+      },
+      "id": "classify-task",
+      "name": "Classify Task",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [470, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "issue",
+        "operation": "create",
+        "owner": "={{ $json.repository?.owner || 'YOUR_USERNAME' }}",
+        "repository": "={{ $json.repository?.name || 'YOUR_REPO' }}",
+        "title": "=[{{ $json.classification.tier }}] {{ $json.title }}",
+        "body": "## Task\n\n{{ $json.description }}\n\n## Classification\n\n- **Tier**: {{ $json.classification.tier }} ({{ $json.classification.label }})\n- **Recommended Tool**: {{ $json.classification.tool }}\n- **Complexity Score**: {{ $json.classification.score }}\n\n## Files\n\n{{ $json.files ? $json.files.map(f => '- ' + f).join('\\n') : 'Not specified' }}\n\n---\n*Classified by n8n task router at {{ $json.classified_at }}*",
+        "labels": [
+          "={{ $json.github_label }}"
+        ]
+      },
+      "id": "create-github-issue",
+      "name": "Create GitHub Issue",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [690, 300],
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "CREDENTIAL_ID",
+          "name": "GitHub OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, tier: $json.classification.tier, tool: $json.classification.tool, issue_number: $json.number, issue_url: $json.html_url }) }}"
+      },
+      "id": "respond-webhook",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [910, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Classify Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Task": {
+      "main": [
+        [
+          {
+            "node": "Create GitHub Issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create GitHub Issue": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateId": "task-router-tiered-agents"
+  },
+  "tags": [
+    {
+      "name": "tiered-agents"
+    },
+    {
+      "name": "automation"
+    }
+  ]
+}

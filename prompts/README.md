@@ -16,6 +16,7 @@ prompts/
 │   └── marketing/              # Marketing content prompts
 │
 ├── extended/                    # Full-featured prompts (no limit)
+│   ├── PRODUCT-MARKET-FIT-RESEARCH.md
 │   ├── PROJECT-KICKSTART-PROMPT.md
 │   ├── TESTING-AUTOMATION-PROMPTS.md
 │   ├── BLOCK-DEVELOPMENT-PROMPTS.md
@@ -23,6 +24,12 @@ prompts/
 │   ├── PLUGIN-MARKETING-PROMPTS.md
 │   └── site-review/
 │       └── DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md
+│
+├── tiered/                      # Tier-specific prompts
+│   ├── README.md               # Tier system overview
+│   ├── t1-constrained/         # Copilot-optimized (<500 tokens)
+│   ├── t2-analytical/          # Cursor/ChatGPT prompts
+│   └── t3-collaborative/       # Claude Code prompts
 │
 ├── blocks/                      # Block-specific prompts (Extended)
 │   ├── core-blocks-assistant.md
@@ -77,12 +84,30 @@ prompts/
 - Need the full development workflow
 - Have access to the full repository
 
+### Tiered Prompts (`tiered/`)
+
+**Tool-specific prompts optimized for each AI platform tier.**
+
+| Tier | Tool | Token Limit | Use Case |
+|------|------|-------------|----------|
+| T1 | Copilot | <500 | Single-file, constrained scope |
+| T2 | Cursor/ChatGPT | <2000 | Multi-file review, refactoring |
+| T3 | Claude Code | Unlimited | Architecture, full-context decisions |
+
+**Use tiered prompts when:**
+- You want prompts optimized for a specific tool
+- Task complexity matches the tier
+- You're using the [tiered agent workflow](../workflows/tiered-agents/)
+
+See [tiered/README.md](tiered/README.md) for the complete tier system guide.
+
 ## Quick Start
 
 ### Find the Right Prompt
 
 | Task | Prompt |
 |------|--------|
+| Validate product idea | `extended/PRODUCT-MARKET-FIT-RESEARCH.md` |
 | Full project setup | `extended/PROJECT-KICKSTART-PROMPT.md` |
 | Set up testing | `extended/TESTING-AUTOMATION-PROMPTS.md` |
 | Create blocks | `extended/BLOCK-DEVELOPMENT-PROMPTS.md` |
@@ -154,6 +179,7 @@ All prompts use the [Universal Prompt Specification](../platforms/universal/prom
 
 | Stage | Prompts to Use |
 |-------|----------------|
+| **Validation** | `extended/PRODUCT-MARKET-FIT-RESEARCH.md` |
 | **Brainstorming** | `extended/PROJECT-KICKSTART-PROMPT.md` (Phase 1) |
 | **Planning** | User Story templates, Architecture prompts |
 | **Setup** | `extended/TESTING-AUTOMATION-PROMPTS.md` |

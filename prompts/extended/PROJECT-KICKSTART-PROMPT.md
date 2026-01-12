@@ -72,9 +72,15 @@ This repository contains:
 
 Follow the complete development lifecycle from the wp-dev-prompts framework:
 
-## Phase 0: Website Assessment (Optional)
+## Phase 0: Validation & Assessment (Optional)
 
-**If building for an existing website**, consider running a comprehensive site review first using the Digital Experience Integrity System (site-review/DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md):
+**For new product ideas**, validate product-market fit first using [PRODUCT-MARKET-FIT-RESEARCH.md](PRODUCT-MARKET-FIT-RESEARCH.md):
+- Research existing solutions and market size
+- Identify gaps and differentiation opportunities
+- Validate willingness to pay
+- Assess technical feasibility and ecosystem risks
+
+**If building for an existing website**, consider running a comprehensive site review using the Digital Experience Integrity System (site-review/DIGITAL-EXPERIENCE-INTEGRITY-SYSTEM.md):
 
 1. Assess the existing site's content strategy and information architecture
 2. Review current SEO, accessibility, and performance baselines
@@ -248,6 +254,24 @@ Use COMMUNITY-FILES-PROMPTS.md to generate any documentation with AI assistance.
 2. Set up support channels
 3. Plan ongoing maintenance
 4. Track feature requests
+
+## Task Routing with Tiered Agents
+
+Throughout development, route tasks to the appropriate AI tool based on complexity:
+
+| Signal | T1 (Copilot) | T2 (Cursor/ChatGPT) | T3 (Claude Code) |
+|--------|--------------|---------------------|------------------|
+| Files touched | 1-2 | 3-5 | 6+ |
+| Existing tests | Yes | Partial | No |
+| Risk level | Low | Medium | High |
+| Architecture change | No | Minor | Yes |
+
+**Examples:**
+- **T1**: Fix typo, add comment, simple function change
+- **T2**: Refactor module, add feature to existing code, code review
+- **T3**: New feature architecture, security patterns, multi-component work
+
+See [workflows/tiered-agents/](../../workflows/tiered-agents/) for the complete tier system.
 
 # How to Guide Me
 

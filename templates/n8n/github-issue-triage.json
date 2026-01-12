@@ -1,0 +1,177 @@
+{
+  "name": "GitHub Issue Triage - Auto-Label by Complexity",
+  "nodes": [
+    {
+      "parameters": {
+        "events": ["issues"],
+        "owner": "={{ $env.GITHUB_OWNER || 'YOUR_USERNAME' }}",
+        "repository": "={{ $env.GITHUB_REPO || 'YOUR_REPO' }}"
+      },
+      "id": "github-trigger",
+      "name": "GitHub Trigger",
+      "type": "n8n-nodes-base.githubTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "github-issue-triage",
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "CREDENTIAL_ID",
+          "name": "GitHub OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.action }}",
+              "operation": "equals",
+              "value2": "opened"
+            }
+          ]
+        }
+      },
+      "id": "filter-opened",
+      "name": "Filter New Issues",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [470, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// GitHub Issue Triage Classification\n// Analyzes issue title and body for complexity signals\n\nconst issue = $input.first().json.issue;\nconst title = (issue.title || '').toLowerCase();\nconst body = (issue.body || '').toLowerCase();\nconst combined = `${title} ${body}`;\n\n// Initialize complexity score\nlet score = 0;\nlet signals = [];\n\n// Signal 1: File mentions (estimate from issue text)\nconst fileMatches = combined.match(/\\.(php|js|tsx?|css|json)\\b/gi) || [];\nconst uniqueFiles = [...new Set(fileMatches)].length;\nif (uniqueFiles >= 6) {\n  score += 3;\n  signals.push(`${uniqueFiles}+ file types mentioned`);\n} else if (uniqueFiles >= 3) {\n  score += 2;\n  signals.push(`${uniqueFiles} file types mentioned`);\n} else if (uniqueFiles >= 1) {\n  score += 1;\n  signals.push(`${uniqueFiles} file type mentioned`);\n}\n\n// Signal 2: Risk indicators\nconst riskKeywords = [\n  { word: 'security', weight: 2 },\n  { word: 'vulnerability', weight: 2 },\n  { word: 'authentication', weight: 2 },\n  { word: 'authorization', weight: 2 },\n  { word: 'architecture', weight: 2 },\n  { word: 'refactor', weight: 1 },\n  { word: 'migration', weight: 2 },\n  { word: 'database', weight: 1 },\n  { word: 'breaking change', weight: 2 },\n  { word: 'api', weight: 1 },\n  { word: 'performance', weight: 1 },\n  { word: 'optimize', weight: 1 }\n];\n\nfor (const { word, weight } of riskKeywords) {\n  if (combined.includes(word)) {\n    score += weight;\n    signals.push(`'${word}' detected (+${weight})`);\n  }\n}\n\n// Signal 3: Scope indicators\nif (combined.includes('entire') || combined.includes('all files')) {\n  score += 2;\n  signals.push('Broad scope detected');\n}\nif (combined.includes('multiple') || combined.includes('several')) {\n  score += 1;\n  signals.push('Multiple items mentioned');\n}\n\n// Signal 4: Simple task indicators (reduce score)\nconst simpleKeywords = ['typo', 'readme', 'comment', 'phpdoc', 'docblock'];\nfor (const word of simpleKeywords) {\n  if (combined.includes(word)) {\n    score = Math.max(0, score - 1);\n    signals.push(`'${word}' suggests simple task (-1)`);\n  }\n}\n\n// Signal 5: Issue labels already applied\nconst existingLabels = (issue.labels || []).map(l => l.name.toLowerCase());\nif (existingLabels.includes('bug')) score += 0;\nif (existingLabels.includes('enhancement')) score += 1;\nif (existingLabels.includes('feature')) score += 2;\n\n// Determine tier\nlet tier, label, tool, color;\nif (score <= 2) {\n  tier = 'T1';\n  label = 'routine';\n  tool = 'Copilot';\n  color = 'green';\n} else if (score <= 5) {\n  tier = 'T2';\n  label = 'analytical';\n  tool = 'Cursor/ChatGPT';\n  color = 'yellow';\n} else {\n  tier = 'T3';\n  label = 'complex';\n  tool = 'Claude Code';\n  color = 'red';\n}\n\nreturn {\n  json: {\n    issue_number: issue.number,\n    issue_url: issue.html_url,\n    owner: $json.repository.owner.login,\n    repo: $json.repository.name,\n    classification: {\n      tier,\n      label,\n      tool,\n      score,\n      color,\n      signals\n    },\n    tier_label: tier.toLowerCase(),\n    classified_at: new Date().toISOString()\n  }\n};"
+      },
+      "id": "classify-issue",
+      "name": "Classify Issue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [690, 200]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "issue",
+        "operation": "edit",
+        "owner": "={{ $json.owner }}",
+        "repository": "={{ $json.repo }}",
+        "issueNumber": "={{ $json.issue_number }}",
+        "editFields": {
+          "labels": ["={{ $json.tier_label }}"]
+        }
+      },
+      "id": "add-label",
+      "name": "Add Tier Label",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [910, 200],
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "CREDENTIAL_ID",
+          "name": "GitHub OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "issue",
+        "operation": "createComment",
+        "owner": "={{ $json.owner }}",
+        "repository": "={{ $json.repo }}",
+        "issueNumber": "={{ $json.issue_number }}",
+        "body": "### \ud83e\udd16 Auto-Classification\n\n| Property | Value |\n|----------|-------|\n| **Tier** | {{ $json.classification.tier }} ({{ $json.classification.label }}) |\n| **Recommended Tool** | {{ $json.classification.tool }} |\n| **Complexity Score** | {{ $json.classification.score }} |\n\n<details>\n<summary>Classification Signals</summary>\n\n{{ $json.classification.signals.map(s => '- ' + s).join('\\n') || 'No specific signals detected' }}\n\n</details>\n\n---\n<sub>Classified by n8n issue triage at {{ $json.classified_at }}</sub>"
+      },
+      "id": "add-comment",
+      "name": "Add Classification Comment",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [1130, 200],
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "CREDENTIAL_ID",
+          "name": "GitHub OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "no-op",
+      "name": "No Operation",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [690, 400]
+    }
+  ],
+  "connections": {
+    "GitHub Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter New Issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter New Issues": {
+      "main": [
+        [
+          {
+            "node": "Classify Issue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Issue": {
+      "main": [
+        [
+          {
+            "node": "Add Tier Label",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Tier Label": {
+      "main": [
+        [
+          {
+            "node": "Add Classification Comment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateId": "github-issue-triage"
+  },
+  "tags": [
+    {
+      "name": "tiered-agents"
+    },
+    {
+      "name": "github"
+    },
+    {
+      "name": "automation"
+    }
+  ]
+}

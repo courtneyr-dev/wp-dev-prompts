@@ -8,7 +8,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Version](https://img.shields.io/badge/Version-2.0.0-blue.svg)](https://github.com/courtneyr-dev/wp-dev-prompts)
 
-> **Works with any AI platform**: Claude Code, Cursor, Cline, GitHub Copilot, ChatGPT, Gemini, and more.
+> **Works with any AI platform**: Claude Code, Cursor, Cline, GitHub Copilot, ChatGPT, Gemini, n8n, and more.
 >
 > **Enhanced with [Automattic/agent-skills](https://github.com/Automattic/agent-skills)** - WordPress Agent Skills for AI assistants, providing modern best practices for WordPress 6.9+ development.
 
@@ -16,7 +16,17 @@
 
 ## 🎯 Start Here: New Project?
 
-### **👉 [PROJECT-KICKSTART-PROMPT.md](prompts/PROJECT-KICKSTART-PROMPT.md) 👈**
+### **Step 0: Validate Your Idea (Optional)**
+
+Before building, validate product-market fit:
+
+**👉 [PRODUCT-MARKET-FIT-RESEARCH.md](prompts/extended/PRODUCT-MARKET-FIT-RESEARCH.md)**
+
+Use this falsification-based research prompt to discover whether your idea solves a real problem people will pay for.
+
+### **Step 1: Build Your Project**
+
+**👉 [PROJECT-KICKSTART-PROMPT.md](prompts/extended/PROJECT-KICKSTART-PROMPT.md) 👈**
 
 **The single prompt to rule them all.**
 
@@ -42,6 +52,13 @@ This repository provides everything you need for professional WordPress developm
 - **90+ specialized prompts** for testing, documentation, community files, marketing, and block development
 - **Works with Claude, ChatGPT, Copilot, and any AI assistant**
 - **Enhanced with [Automattic/agent-skills](https://github.com/Automattic/agent-skills)** - Modern WordPress 6.9+ best practices
+
+### 🎯 Tiered Agent System
+- **Three complexity tiers** route tasks to the right AI tool
+- **T1 (Routine)**: Copilot for single-file, constrained tasks
+- **T2 (Analytical)**: Cursor/ChatGPT for multi-file review and refactoring
+- **T3 (Complex)**: Claude Code for architecture and full-context decisions
+- **n8n workflows** for automated task routing and escalation
 
 ### 🧪 Complete Testing Framework
 - **21 quality dimensions**: PHP, JavaScript, security, accessibility, performance
@@ -178,12 +195,17 @@ wp-dev-prompts/
 │   ├── core/                            # Portable prompts (<2000 tokens)
 │   │   └── (coming in v2.1)
 │   ├── extended/                        # Full-featured prompts
+│   │   ├── PRODUCT-MARKET-FIT-RESEARCH.md # PMF validation prompt
 │   │   ├── PROJECT-KICKSTART-PROMPT.md  # 👈 Main entry point
 │   │   ├── TESTING-AUTOMATION-PROMPTS.md
 │   │   ├── BLOCK-DEVELOPMENT-PROMPTS.md
 │   │   ├── COMMUNITY-FILES-PROMPTS.md
 │   │   └── PLUGIN-MARKETING-PROMPTS.md
-│   ├── testing/                         # UI/UX testing prompts (NEW)
+│   ├── tiered/                          # Tier-specific prompts
+│   │   ├── t1-constrained/             # Copilot-optimized prompts
+│   │   ├── t2-analytical/              # Cursor/ChatGPT prompts
+│   │   └── t3-collaborative/           # Claude Code prompts
+│   ├── testing/                         # UI/UX testing prompts
 │   │   ├── ui-ux-audit.md
 │   │   ├── navigation-flow-tests.md
 │   │   ├── responsive-tests.md
@@ -242,21 +264,31 @@ wp-dev-prompts/
 │   ├── universal/                       # Cross-platform specs
 │   │   ├── prompt-specification.md
 │   │   └── capability-matrix.md
-│   ├── claude-code/                     # Claude Code
+│   ├── claude-code/                     # Claude Code (T3)
 │   │   ├── README.md
 │   │   └── CLAUDE.md.template
-│   ├── cursor/                          # Cursor
+│   ├── cursor/                          # Cursor (T2)
 │   │   ├── README.md
 │   │   └── cursorrules.template
 │   ├── cline/                           # Cline
 │   │   ├── README.md
 │   │   └── clinerules.template
-│   └── copilot/                         # GitHub Copilot
+│   ├── copilot/                         # GitHub Copilot (T1)
+│   │   ├── README.md
+│   │   └── copilot-instructions.template
+│   └── n8n/                             # n8n workflow automation
 │       ├── README.md
-│       └── copilot-instructions.template
+│       └── getting-started.md
 │
 ├── 📖 workflows/                         # Multi-step Guides
 │   ├── README.md                        # Workflow structure
+│   ├── tiered-agents/                   # Tiered AI task routing
+│   │   ├── TIER_SYSTEM.md              # Complete classification framework
+│   │   ├── overview.md                 # Quick reference
+│   │   ├── escalation-guide.md         # When to move between tiers
+│   │   ├── tier-1-routine.md           # T1 Copilot patterns
+│   │   ├── tier-2-analytical.md        # T2 Cursor/ChatGPT patterns
+│   │   └── tier-3-complex.md           # T3 Claude Code patterns
 │   └── plugin-maintenance/              # Plugin maintenance workflow
 │       ├── overview.md
 │       ├── wordpress-update.md
@@ -545,6 +577,23 @@ GRAPHQL_ENDPOINT=https://example.com/graphql npx playwright test tests/audit/
 4. 📊 **[data/core-blocks.json](data/core-blocks.json)** - Block metadata reference
 5. 📊 **[data/core-icons.json](data/core-icons.json)** - 400+ icons with labels
 
+### 🎯 I Want to Optimize Task Routing
+
+**Use the tiered agent system:**
+
+1. 📋 **[workflows/tiered-agents/TIER_SYSTEM.md](workflows/tiered-agents/TIER_SYSTEM.md)** - Complete framework
+2. 📊 **[workflows/tiered-agents/overview.md](workflows/tiered-agents/overview.md)** - Quick reference
+3. ⬆️ **[workflows/tiered-agents/escalation-guide.md](workflows/tiered-agents/escalation-guide.md)** - When to escalate
+
+**Tier-specific guides:**
+- **T1**: [tier-1-routine.md](workflows/tiered-agents/tier-1-routine.md) - Copilot patterns
+- **T2**: [tier-2-analytical.md](workflows/tiered-agents/tier-2-analytical.md) - Cursor/ChatGPT patterns
+- **T3**: [tier-3-complex.md](workflows/tiered-agents/tier-3-complex.md) - Claude Code patterns
+
+**Automate with n8n:**
+- **[platforms/n8n/](platforms/n8n/)** - Setup and configuration
+- **[templates/n8n/](templates/n8n/)** - Ready-to-import workflows
+
 ### 🔍 I Need to Audit UI/UX
 
 **Comprehensive usability and design testing:**
@@ -800,7 +849,7 @@ This framework incorporates best practices and guidance from:
 **WordPress**: 6.5+
 **PHP**: 8.0+
 **Enhanced With**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills), [richtabor/skills](https://github.com/richtabor/skills), [@felixarntz/wp-plugins-cli](https://www.npmjs.com/package/@felixarntz/wp-plugins-cli), [trac-mcp](https://github.com/Jameswlepage/trac-mcp)
-**Platforms**: Claude Code, Cursor, Cline, GitHub Copilot, ChatGPT, Gemini
+**Platforms**: Claude Code, Cursor, Cline, GitHub Copilot, ChatGPT, Gemini, n8n
 
 ---
 
