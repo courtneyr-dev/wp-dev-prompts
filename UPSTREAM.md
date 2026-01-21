@@ -54,6 +54,35 @@ gh api repos/richtabor/skills/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.mes
 
 ---
 
+### 2b. richtabor/agent-skills
+
+**Repository**: [github.com/richtabor/agent-skills](https://github.com/richtabor/agent-skills)
+**License**: Check repository
+**Last Synced**: 2026-01-21
+
+**What we use:**
+- Accessibility review skill (WCAG 2.1/2.2 Level AA)
+- Motion design skill (easing, duration tokens)
+- X writing skill (Twitter content creation)
+
+**Files affected:**
+- `skills/accessibility/accessibility-review.md`
+- `skills/design/motion-design.md`
+- `skills/design/references/decision-tree.md`
+- `skills/design/references/easing-tokens.md`
+- `skills/social-media/x-writing.md`
+- `skills/social-media/references/x-strategy.md`
+- `skills/social-media/references/style-guide.md`
+- `skills/social-media/references/anti-patterns.md`
+
+**Sync command:**
+```bash
+# Check for updates
+gh api repos/richtabor/agent-skills/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
 ### 3. WordPress/WordPress-Documentation-Style-Guide
 
 **Repository**: [github.com/WordPress/WordPress-Documentation-Style-Guide](https://github.com/WordPress/WordPress-Documentation-Style-Guide)
@@ -122,6 +151,100 @@ gh api repos/Jameswlepage/trac-mcp/commits --jq '.[0] | "\(.sha[0:7]) - \(.commi
 npm view @felixarntz/wp-plugins-cli version
 gh api repos/felixarntz/packages/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
 ```
+
+---
+
+### 6. deanpeters/product-manager-prompts
+
+**Repository**: [github.com/deanpeters/product-manager-prompts](https://github.com/deanpeters/product-manager-prompts)
+**License**: MIT
+**Last Synced**: 2026-01-21
+
+**What we use:**
+- Jobs to Be Done framework (adapted for WordPress)
+- User story templates (adapted for WordPress personas)
+- Positioning statement framework
+- Proto-persona templates
+- Problem framing canvas
+- Feature hypothesis methodology
+
+**Files affected:**
+- `skills/product-management/jobs-to-be-done.md`
+- `skills/product-management/user-story-wordpress.md`
+- `skills/product-management/plugin-positioning.md`
+- `skills/product-management/plugin-persona.md`
+- `skills/product-management/problem-framing.md`
+- `skills/product-management/feature-hypothesis.md`
+
+**Sync command:**
+```bash
+# Check for updates
+gh api repos/deanpeters/product-manager-prompts/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
+### 7. EveryInc/compound-engineering-plugin
+
+**Repository**: [github.com/EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin)
+**License**: MIT
+**Last Synced**: 2026-01-21
+
+**What we use:**
+- Compound planning workflow (adapted for WordPress)
+- Multi-dimensional code review process
+- Solution documentation patterns
+- Git worktree workflow
+
+**Files affected:**
+- `skills/engineering/compound-planning.md`
+- `skills/engineering/compound-review.md`
+- `skills/engineering/compound-docs.md`
+- `skills/engineering/git-worktree-wordpress.md`
+
+**Sync command:**
+```bash
+# Check for updates
+gh api repos/EveryInc/compound-engineering-plugin/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
+### 8. skills.sh WordPress Skills
+
+**Source**: [skills.sh](https://skills.sh)
+**License**: Various (check individual repositories)
+**Last Synced**: 2026-01-21
+
+**What we use:**
+- WordPress penetration testing methodology
+- WordPress performance best practices (34 rules)
+- WordPress plugin development core patterns
+- WordPress REST API publishing
+- WordPress project routing
+- WordPress pro development patterns
+- SEO WordPress manager (Yoast batch updates)
+
+**Files affected:**
+- `skills/security/penetration-testing.md`
+- `skills/performance/performance-rules.md`
+- `skills/wordpress/plugin-core.md`
+- `skills/wordpress/wordpress-publisher.md`
+- `skills/wordpress/wordpress-router.md`
+- `skills/wordpress/wordpress-pro.md`
+- `skills/wordpress/seo-wordpress-manager.md`
+
+**Individual sources:**
+
+| Skill | Repository | Author |
+|-------|------------|--------|
+| penetration-testing | [antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills) | sickn33 |
+| performance-rules | [wordpress-performance-best-practises](https://github.com/bartekmis/wordpress-performance-best-practises) | bartekmis |
+| plugin-core | [claude-skills](https://github.com/jezweb/claude-skills) | jezweb |
+| wordpress-publisher | [claude-skills-library](https://github.com/aviz85/claude-skills-library) | aviz85 |
+| wordpress-router | [agent-skills](https://github.com/Automattic/agent-skills) | Automattic |
+| wordpress-pro | [claude-skills](https://github.com/jeffallan/claude-skills) | jeffallan |
+| seo-wordpress-manager | [claude-content-skills](https://github.com/dragosroua/claude-content-skills) | dragosroua |
 
 ---
 
