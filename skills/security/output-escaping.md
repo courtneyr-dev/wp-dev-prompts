@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: Security
-> **Source**: Automattic/agent-skills security reference
+> **Source**: WordPress/agent-skills wp-plugin-development
 
 <skill>
 <summary>
@@ -128,7 +128,7 @@ echo '<a href="' . esc_url( $url ) . '">Link</a>';
 </best_practices>
 
 <references>
-- [Automattic/agent-skills security reference](https://github.com/Automattic/agent-skills)
+- [WordPress/agent-skills wp-plugin-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-plugin-development)
 - [Securing Output](https://developer.wordpress.org/plugins/security/securing-output/)
 </references>
 </skill>

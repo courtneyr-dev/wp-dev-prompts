@@ -140,7 +140,7 @@ grep -r "\](\./" --include="*.md" . | head -10
 ## Upstream Dependencies
 
 This repo tracks external sources. See `UPSTREAM.md` for:
-- Automattic/agent-skills (security skills)
+- WordPress/agent-skills (security skills)
 - richtabor/skills (technical writing)
 - WordPress/WordPress-Documentation-Style-Guide
 

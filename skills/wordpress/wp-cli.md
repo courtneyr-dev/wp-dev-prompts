@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: WordPress Development
-> **Source**: Automattic/agent-skills wp-wpcli-and-ops
+> **Source**: WordPress/agent-skills wp-wpcli-and-ops
 
 <skill>
 <summary>
@@ -165,7 +165,7 @@ wp cron event delete my_scheduled_event
 </best_practices>
 
 <references>
-- [Automattic/agent-skills wp-wpcli-and-ops](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-wpcli-and-ops)
+- [WordPress/agent-skills wp-wpcli-and-ops](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-wpcli-and-ops)
 - [WP-CLI Commands](https://developer.wordpress.org/cli/commands/)
 </references>
 </skill>

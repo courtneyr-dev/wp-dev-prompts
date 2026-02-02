@@ -33,7 +33,7 @@ This sets up PHPUnit, PHPCS, PHPStan, ESLint, Jest, Playwright, and GitHub Actio
 | Directory | What It Contains | Start Here |
 |-----------|------------------|------------|
 | [prompts/](prompts/) | AI prompts for development tasks | [Prompts README](prompts/README.md) |
-| [skills/](skills/) | Reusable knowledge modules (71 skills) | [Skills README](skills/README.md) |
+| [skills/](skills/) | Reusable knowledge modules (76 skills) | [Skills README](skills/README.md) |
 | [agents/](agents/) | Specialized AI personas for site review | [Agents README](agents/README.md) |
 | [workflows/](workflows/) | Step-by-step guides for complex tasks | [Workflows README](workflows/README.md) |
 | [templates/](templates/) | Ready-to-use files (community, marketing, GitHub) | [Templates README](templates/README.md) |
@@ -95,16 +95,16 @@ Copy the appropriate config to your project:
 
 ## Skills Overview
 
-71 skills across 10 categories:
+76 skills across 10 categories:
 
 | Category | Skills | Highlights |
 |----------|--------|------------|
-| [wordpress/](skills/wordpress/) | 12 | Plugin architecture, blocks, Interactivity API, WP-CLI |
+| [wordpress/](skills/wordpress/) | 16 | Plugin architecture, blocks, REST API, Interactivity API, WP-CLI |
 | [security/](skills/security/) | 5 | Input sanitization, output escaping, nonces, SQL injection |
 | [testing/](skills/testing/) | 29 | PHPUnit, PHPCS, PHPStan, Playwright, Jest |
 | [performance/](skills/performance/) | 6 | Core Web Vitals, profiling, caching, 34 performance rules |
 | [accessibility/](skills/accessibility/) | 6 | WCAG checklist, ARIA patterns, screen reader testing |
-| [design/](skills/design/) | 1 | Motion design with easing tokens |
+| [design/](skills/design/) | 2 | Motion design, WordPress Design System (WPDS) |
 | [social-media/](skills/social-media/) | 1 | X/Twitter content creation |
 | [product-management/](skills/product-management/) | 6 | JTBD, user stories, positioning, personas |
 | [engineering/](skills/engineering/) | 4 | Planning, code review, documentation, git worktrees |
@@ -116,7 +116,7 @@ Copy the appropriate config to your project:
 
 This toolkit incorporates best practices from:
 
-- **[Automattic/agent-skills](https://github.com/Automattic/agent-skills)** — WordPress development patterns (MIT)
+- **[WordPress/agent-skills](https://github.com/WordPress/agent-skills)** — WordPress development patterns (MIT)
 - **[richtabor/agent-skills](https://github.com/richtabor/agent-skills)** — Accessibility, motion design, X writing
 - **[deanpeters/product-manager-prompts](https://github.com/deanpeters/product-manager-prompts)** — Product management frameworks (MIT)
 - **[EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin)** — Engineering workflows (MIT)

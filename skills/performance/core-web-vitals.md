@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: Performance
-> **Source**: Automattic/agent-skills wp-performance
+> **Source**: WordPress/agent-skills wp-performance
 
 <skill>
 <summary>
@@ -168,7 +168,7 @@ wp_enqueue_script( 'my-script', 'script.js', array(), '1.0', array(
 </best_practices>
 
 <references>
-- [Automattic/agent-skills wp-performance](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-performance)
+- [WordPress/agent-skills wp-performance](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-performance)
 - [web.dev Core Web Vitals](https://web.dev/vitals/)
 </references>
 </skill>

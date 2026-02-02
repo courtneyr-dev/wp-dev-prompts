@@ -194,11 +194,14 @@ function mytheme_get_field($field, $post_id = null, $default = '') {
 
 ## Related Skills
 
-- **plugin-architecture** — Plugin structure patterns
-- **block-development** — Gutenberg block creation
-- **interactivity-api** — Client-side interactivity
-- **performance-rules** — Optimization strategies
-- **input-sanitization** — Security practices
+- [plugin-architecture](plugin-architecture.md) — Plugin structure patterns
+- [block-development](block-development.md) — Gutenberg block creation
+- [interactivity-api](interactivity-api.md) — Client-side interactivity
+- [rest-api](rest-api.md) — REST endpoint patterns and authentication
+- [abilities-api](abilities-api.md) — Permission-based functionality
+- [project-triage](project-triage.md) — Project detection and analysis
+- [performance-rules](../performance/performance-rules.md) — Optimization strategies
+- [input-sanitization](../security/input-sanitization.md) — Security practices
 </knowledge>
 
 <best_practices>

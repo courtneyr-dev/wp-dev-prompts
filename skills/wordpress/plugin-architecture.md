@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: WordPress Development
-> **Source**: Automattic/agent-skills wp-plugin-development
+> **Source**: WordPress/agent-skills wp-plugin-development
 
 <skill>
 <summary>
@@ -112,7 +112,7 @@ my-plugin/
 </best_practices>
 
 <references>
-- [Automattic/agent-skills wp-plugin-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-plugin-development)
+- [WordPress/agent-skills wp-plugin-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-plugin-development)
 - [WordPress Plugin Handbook](https://developer.wordpress.org/plugins/)
 </references>
 </skill>

@@ -40,12 +40,12 @@ I'm starting a new WordPress [plugin/theme] project and want to use the wp-dev-p
 - [Use case 3]
 
 **Technical Requirements:**
-- Minimum WordPress: [e.g., 6.9+] *(See: [Automattic/agent-skills](https://github.com/Automattic/agent-skills) for WP 6.9+ best practices)*
+- Minimum WordPress: [e.g., 6.9+] *(See: [WordPress/agent-skills](https://github.com/WordPress/agent-skills) for WP 6.9+ best practices)*
 - Minimum PHP: [e.g., 8.0]
 - Dependencies: [List any required plugins or libraries]
 
 **Project Type Detection:**
-*(From [Automattic/agent-skills wp-project-triage](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-project-triage))*
+*(From [WordPress/agent-skills wp-project-triage](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-project-triage))*
 - Repository type: [plugin/theme/block-theme/full-site]
 - Available tooling: [PHP/Node.js/Composer/npm]
 - Existing test infrastructure: [describe if any]
@@ -133,7 +133,7 @@ Use the prompts from TESTING-AUTOMATION-PROMPTS.md to generate configurations.
 
 ## Phase 4: Development
 
-*(Architecture guidance from [Automattic/agent-skills wp-plugin-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-plugin-development))*
+*(Architecture guidance from [WordPress/agent-skills wp-plugin-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-plugin-development))*
 
 **Plugin Architecture Best Practices:**
 - Maintain a single bootstrap (main plugin file with header)
@@ -141,7 +141,7 @@ Use the prompts from TESTING-AUTOMATION-PROMPTS.md to generate configurations.
 - Register activation/deactivation hooks at top level, separate from other callbacks
 
 **Security Foundation:**
-*(From [Automattic/agent-skills security reference](https://github.com/Automattic/agent-skills))*
+*(From [WordPress/agent-skills security reference](https://github.com/WordPress/agent-skills))*
 - Validate/sanitize input early; escape output late
 - Combine nonces with capability checks (nonces prevent CSRF, not authorization)
 - Avoid processing entire superglobal arrays; access only specific keys
@@ -149,14 +149,14 @@ Use the prompts from TESTING-AUTOMATION-PROMPTS.md to generate configurations.
 - Use parameterized SQL statements rather than concatenating user input
 
 **For Block Development:**
-*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-development))*
+*(From [WordPress/agent-skills wp-block-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-block-development))*
 - Upgrade to `apiVersion: 3` for WordPress 6.9+ compatibility (WP 7.0 will run post editor in iframe regardless of apiVersion)
 - Choose between static blocks (saved in post content), dynamic blocks (server-rendered), or interactive blocks using `viewScriptModule`
 - Never change block names (breaks compatibility) or modify saved markup without deprecations
 - Always add deprecations with migration paths when changing block structure
 
 **For Interactive Blocks:**
-*(From [Automattic/agent-skills wp-interactivity-api](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-interactivity-api))*
+*(From [WordPress/agent-skills wp-interactivity-api](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-interactivity-api))*
 - Use `@wordpress/create-block-interactive-template` for new interactive blocks
 - Ensure server-rendered markup + client hydration align
 - Keep directives scoped and minimal
@@ -178,7 +178,7 @@ Follow the 5-phase documentation workflow:
 - Outline user guide structure
 
 **Phase 2: WordPress Playground Blueprint**
-*(Enhanced with [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-playground))*
+*(Enhanced with [WordPress/agent-skills wp-playground](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-playground))*
 - Create blueprint.json following BLUEPRINT-CREATION-GUIDE.md
 - Set up demo environment with sample content
 - Configure settings for documentation state
@@ -210,7 +210,7 @@ Use COMMUNITY-FILES-PROMPTS.md to generate any documentation with AI assistance.
 ## Phase 6: Pre-Launch (QA-TESTING-CHECKLIST.md)
 
 **Performance Optimization:**
-*(From [Automattic/agent-skills wp-performance](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-performance))*
+*(From [WordPress/agent-skills wp-performance](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-performance))*
 - Establish baseline performance with `curl` or WP-CLI before making changes
 - Run `wp doctor check` to catch common issues (autoload bloat, debug flags, plugin overload)
 - Use `wp profile stage` to identify where time is spent
@@ -229,7 +229,7 @@ Use COMMUNITY-FILES-PROMPTS.md to generate any documentation with AI assistance.
 ## Phase 7: Deployment
 
 **WP-CLI Operations:**
-*(From [Automattic/agent-skills wp-wpcli-and-ops](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-wpcli-and-ops))*
+*(From [WordPress/agent-skills wp-wpcli-and-ops](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-wpcli-and-ops))*
 - Establish execution environment (development, staging, or production)
 - Backup database before performing risky changes
 - For migrations: export database, perform dry-run test, then execute
@@ -664,7 +664,7 @@ If you need help with:
 **Last Updated:** December 30, 2024
 **Framework Version:** 1.3.0
 **Compatible With:** WordPress 6.5+, PHP 8.0+
-**Enhanced With:** [Automattic/agent-skills](https://github.com/Automattic/agent-skills) - WordPress Agent Skills for AI assistants
+**Enhanced With:** [WordPress/agent-skills](https://github.com/WordPress/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---
 

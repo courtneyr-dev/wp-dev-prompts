@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: wordpress/routing
-> **Source**: [Automattic/agent-skills](https://skills.sh/automattic/agent-skills/wordpress-router)
+> **Source**: [WordPress/agent-skills](https://skills.sh/automattic/agent-skills/wordpress-router)
 
 <skill>
 <summary>
@@ -124,6 +124,6 @@ If still unclear, ask user to clarify project intent.
 
 <references>
 - [skills.sh/automattic](https://skills.sh/automattic/agent-skills/wordpress-router)
-- [Automattic/agent-skills](https://github.com/Automattic/agent-skills)
+- [WordPress/agent-skills](https://github.com/WordPress/agent-skills)
 </references>
 </skill>

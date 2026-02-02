@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: Performance
-> **Source**: Automattic/agent-skills wp-performance
+> **Source**: WordPress/agent-skills wp-performance
 
 <skill>
 <summary>
@@ -174,7 +174,7 @@ X-QM-Overview-Memory: 12345678
 </best_practices>
 
 <references>
-- [Automattic/agent-skills wp-performance](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-performance)
+- [WordPress/agent-skills wp-performance](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-performance)
 - [WP-CLI Profile](https://developer.wordpress.org/cli/commands/profile/)
 - [Query Monitor](https://querymonitor.com/)
 </references>

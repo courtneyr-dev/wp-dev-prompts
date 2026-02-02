@@ -1,9 +1,9 @@
 # WordPress Block Development: AI Prompts Guide
 
-Comprehensive prompt templates for building Gutenberg blocks, block themes, and interactive blocks using the WordPress Interactivity API. These prompts incorporate best practices from [Automattic/agent-skills](https://github.com/Automattic/agent-skills).
+Comprehensive prompt templates for building Gutenberg blocks, block themes, and interactive blocks using the WordPress Interactivity API. These prompts incorporate best practices from [WordPress/agent-skills](https://github.com/WordPress/agent-skills).
 
 **Compatible with**: WordPress 6.9+ | PHP 8.0+ | Node 20+
-**Source**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills) - WordPress Agent Skills for AI assistants
+**Source**: [WordPress/agent-skills](https://github.com/WordPress/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---
 
@@ -19,7 +19,7 @@ Comprehensive prompt templates for building Gutenberg blocks, block themes, and 
 
 ## Block Creation Prompts
 
-*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-development))*
+*(From [WordPress/agent-skills wp-block-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-block-development))*
 
 ### 1. Create a New Static Block
 
@@ -146,7 +146,7 @@ My block needs to:
 
 ## Block Theme Prompts
 
-*(From [Automattic/agent-skills wp-block-themes](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-themes))*
+*(From [WordPress/agent-skills wp-block-themes](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-block-themes))*
 
 ### 4. Create theme.json Configuration
 
@@ -265,7 +265,7 @@ Important:
 
 ## Interactivity API Prompts
 
-*(From [Automattic/agent-skills wp-interactivity-api](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-interactivity-api))*
+*(From [WordPress/agent-skills wp-interactivity-api](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-interactivity-api))*
 
 ### 7. Create Interactive Block
 
@@ -402,7 +402,7 @@ Important considerations from agent-skills:
 
 ## Block Deprecation Prompts
 
-*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-development))*
+*(From [WordPress/agent-skills wp-block-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-block-development))*
 
 ### 10. Add Block Deprecation
 
@@ -449,7 +449,7 @@ Also provide:
 
 ## Abilities API Prompts
 
-*(From [Automattic/agent-skills wp-abilities-api](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-abilities-api))*
+*(From [WordPress/agent-skills wp-abilities-api](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-abilities-api))*
 
 ### 11. Register WordPress Ability
 
@@ -533,13 +533,29 @@ Please help me identify the issue based on:
 
 ---
 
+## Related Skills
+
+These prompts work best when combined with the following skills from this repository:
+
+| Skill | Use For |
+|-------|---------|
+| [Block Development](../../skills/wordpress/block-development.md) | API versions, deprecations, block types |
+| [Block Themes](../../skills/wordpress/block-themes.md) | theme.json, templates, style variations |
+| [Interactivity API](../../skills/wordpress/interactivity-api.md) | Directives, stores, hydration |
+| [Abilities API](../../skills/wordpress/abilities-api.md) | Permission-based functionality |
+| [REST API](../../skills/wordpress/rest-api.md) | Custom endpoints, authentication |
+| [Project Triage](../../skills/wordpress/project-triage.md) | Project detection before development |
+| [WPDS](../../skills/design/wpds.md) | WordPress Design System components |
+
+---
+
 ## Additional Resources
 
 - [WordPress Block Editor Handbook](https://developer.wordpress.org/block-editor/)
 - [Block API Reference](https://developer.wordpress.org/block-editor/reference-guides/block-api/)
 - [Interactivity API Reference](https://developer.wordpress.org/block-editor/reference-guides/interactivity-api/)
 - [theme.json Reference](https://developer.wordpress.org/block-editor/reference-guides/theme-json-reference/)
-- [Automattic/agent-skills](https://github.com/Automattic/agent-skills) - WordPress Agent Skills for AI assistants
+- [WordPress/agent-skills](https://github.com/WordPress/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---
 
@@ -556,4 +572,4 @@ Please contribute:
 ---
 
 **Last Updated:** December 30, 2024
-**Source:** [Automattic/agent-skills](https://github.com/Automattic/agent-skills)
+**Source:** [WordPress/agent-skills](https://github.com/WordPress/agent-skills)

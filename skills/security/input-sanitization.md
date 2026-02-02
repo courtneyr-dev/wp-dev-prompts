@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: Security
-> **Source**: Automattic/agent-skills security reference
+> **Source**: WordPress/agent-skills wp-plugin-development
 
 <skill>
 <summary>
@@ -130,7 +130,7 @@ if ( ! is_email( $email ) ) {
 </best_practices>
 
 <references>
-- [Automattic/agent-skills security reference](https://github.com/Automattic/agent-skills)
+- [WordPress/agent-skills wp-plugin-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-plugin-development)
 - [Data Validation](https://developer.wordpress.org/plugins/security/data-validation/)
 </references>
 </skill>

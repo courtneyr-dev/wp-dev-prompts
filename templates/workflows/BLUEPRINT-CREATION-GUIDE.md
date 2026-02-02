@@ -1,10 +1,10 @@
 # WordPress Playground Blueprint Creation Guide
 
-> **Enhanced with**: [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-playground) - WordPress Playground Agent Skills
+> **Enhanced with**: [WordPress/agent-skills wp-playground](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-playground) - WordPress Playground Agent Skills
 
 ## Key Capabilities
 
-*(From [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills))*
+*(From [WordPress/agent-skills wp-playground](https://github.com/WordPress/agent-skills))*
 
 WordPress Playground enables:
 - **Quick Local Testing**: Spin up isolated WordPress environments with `npx @wp-playground/cli@latest server --auto-mount`
@@ -164,7 +164,7 @@ When hitting "Invalid blueprint" errors, the encoding method is likely the issue
 
 ## CLI-Based Testing Workflow
 
-*(From [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills))*
+*(From [WordPress/agent-skills wp-playground](https://github.com/WordPress/agent-skills))*
 
 ### Quick Local Development
 
@@ -202,4 +202,4 @@ https://playground.wordpress.net/?blueprint-url=https://example.com/blueprint.js
 
 *Created: 2025-12-09*
 *Last Updated: 2025-12-30*
-*Enhanced with: [Automattic/agent-skills](https://github.com/Automattic/agent-skills)*
+*Enhanced with: [WordPress/agent-skills](https://github.com/WordPress/agent-skills)*

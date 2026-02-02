@@ -261,4 +261,12 @@ function myplugin_get_items($request) {
 - [WordPress Plugin Handbook](https://developer.wordpress.org/plugins/)
 - [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/)
 </references>
+
+<related_skills>
+- [REST API](rest-api.md) — Detailed REST endpoint patterns and authentication
+- [Project Triage](project-triage.md) — Analyze project before development
+- [Input Sanitization](../security/input-sanitization.md) — Complete sanitization guide
+- [Output Escaping](../security/output-escaping.md) — Context-specific escaping
+- [Database Queries](../security/database-queries.md) — Secure $wpdb usage
+</related_skills>
 </skill>

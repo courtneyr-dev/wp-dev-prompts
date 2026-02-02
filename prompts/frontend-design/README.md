@@ -111,6 +111,8 @@ All styles use CSS custom properties for easy theming:
 - **Storybook**: [../../ui/storybook/](../../ui/storybook/) - Preview and test components
 - **Skills**: [../../skills/accessibility/](../../skills/accessibility/) - Accessibility knowledge
 - **Skills**: [../../skills/performance/](../../skills/performance/) - Performance optimization
+- **Skills**: [../../skills/design/wpds.md](../../skills/design/wpds.md) - WordPress Design System
+- **Skills**: [../../skills/design/motion-design.md](../../skills/design/motion-design.md) - Animation specifications
 - **Agents**: [../../agents/specialists/accessibility.md](../../agents/specialists/accessibility.md) - A11y specialist
 
 ## Output Format

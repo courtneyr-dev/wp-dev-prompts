@@ -12,8 +12,8 @@ grep -A2 "### [0-9]" UPSTREAM.md | head -20
 ## Check Each Repository
 
 ```bash
-echo "=== Automattic/agent-skills ==="
-gh api repos/Automattic/agent-skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.author.date[0:10]) \(.commit.message | split("\n")[0])"' 2>/dev/null || echo "Run: gh auth login"
+echo "=== WordPress/agent-skills ==="
+gh api repos/WordPress/agent-skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.author.date[0:10]) \(.commit.message | split("\n")[0])"' 2>/dev/null || echo "Run: gh auth login"
 
 echo ""
 echo "=== richtabor/skills ==="
@@ -45,7 +45,7 @@ gh api repos/WordPress/WordPress-Documentation-Style-Guide/commits?per_page=3 --
 
 ## Affected Files by Upstream
 
-**Automattic/agent-skills:**
+**WordPress/agent-skills:**
 - `skills/security/*.md`
 
 **richtabor/skills:**

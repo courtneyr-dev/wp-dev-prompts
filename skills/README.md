@@ -1,17 +1,17 @@
 # Skills
 
-Reusable knowledge modules that teach AI assistants WordPress best practices. 71 skills across 10 categories.
+Reusable knowledge modules that teach AI assistants WordPress best practices. 76 skills across 10 categories.
 
 ## Categories
 
 | Category | Skills | Description |
 |----------|--------|-------------|
-| [wordpress/](wordpress/) | 12 | Plugin architecture, blocks, Interactivity API, WP-CLI, Playground |
+| [wordpress/](wordpress/) | 16 | Plugin architecture, blocks, REST API, Interactivity API, WP-CLI, Playground |
 | [security/](security/) | 5 | Input sanitization, output escaping, nonces, database queries, pentesting |
 | [testing/](testing/) | 29 | PHPUnit, PHPCS, PHPStan, Playwright, Jest, visual regression |
 | [performance/](performance/) | 6 | Core Web Vitals, profiling, caching, asset optimization |
 | [accessibility/](accessibility/) | 6 | WCAG checklist, ARIA patterns, keyboard navigation, screen readers |
-| [design/](design/) | 1 | Motion design with easing tokens and decision tree |
+| [design/](design/) | 2 | Motion design, WordPress Design System (WPDS) |
 | [social-media/](social-media/) | 1 | X/Twitter content creation with anti-patterns |
 | [product-management/](product-management/) | 6 | JTBD, user stories, positioning, personas, problem framing |
 | [engineering/](engineering/) | 4 | Planning, code review, documentation, git worktrees |
@@ -77,7 +77,7 @@ Link to skills for context:
 
 ## Sources
 
-- **[Automattic/agent-skills](https://github.com/Automattic/agent-skills)** — WordPress development patterns (MIT)
+- **[WordPress/agent-skills](https://github.com/WordPress/agent-skills)** — WordPress development patterns (MIT)
 - **[richtabor/agent-skills](https://github.com/richtabor/agent-skills)** — Accessibility, motion design, X writing
 - **[deanpeters/product-manager-prompts](https://github.com/deanpeters/product-manager-prompts)** — Product management (MIT)
 - **[EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin)** — Engineering workflows (MIT)

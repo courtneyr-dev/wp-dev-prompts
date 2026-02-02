@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: Security
-> **Source**: Automattic/agent-skills security reference
+> **Source**: WordPress/agent-skills wp-plugin-development
 
 <skill>
 <summary>
@@ -177,7 +177,7 @@ function my_settings_page_handler() {
 </best_practices>
 
 <references>
-- [Automattic/agent-skills security reference](https://github.com/Automattic/agent-skills)
+- [WordPress/agent-skills wp-plugin-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-plugin-development)
 - [Nonces](https://developer.wordpress.org/plugins/security/nonces/)
 - [Checking User Capabilities](https://developer.wordpress.org/plugins/security/checking-user-capabilities/)
 </references>

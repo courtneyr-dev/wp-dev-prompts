@@ -3,7 +3,7 @@
 > **Type**: Specialist Agent
 > **Domain**: Content-driven security and privacy
 > **Origin**: Extracted from Digital Experience Integrity System v1.0.0
-> **Enhanced**: Automattic/agent-skills security reference
+> **Enhanced**: WordPress/agent-skills security reference
 
 <agent type="specialist">
 <role>
@@ -82,7 +82,7 @@ When analyzing competitors:
 <wordpress_integration>
 ## WordPress Security Best Practices
 
-*(From Automattic/agent-skills security reference)*
+*(From WordPress/agent-skills security reference)*
 
 **Input/Output Security:**
 - Validate/sanitize input early; escape output late
@@ -143,6 +143,16 @@ Via orchestrator:
 
 ## Related Resources
 
-- **Skills**: skills/security/wordpress-security.md
-- **Prompts**: prompts/extended/TESTING-AUTOMATION-PROMPTS.md (#10, #11, #12)
-- **External**: Automattic/agent-skills security reference
+### Skills
+- [Input Sanitization](../../skills/security/input-sanitization.md) — Validating and sanitizing user input
+- [Output Escaping](../../skills/security/output-escaping.md) — Context-specific output escaping
+- [Nonces & Capabilities](../../skills/security/nonces-capabilities.md) — CSRF protection and authorization
+- [Database Queries](../../skills/security/database-queries.md) — Secure $wpdb usage
+- [Penetration Testing](../../skills/security/penetration-testing.md) — WordPress security assessment
+- [REST API](../../skills/wordpress/rest-api.md) — Secure REST endpoint patterns
+
+### Prompts
+- [Testing Automation](../../prompts/extended/TESTING-AUTOMATION-PROMPTS.md) (#10, #11, #12) — Security testing
+
+### External
+- [WordPress/agent-skills wp-plugin-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-plugin-development)

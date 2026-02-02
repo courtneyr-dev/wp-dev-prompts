@@ -3,7 +3,7 @@
 > **Type**: Specialist Agent
 > **Domain**: Web performance and Core Web Vitals
 > **Origin**: Extracted from Digital Experience Integrity System v1.0.0
-> **Enhanced**: Automattic/agent-skills wp-performance
+> **Enhanced**: WordPress/agent-skills wp-performance
 
 <agent type="specialist">
 <role>
@@ -29,7 +29,7 @@ You are a Web Performance Engineer focused on speed and stability. You analyze w
 <methodology>
 ## Assessment Process
 
-*(From Automattic/agent-skills wp-performance)*
+*(From WordPress/agent-skills wp-performance)*
 
 1. **Establish Baseline**
    - Measure before making any changes
@@ -85,7 +85,7 @@ When analyzing competitors:
 <wordpress_integration>
 ## WordPress-Specific Analysis
 
-*(From Automattic/agent-skills wp-performance)*
+*(From WordPress/agent-skills wp-performance)*
 
 When reviewing WordPress sites:
 - Check autoloaded options for bloat
@@ -140,6 +140,15 @@ Via orchestrator:
 
 ## Related Resources
 
-- **Skills**: skills/performance/core-web-vitals.md
-- **Prompts**: prompts/extended/TESTING-AUTOMATION-PROMPTS.md (#15, #25, #26)
-- **External**: Automattic/agent-skills wp-performance
+### Skills
+- [Core Web Vitals](../../skills/performance/core-web-vitals.md) — LCP, INP, CLS optimization
+- [WP Profiling](../../skills/performance/wp-profiling.md) — WP-CLI performance profiling
+- [Performance Rules](../../skills/performance/performance-rules.md) — 34 performance best practices
+- [Caching Strategies](../../skills/performance/caching-strategies.md) — Object, page, and transient caching
+- [Asset Optimization](../../skills/performance/asset-optimization.md) — Images, scripts, stylesheets
+
+### Prompts
+- [Testing Automation](../../prompts/extended/TESTING-AUTOMATION-PROMPTS.md) (#15, #25, #26) — Performance testing
+
+### External
+- [WordPress/agent-skills wp-performance](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-performance)

@@ -14,7 +14,10 @@ Core WordPress development patterns and APIs.
 | [wp-cli.md](wp-cli.md) | WP-CLI operations and automation | wp-dev-prompts |
 | [wp-plugins-cli.md](wp-plugins-cli.md) | Plugin maintenance with @felixarntz/wp-plugins-cli | [felixarntz](https://github.com/felixarntz/packages) |
 | [playground.md](playground.md) | WordPress Playground for testing | wp-dev-prompts |
-| [wordpress-router.md](wordpress-router.md) | Project type detection and skill routing | [Automattic](https://skills.sh/automattic/agent-skills/wordpress-router) |
+| [wordpress-router.md](wordpress-router.md) | Project type detection and skill routing | [WordPress](https://github.com/WordPress/agent-skills) |
+| [project-triage.md](project-triage.md) | Deterministic inspection of WordPress repos | [WordPress](https://github.com/WordPress/agent-skills) |
+| [rest-api.md](rest-api.md) | REST API routes, endpoints, and authentication | [WordPress](https://github.com/WordPress/agent-skills) |
+| [abilities-api.md](abilities-api.md) | Ability registration and REST exposure | [WordPress](https://github.com/WordPress/agent-skills) |
 | [wordpress-publisher.md](wordpress-publisher.md) | REST API publishing workflow | [aviz85](https://skills.sh/aviz85/claude-skills-library/wordpress-publisher) |
 | [wordpress-pro.md](wordpress-pro.md) | Senior WP development patterns | [jeffallan](https://skills.sh/jeffallan/claude-skills/wordpress-pro) |
 | [seo-wordpress-manager.md](seo-wordpress-manager.md) | Yoast SEO batch management | [dragosroua](https://skills.sh/dragosroua/claude-content-skills/seo-wordpress-manager) |

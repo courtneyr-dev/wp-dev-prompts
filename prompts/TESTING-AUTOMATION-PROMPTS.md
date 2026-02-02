@@ -3,7 +3,7 @@
 Comprehensive prompt templates for setting up automated testing infrastructure across all 21 quality dimensions for WordPress plugins and themes. These prompts help you work with AI assistants to establish production-ready testing pipelines.
 
 **Compatible with**: WordPress 6.7+ | PHP 8.0+ | Node 20+
-**Enhanced with**: [Automattic/agent-skills](https://github.com/Automattic/agent-skills) - WordPress Agent Skills for AI assistants
+**Enhanced with**: [WordPress/agent-skills](https://github.com/WordPress/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---
 
@@ -1576,13 +1576,13 @@ After setting up testing infrastructure:
 - [WP-CLI Testing Framework](https://make.wordpress.org/cli/handbook/plugin-unit-tests/)
 - [@wordpress/scripts Documentation](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/)
 - [GitHub Actions for WordPress](https://github.com/marketplace?query=wordpress)
-- [Automattic/agent-skills](https://github.com/Automattic/agent-skills) - WordPress Agent Skills for AI assistants
+- [WordPress/agent-skills](https://github.com/WordPress/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---
 
 ## Performance Profiling Prompts
 
-*(From [Automattic/agent-skills wp-performance](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-performance))*
+*(From [WordPress/agent-skills wp-performance](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-performance))*
 
 ### 25. WordPress Performance Profiling Setup
 
@@ -1628,7 +1628,7 @@ Follow the "measure first, then optimize" approach from agent-skills.
 - Systematic debugging checklist
 
 #### Notes
-*(From [Automattic/agent-skills wp-performance](https://github.com/Automattic/agent-skills))*
+*(From [WordPress/agent-skills wp-performance](https://github.com/WordPress/agent-skills))*
 - Always establish baseline before making changes
 - Focus on the dominant bottleneck first
 - Re-run measurements after each change to verify improvements
@@ -1676,7 +1676,7 @@ Follow systematic approach: diagnose → identify bottleneck → target optimiza
 
 ## Block Development Testing Prompts
 
-*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-development))*
+*(From [WordPress/agent-skills wp-block-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-block-development))*
 
 ### 27. Block Validation and Deprecation Testing
 
@@ -1724,7 +1724,7 @@ Test file: tests/e2e/blocks/[block-name].spec.js
 - Fixture examples for deprecated versions
 
 #### Notes
-*(From [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills))*
+*(From [WordPress/agent-skills wp-block-development](https://github.com/WordPress/agent-skills))*
 - Keep example content samples (fixtures) for each deprecated version
 - Prioritize migration paths: "When in doubt, add a migration path rather than silently changing selectors"
 
@@ -1774,7 +1774,7 @@ Test file: tests/e2e/interactivity/[block-name].spec.js
 - Directive functionality tests
 
 #### Notes
-*(From [Automattic/agent-skills wp-interactivity-api](https://github.com/Automattic/agent-skills))*
+*(From [WordPress/agent-skills wp-interactivity-api](https://github.com/WordPress/agent-skills))*
 - For new interactive blocks, use `@wordpress/create-block-interactive-template`
 - Check for JavaScript console errors that may block hydration
 - Verify directive scoping is minimal and purposeful
@@ -1783,7 +1783,7 @@ Test file: tests/e2e/interactivity/[block-name].spec.js
 
 ## WP-CLI Operations Testing Prompts
 
-*(From [Automattic/agent-skills wp-wpcli-and-ops](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-wpcli-and-ops))*
+*(From [WordPress/agent-skills wp-wpcli-and-ops](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-wpcli-and-ops))*
 
 ### 29. WP-CLI Migration Testing
 
@@ -1827,7 +1827,7 @@ Document each step with expected output.
 
 ## Block Theme Testing Prompts
 
-*(From [Automattic/agent-skills wp-block-themes](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-themes))*
+*(From [WordPress/agent-skills wp-block-themes](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-block-themes))*
 
 ### 30. Block Theme Style Debugging
 
@@ -1870,7 +1870,7 @@ Provide systematic debugging approach.
 - Style hierarchy debugging approach
 
 #### Notes
-*(From [Automattic/agent-skills wp-block-themes](https://github.com/Automattic/agent-skills))*
+*(From [WordPress/agent-skills wp-block-themes](https://github.com/WordPress/agent-skills))*
 - User customizations can mask theme edits - check this first
 - Settings control UI options; styles control default appearance
 - Templates go in templates/, parts go in parts/ (no subdirectory nesting)

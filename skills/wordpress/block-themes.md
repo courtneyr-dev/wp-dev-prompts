@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: WordPress Development
-> **Source**: Automattic/agent-skills wp-block-themes
+> **Source**: WordPress/agent-skills wp-block-themes
 
 <skill>
 <summary>
@@ -163,7 +163,7 @@ User Site Editor customizations can mask theme edits. Check this first when styl
 </best_practices>
 
 <references>
-- [Automattic/agent-skills wp-block-themes](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-themes)
+- [WordPress/agent-skills wp-block-themes](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-block-themes)
 - [Theme JSON Reference](https://developer.wordpress.org/block-editor/reference-guides/theme-json-reference/)
 </references>
 </skill>

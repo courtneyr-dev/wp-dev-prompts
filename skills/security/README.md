@@ -25,7 +25,7 @@ For security review, apply:
 
 ## Source
 
-Based on [Automattic/agent-skills](https://github.com/Automattic/agent-skills).
+Based on [WordPress/agent-skills](https://github.com/WordPress/agent-skills).
 
 ## Related
 

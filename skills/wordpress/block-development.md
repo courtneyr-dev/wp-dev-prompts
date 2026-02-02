@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: WordPress Development
-> **Source**: Automattic/agent-skills wp-block-development
+> **Source**: WordPress/agent-skills wp-block-development
 
 <skill>
 <summary>
@@ -127,7 +127,7 @@ registerBlockType('my-plugin/my-block', {
 </best_practices>
 
 <references>
-- [Automattic/agent-skills wp-block-development](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-block-development)
+- [WordPress/agent-skills wp-block-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-block-development)
 - [Block Editor Handbook](https://developer.wordpress.org/block-editor/)
 </references>
 </skill>

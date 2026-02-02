@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: WordPress Development
-> **Source**: Automattic/agent-skills wp-interactivity-api
+> **Source**: WordPress/agent-skills wp-interactivity-api
 
 <skill>
 <summary>
@@ -141,7 +141,7 @@ wp_interactivity_state('myNamespace', [
 </best_practices>
 
 <references>
-- [Automattic/agent-skills wp-interactivity-api](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-interactivity-api)
+- [WordPress/agent-skills wp-interactivity-api](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-interactivity-api)
 - [Interactivity API Docs](https://developer.wordpress.org/block-editor/reference-guides/interactivity-api/)
 </references>
 </skill>

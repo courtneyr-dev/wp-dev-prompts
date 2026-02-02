@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: Security
-> **Source**: Automattic/agent-skills security reference
+> **Source**: WordPress/agent-skills wp-plugin-development
 
 <skill>
 <summary>
@@ -176,7 +176,7 @@ $table = $wpdb->prefix . 'my_custom_table';
 </best_practices>
 
 <references>
-- [Automattic/agent-skills security reference](https://github.com/Automattic/agent-skills)
+- [WordPress/agent-skills wp-plugin-development](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-plugin-development)
 - [Class Reference/wpdb](https://developer.wordpress.org/reference/classes/wpdb/)
 </references>
 </skill>

@@ -2,7 +2,7 @@
 
 > **Type**: Skill
 > **Domain**: WordPress Development
-> **Source**: Automattic/agent-skills wp-playground
+> **Source**: WordPress/agent-skills wp-playground
 
 <skill>
 <summary>
@@ -168,7 +168,7 @@ This will:
 </best_practices>
 
 <references>
-- [Automattic/agent-skills wp-playground](https://github.com/Automattic/agent-skills/tree/trunk/skills/wp-playground)
+- [WordPress/agent-skills wp-playground](https://github.com/WordPress/agent-skills/tree/trunk/skills/wp-playground)
 - [WordPress Playground](https://wordpress.org/playground/)
 - [Blueprint Reference](https://wordpress.github.io/wordpress-playground/blueprints/)
 </references>

@@ -436,7 +436,7 @@ wp-dev-prompts/
 
 Extract one skill per topic from existing content:
 
-#### From Automattic/agent-skills Integration
+#### From WordPress/agent-skills Integration
 
 | Skill | Source | Content |
 |-------|--------|---------|
@@ -467,7 +467,7 @@ Extract one skill per topic from existing content:
 
 > **Topic**: [category/topic-name]
 > **Platforms**: All
-> **Source**: [Automattic/agent-skills](URL) | wp-dev-prompts
+> **Source**: [WordPress/agent-skills](URL) | wp-dev-prompts
 
 <skill>
 <summary>
@@ -504,7 +504,7 @@ Extract one skill per topic from existing content:
 
 <references>
 - [WordPress Developer Docs](URL)
-- [Automattic/agent-skills](URL)
+- [WordPress/agent-skills](URL)
 </references>
 </skill>
 

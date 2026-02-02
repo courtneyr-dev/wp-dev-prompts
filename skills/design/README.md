@@ -7,6 +7,7 @@ Skills for UI/UX design patterns, motion design, and visual consistency.
 | Skill | Description | Source |
 |-------|-------------|--------|
 | [motion-design.md](motion-design.md) | Animation specifications for product UI | [richtabor/agent-skills](https://github.com/richtabor/agent-skills) |
+| [wpds.md](wpds.md) | WordPress Design System components and tokens | [WordPress/agent-skills](https://github.com/WordPress/agent-skills) |
 
 ## References
 

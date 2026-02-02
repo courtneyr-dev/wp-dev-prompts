@@ -6,23 +6,50 @@ This repository integrates content from external sources. This document tracks t
 
 ## Tracked Repositories
 
-### 1. Automattic/agent-skills
+### 1. WordPress/agent-skills
 
-**Repository**: [github.com/Automattic/agent-skills](https://github.com/Automattic/agent-skills)
+**Repository**: [github.com/WordPress/agent-skills](https://github.com/WordPress/agent-skills)
+**Previous Location**: WordPress/agent-skills (migrated to WordPress org)
 **License**: MIT
-**Last Synced**: 2025-01-01
+**Last Synced**: 2026-02-02
 
 **What we use:**
-- WordPress security skills (input sanitization, output escaping, nonces, database queries)
-- Patterns and anti-patterns for secure WordPress development
+- WordPress router and project triage skills
+- Block development and block themes skills
+- REST API and Abilities API skills
+- Interactivity API skill
+- WP-CLI and ops skill
+- WordPress Playground skill
+- Performance profiling skill
+- PHPStan configuration skill
+- WordPress Design System (WPDS) skill
+- Plugin development architecture and security patterns
+
+**Skills (13 total):**
+- wordpress-router
+- wp-project-triage (NEW)
+- wp-block-development
+- wp-block-themes
+- wp-plugin-development
+- wp-rest-api (NEW)
+- wp-interactivity-api
+- wp-abilities-api (NEW)
+- wp-wpcli-and-ops
+- wp-performance
+- wp-phpstan
+- wp-playground
+- wpds (NEW)
 
 **Files affected:**
+- `skills/wordpress/*.md`
 - `skills/security/*.md`
+- `skills/performance/*.md`
+- `skills/design/wpds.md`
 
 **Sync command:**
 ```bash
 # Check for updates
-gh api repos/Automattic/agent-skills/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+gh api repos/WordPress/agent-skills/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
 ```
 
 ---
@@ -242,7 +269,7 @@ gh api repos/EveryInc/compound-engineering-plugin/commits --jq '.[0] | "\(.sha[0
 | performance-rules | [wordpress-performance-best-practises](https://github.com/bartekmis/wordpress-performance-best-practises) | bartekmis |
 | plugin-core | [claude-skills](https://github.com/jezweb/claude-skills) | jezweb |
 | wordpress-publisher | [claude-skills-library](https://github.com/aviz85/claude-skills-library) | aviz85 |
-| wordpress-router | [agent-skills](https://github.com/Automattic/agent-skills) | Automattic |
+| wordpress-router | [agent-skills](https://github.com/WordPress/agent-skills) | WordPress |
 | wordpress-pro | [claude-skills](https://github.com/jeffallan/claude-skills) | jeffallan |
 | seo-wordpress-manager | [claude-content-skills](https://github.com/dragosroua/claude-content-skills) | dragosroua |
 
@@ -263,8 +290,8 @@ Run this command to check all upstreams at once:
 
 ```bash
 # Check all upstream repos for recent activity
-echo "=== Automattic/agent-skills ===" && \
-gh api repos/Automattic/agent-skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
+echo "=== WordPress/agent-skills ===" && \
+gh api repos/WordPress/agent-skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
 echo "\n=== richtabor/skills ===" && \
 gh api repos/richtabor/skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
 echo "\n=== WordPress/WordPress-Documentation-Style-Guide ===" && \
