@@ -474,7 +474,7 @@ I specifically need help with:
 ```
 # Additional Context
 
-- This needs to work with PHP 7.4+ (client requirement)
+- This needs to work with PHP 8.2+ (client requirement)
 - Must be compatible with WPML for internationalization
 - Client uses Cloudflare, so need to consider caching
 - Multisite support is critical
@@ -687,7 +687,7 @@ If you need help with:
 
 **Last Updated:** December 30, 2024
 **Framework Version:** 1.3.0
-**Compatible With:** WordPress 6.5+, PHP 8.0+
+**Compatible With:** WordPress 6.9+, PHP 8.2+
 **Enhanced With:** [WordPress/agent-skills](https://github.com/WordPress/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---

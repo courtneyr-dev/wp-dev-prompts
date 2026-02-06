@@ -340,8 +340,8 @@ External applications can now interact with My Plugin via our new REST API.
 
 ## Breaking Changes
 
-- **WordPress 6.0+ Required**: We've updated our minimum WordPress version.
-- **PHP 7.4+ Required**: Please upgrade PHP if you're on an older version.
+- **WordPress 6.9+ Required**: We've updated our minimum WordPress version.
+- **PHP 8.2+ Required**: Please upgrade PHP if you're on an older version.
 - **Removed Legacy Shortcodes**: Please migrate to blocks or use the new shortcode format.
 
 ## All Changes
@@ -362,7 +362,7 @@ External applications can now interact with My Plugin via our new REST API.
 ## Upgrade Notes
 
 1. **Backup First**: Always backup before upgrading.
-2. **Check Requirements**: Ensure WordPress 6.0+ and PHP 7.4+
+2. **Check Requirements**: Ensure WordPress 6.9+ and PHP 8.2+
 3. **Update Shortcodes**: Migrate legacy shortcodes to new format.
 
 ## Getting Help

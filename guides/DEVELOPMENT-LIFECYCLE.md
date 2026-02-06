@@ -664,8 +664,8 @@ touch your-plugin-name.php
  * Plugin URI: https://example.com
  * Description: Brief description
  * Version: 0.1.0
- * Requires at least: 6.5
- * Requires PHP: 8.0
+ * Requires at least: 6.9
+ * Requires PHP: 8.2
  * Author: Your Name
  * Author URI: https://example.com
  * License: GPL v3 or later
@@ -1069,9 +1069,9 @@ npm audit                 # NPM vulnerabilities
 - [ ] Frontend displays work
 
 ## Day 3: Compatibility Testing
-- [ ] Latest WordPress (6.7+)
-- [ ] Minimum WordPress (6.5)
-- [ ] PHP 8.0, 8.1, 8.2, 8.3
+- [ ] Latest WordPress (6.9+)
+- [ ] Minimum WordPress (6.7)
+- [ ] PHP 8.2, 8.3, 8.4
 - [ ] Popular themes (Twenty Twenty-Five, Astra, GeneratePress)
 - [ ] Popular plugins (Yoast SEO, WooCommerce if relevant)
 
@@ -1203,9 +1203,9 @@ npm run test:visual  # Detects visual changes
 === Plugin Name ===
 Contributors: yourusername
 Tags: tag1, tag2, tag3
-Requires at least: 6.5
+Requires at least: 6.9
 Tested up to: 6.7
-Requires PHP: 8.0
+Requires PHP: 8.2
 Stable tag: 1.0.0
 License: GPLv3 or later
 

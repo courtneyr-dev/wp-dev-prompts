@@ -86,7 +86,7 @@ Design and optimize GitHub Actions workflows for WordPress development. Own work
 ### Claude Code
 ```
 @github-actions-architect Create a CI workflow that runs tests
-on PHP 7.4-8.3, WordPress 6.4-6.5, with multisite matrix.
+on PHP 8.2-8.4, WordPress 6.4-6.5, with multisite matrix.
 ```
 
 ### Cursor
@@ -397,14 +397,9 @@ strategy:
     multisite: [false, true]
     locale: ['en_US', 'ar']
 
-    exclude:
-      # PHP 7.4 not compatible with WP latest
-      - php: '7.4'
-        wp: 'latest'
-
     include:
       # Add specific combination
-      - php: '8.2'
+      - php: '8.4'
         wp: 'latest'
         multisite: true
         locale: 'he_IL'

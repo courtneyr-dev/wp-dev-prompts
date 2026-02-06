@@ -708,8 +708,8 @@ Detailed description of what your plugin does, who it's for, and why they need i
 
 ## 📋 Requirements
 
-- WordPress 6.5 or higher
-- PHP 8.0 or higher
+- WordPress 6.9 or higher
+- PHP 8.2 or higher
 - MySQL 5.7 or higher (or MariaDB 10.3+)
 
 ## 🚀 Installation
@@ -796,9 +796,9 @@ Built by [Your Name](https://yoursite.com)
 === Plugin Name ===
 Contributors: your-wp-username
 Tags: tag1, tag2, tag3, tag4, tag5
-Requires at least: 6.5
+Requires at least: 6.9
 Tested up to: 6.7
-Requires PHP: 8.0
+Requires PHP: 8.2
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

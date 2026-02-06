@@ -69,7 +69,7 @@ Set up complete testing infrastructure for this WordPress plugin:
 
 2. GitHub Actions CI
    - Run on pull requests and main branch
-   - Matrix test PHP 8.0, 8.1, 8.2
+   - Matrix test PHP 8.2, 8.3, 8.4
    - Include PHPCS and PHPStan checks
    - Report coverage to PR comments
 

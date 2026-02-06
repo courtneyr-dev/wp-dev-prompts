@@ -302,7 +302,7 @@ test-dist/
  * Description:       Brief description of what your plugin does.
  * Version:           1.0.0
  * Requires at least: 6.8
- * Requires PHP:      7.4
+ * Requires PHP:      8.2
  * Author:            Your Name
  * Author URI:        https://yourwebsite.com
  * License:           GPL v2 or later
@@ -1607,7 +1607,7 @@ Comprehensive description of what the plugin does, why it exists, and who it's f
 ## Requirements
 
 - WordPress 6.8 or higher
-- PHP 7.4 or higher
+- PHP 8.2 or higher
 - Block theme (FSE theme)
 
 ## Installation
@@ -1722,7 +1722,7 @@ Donate link: https://github.com/sponsors/yourusername
 Tags: tag1, tag2, tag3, tag4, tag5
 Requires at least: 6.8
 Tested up to: 6.8
-Requires PHP: 7.4
+Requires PHP: 8.2
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -2623,7 +2623,7 @@ Donate link: https://example.com/donate
 Tags: tag1, tag2, tag3 (max 5, lowercase, hyphens)
 Requires at least: 6.8
 Tested up to: 6.8 (must be current)
-Requires PHP: 7.4
+Requires PHP: 8.2
 Stable tag: 1.0.0 (matches version in plugin file)
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -3148,7 +3148,7 @@ Brief tagline describing what your plugin does in one sentence.
 
 ### Prerequisites
 - Node.js 20+ and npm
-- PHP 7.4+ and Composer
+- PHP 8.2+ and Composer
 - WordPress 6.8+
 - Local WordPress development environment (Local, XAMPP, Docker, etc.)
 
@@ -3251,7 +3251,7 @@ Donate link: https://example.com/donate
 Tags: tag1, tag2, tag3, tag4, tag5
 Requires at least: 6.8
 Tested up to: 6.8
-Requires PHP: 7.4
+Requires PHP: 8.2
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -3340,7 +3340,7 @@ Donate link: https://example.com/donate
 Tags: tag1, tag2, tag3, tag4, tag5
 Requires at least: 6.8
 Tested up to: 6.8
-Requires PHP: 7.4
+Requires PHP: 8.2
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

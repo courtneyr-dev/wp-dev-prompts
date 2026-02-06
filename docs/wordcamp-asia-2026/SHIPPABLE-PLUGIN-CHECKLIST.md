@@ -300,9 +300,9 @@ phpunit.xml
 === Cat Counter ===
 Contributors: yourusername
 Tags: cats, counter, pets
-Requires at least: 6.0
+Requires at least: 6.9
 Tested up to: 6.7
-Requires PHP: 8.0
+Requires PHP: 8.2
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -341,8 +341,8 @@ As many as you have!
  * Plugin URI: https://example.com/cat-counter
  * Description: Count your cats with style.
  * Version: 1.0.0
- * Requires at least: 6.0
- * Requires PHP: 8.0
+ * Requires at least: 6.9
+ * Requires PHP: 8.2
  * Author: Your Name
  * Author URI: https://example.com
  * License: GPL-2.0-or-later

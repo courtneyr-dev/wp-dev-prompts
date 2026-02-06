@@ -86,7 +86,7 @@ Define and manage compatibility testing matrices for WordPress development. Own 
 ### Claude Code
 ```
 @compatibility-matrix Create a test matrix for our plugin supporting
-PHP 7.4-8.3 and WordPress 6.2+. Include multisite and RTL.
+PHP 8.2-8.4 and WordPress 6.2+. Include multisite and RTL.
 ```
 
 ### Cursor
@@ -99,7 +99,7 @@ for any compatibility issues and update minimum requirements.
 ```
 # Matrix Task: Version Update
 #
-# Update matrix to drop PHP 7.4 and WP 6.2 support:
+# Update matrix to drop PHP 8.1 and WP 6.6 support:
 # - Update CI matrix
 # - Update plugin headers
 # - Update readme requirements
@@ -173,24 +173,19 @@ Design our compatibility strategy:
 strategy:
   fail-fast: false
   matrix:
-    php: ['7.4', '8.0', '8.1', '8.2', '8.3']
-    wp: ['6.2', '6.4', 'latest']
+    php: ['8.2', '8.3', '8.4']
+    wp: ['6.7', '6.9', 'latest']
     multisite: [false, true]
 
     exclude:
-      # PHP 7.4 not compatible with WP latest (requires 7.4+ but 8.0 recommended)
-      - php: '7.4'
-        wp: 'latest'
       # Reduce multisite combinations
-      - php: '8.0'
-        multisite: true
-      - php: '8.1'
+      - php: '8.3'
         multisite: true
 
     include:
       # Ensure we test oldest supported combo
-      - php: '7.4'
-        wp: '6.2'
+      - php: '8.2'
+        wp: '6.7'
         multisite: false
       # Test latest everything with multisite
       - php: '8.3'
@@ -382,8 +377,8 @@ jobs:
           PHP_MIN=$(grep "Requires PHP:" my-plugin.php | cut -d: -f2 | tr -d ' ')
 
           case $PHP_MIN in
-            7.4)
-              echo "::notice::PHP 7.4 is EOL, consider dropping support"
+            8.0|8.1)
+              echo "::notice::PHP $PHP_MIN is EOL, consider dropping support"
               ;;
           esac
 ```
@@ -396,13 +391,13 @@ jobs:
 ## System Requirements
 
 ### Minimum Requirements
-- PHP 7.4 or higher
-- WordPress 6.2 or higher
+- PHP 8.2 or higher
+- WordPress 6.9 or higher
 - MySQL 5.7 or MariaDB 10.3
 
 ### Recommended
 - PHP 8.2 or higher
-- WordPress 6.5 or higher
+- WordPress 6.9 or higher
 - MySQL 8.0 or MariaDB 11.0
 
 ### Tested Combinations

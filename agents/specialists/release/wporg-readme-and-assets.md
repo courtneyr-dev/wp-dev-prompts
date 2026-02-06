@@ -140,9 +140,9 @@ Prepare our plugin for WordPress.org submission:
 Contributors: username1, username2
 Donate link: https://example.com/donate
 Tags: tag1, tag2, tag3, tag4, tag5
-Requires at least: 6.0
+Requires at least: 6.9
 Tested up to: 6.5
-Requires PHP: 7.4
+Requires PHP: 8.2
 Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -165,8 +165,8 @@ Explain the unique value proposition.
 
 **Requirements:**
 
-* WordPress 6.0 or higher
-* PHP 7.4 or higher
+* WordPress 6.9 or higher
+* PHP 8.2 or higher
 
 **Documentation:**
 
@@ -228,7 +228,7 @@ Yes, the plugin is fully translatable. We welcome translations!
 == Upgrade Notice ==
 
 = 1.2.0 =
-Performance improvements and WordPress 6.5 compatibility. Backup before updating.
+Performance improvements and WordPress 6.9 compatibility. Backup before updating.
 
 = 1.0.0 =
 Initial release.

@@ -3,7 +3,7 @@
 Complete step-by-step guide to set up automated testing for WordPress plugins and themes. This guide will take you from zero to a production-ready testing pipeline.
 
 **Time to complete**: 2-4 hours for initial setup
-**Prerequisites**: Node.js 20+, PHP 8.0+, Composer 2+, Git
+**Prerequisites**: Node.js 20+, PHP 8.2+, Composer 2+, Git
 
 ---
 

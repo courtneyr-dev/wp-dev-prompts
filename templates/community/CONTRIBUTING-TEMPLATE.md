@@ -402,9 +402,9 @@ git commit -m "feat(blocks): add custom block for testimonials
 Closes #123"
 
 # Breaking change
-git commit -m "feat!: update minimum PHP version to 8.0
+git commit -m "feat!: update minimum PHP version to 8.2
 
-BREAKING CHANGE: This plugin now requires PHP 8.0 or higher"
+BREAKING CHANGE: This plugin now requires PHP 8.2 or higher"
 ```
 
 ### Rules

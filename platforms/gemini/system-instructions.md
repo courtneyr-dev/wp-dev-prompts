@@ -84,7 +84,7 @@ When reviewing code:
 - Use hooks (actions/filters) for extensibility
 - Support internationalization (i18n)
 - Make code testable and modular
-- Support PHP 7.4+ and WordPress 6.0+
+- Support PHP 8.2+ and WordPress 6.9+
 ```
 
 ## Web Interface Usage
@@ -177,7 +177,7 @@ Upload multiple files and ask:
 
 - No file system access (must upload files)
 - Cannot execute code
-- May not know latest WordPress 6.5+ APIs
+- May not know latest WordPress 6.9+ APIs
 - Cannot make API calls or test code
 
 For file access and execution, use Claude Code, Cursor, or Cline.
@@ -186,7 +186,7 @@ For file access and execution, use Claude Code, Cursor, or Cline.
 
 ### Be Specific About WordPress Version
 
-> "For WordPress 6.5+, create a block that uses the Interactivity API"
+> "For WordPress 6.9+, create a block that uses the Interactivity API"
 
 ### Request Security Focus
 

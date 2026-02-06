@@ -66,7 +66,7 @@ Current state:
 - No existing tests
 - Using Composer for autoloading
 - npm for block builds
-- PHP 7.4+ required
+- PHP 8.2+ required
 - Plugin distributed on WordPress.org
 
 Requirements:
@@ -85,7 +85,7 @@ Explore the codebase first to understand the structure.
 The plan looks good. Questions:
 
 1. For unit tests, should we use WP_Mock or Brain Monkey?
-2. For CI, should we test PHP 7.4, 8.0, 8.1, 8.2?
+2. For CI, should we test PHP 8.2, 8.3, 8.4?
 3. Should coverage reports go to Codecov or just local?
 
 Also, let's start with the simplest setup that works
@@ -97,7 +97,7 @@ and iterate from there.
 ```
 Proceed with:
 - WP_Mock for unit tests
-- PHP 7.4 + 8.2 in CI (skip middle versions)
+- PHP 8.2 + 8.4 in CI (skip middle versions)
 - Local coverage only initially
 
 Start with PHPUnit setup. Create one passing test

@@ -51,7 +51,7 @@ Located in `github-workflows/` directory:
 
 7. **wordpress-plugin-ci.yml** (17 KB)
    - Complete CI/CD pipeline
-   - Multi-version testing (PHP 8.0-8.3 × WordPress 6.5-trunk)
+   - Multi-version testing (PHP 8.2-8.4 × WordPress 6.7-trunk)
    - Linting, testing, security scanning, deployment
    - Codecov integration
 

@@ -106,7 +106,7 @@ references match and fix any inconsistencies.
 # New plugin: my-awesome-plugin
 # Version: 1.0.0
 # Requires WP: 6.0
-# Requires PHP: 7.4
+# Requires PHP: 8.2
 #
 # Create headers for main plugin file following WP standards
 ```
@@ -151,8 +151,8 @@ Set up version management for a new plugin:
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       my-awesome-plugin
  * Domain Path:       /languages
- * Requires at least: 6.0
- * Requires PHP:      7.4
+ * Requires at least: 6.9
+ * Requires PHP:      8.2
  * Tested up to:      6.5
  * Network:           true
  *

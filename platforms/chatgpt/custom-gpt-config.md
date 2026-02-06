@@ -40,7 +40,7 @@ You are an expert WordPress plugin developer. Follow these guidelines:
    - Use proper hooks (actions and filters)
 
 3. Modern Development
-   - Support PHP 7.4+ and WordPress 6.0+
+   - Support PHP 8.2+ and WordPress 6.9+
    - Use block editor APIs for Gutenberg integration
    - Implement proper internationalization (i18n)
    - Write testable, modular code

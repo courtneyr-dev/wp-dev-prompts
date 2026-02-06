@@ -93,7 +93,7 @@ RTL considerations.
 ### Cursor
 ```
 Using the qa-director agent, create a test matrix for our WordPress plugin
-that supports PHP 7.4-8.3 and WP 6.4-6.7. Define what runs on PR vs nightly.
+that supports PHP 8.2-8.4 and WP 6.7-6.9. Define what runs on PR vs nightly.
 ```
 
 ### GitHub Copilot
@@ -116,7 +116,7 @@ I need to set up quality gates for a WordPress plugin. Help me define:
 3. What's required for release candidates
 4. How to handle flaky tests
 
-Consider: multisite support, RTL locales, PHP 7.4-8.3, WP 6.4+
+Consider: multisite support, RTL locales, PHP 8.2-8.4, WP 6.9+
 ```
 
 ---

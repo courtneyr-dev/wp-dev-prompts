@@ -395,9 +395,9 @@ Test multiple scenarios:
    - Block themes vs Classic themes
 
 3. PHP VERSIONS
-   - PHP 7.4
-   - PHP 8.0
-   - PHP 8.1+
+   - PHP 8.2
+   - PHP 8.3
+   - PHP 8.4
 
 4. BROWSER VARIATIONS
    - Chromium

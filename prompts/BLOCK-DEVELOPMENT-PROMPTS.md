@@ -2,7 +2,7 @@
 
 Comprehensive prompt templates for building Gutenberg blocks, block themes, and interactive blocks using the WordPress Interactivity API. These prompts incorporate best practices from [WordPress/agent-skills](https://github.com/WordPress/agent-skills).
 
-**Compatible with**: WordPress 6.9+ | PHP 8.0+ | Node 20+
+**Compatible with**: WordPress 6.9+ | PHP 8.2+ | Node 20+
 **Source**: [WordPress/agent-skills](https://github.com/WordPress/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---

@@ -2,7 +2,7 @@
 
 Comprehensive prompt templates for setting up automated testing infrastructure across all 21 quality dimensions for WordPress plugins and themes. These prompts help you work with AI assistants to establish production-ready testing pipelines.
 
-**Compatible with**: WordPress 6.7+ | PHP 8.0+ | Node 20+
+**Compatible with**: WordPress 6.7+ | PHP 8.2+ | Node 20+
 **Enhanced with**: [WordPress/agent-skills](https://github.com/WordPress/agent-skills) - WordPress Agent Skills for AI assistants
 
 ---
@@ -221,7 +221,7 @@ Requirements:
 
 The project uses:
 - WordPress 6.7+
-- PHP 8.0+
+- PHP 8.2+
 - [List any specific WordPress APIs heavily used: REST API, Block Editor, etc.]
 ```
 
