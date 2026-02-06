@@ -1,0 +1,123 @@
+# Prompt Validation
+#
+# Validates prompt files on every PR that touches prompts/ or skills/.
+
+name: Validate Prompts
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'prompts/**/*.md'
+      - 'skills/**/*.md'
+
+jobs:
+  validate:
+    name: Validate Prompt Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for AI indicator words
+        run: |
+          echo "Checking for banned AI indicator words..."
+          BANNED="delve|tapestry|myriad|leverage|utilize|seamless|robust|paradigm|synergy|cutting-edge|game-changer"
+          FOUND=0
+
+          for file in $(git diff --name-only origin/main -- 'prompts/**/*.md' 'skills/**/*.md'); do
+            if [ -f "$file" ]; then
+              MATCHES=$(grep -iEn "$BANNED" "$file" || true)
+              if [ -n "$MATCHES" ]; then
+                echo "::warning file=$file::AI indicator words found"
+                echo "$MATCHES"
+                FOUND=1
+              fi
+            fi
+          done
+
+          if [ "$FOUND" -eq 1 ]; then
+            echo "::warning::Some files contain AI indicator words. Consider revising."
+          else
+            echo "No AI indicator words found."
+          fi
+
+      - name: Check core prompt token limits
+        run: |
+          echo "Checking core prompt token estimates..."
+          for file in prompts/core/*.md; do
+            if [ -f "$file" ] && [ "$(basename "$file")" != "README.md" ]; then
+              WORDS=$(wc -w < "$file" | tr -d ' ')
+              # Rough estimate: 1 token ≈ 0.75 words
+              TOKENS=$((WORDS * 4 / 3))
+              if [ "$TOKENS" -gt 2000 ]; then
+                echo "::warning file=$file::Estimated $TOKENS tokens (limit: 2000)"
+              else
+                echo "  $file: ~$TOKENS tokens"
+              fi
+            fi
+          done
+
+      - name: Check prompt structure
+        run: |
+          echo "Checking prompt file structure..."
+          ISSUES=0
+
+          for file in prompts/core/*.md; do
+            if [ -f "$file" ] && [ "$(basename "$file")" != "README.md" ]; then
+              # Check for required sections
+              if ! grep -q "^# " "$file"; then
+                echo "::error file=$file::Missing title (# heading)"
+                ISSUES=1
+              fi
+              if ! grep -q "<prompt>" "$file"; then
+                echo "::error file=$file::Missing <prompt> tag"
+                ISSUES=1
+              fi
+              if ! grep -q "## Usage" "$file"; then
+                echo "::error file=$file::Missing Usage section"
+                ISSUES=1
+              fi
+            fi
+          done
+
+          for file in skills/*/SKILL.md; do
+            if [ -f "$file" ]; then
+              if ! head -1 "$file" | grep -q "^---$"; then
+                echo "::error file=$file::Missing YAML frontmatter"
+                ISSUES=1
+              fi
+            fi
+          done
+
+          if [ "$ISSUES" -eq 1 ]; then
+            echo "::error::Some files have structural issues."
+            exit 1
+          else
+            echo "All files pass structural checks."
+          fi
+
+      - name: Check for broken internal links
+        run: |
+          echo "Checking for potentially broken links..."
+          ISSUES=0
+
+          for file in prompts/**/*.md skills/**/*.md; do
+            if [ -f "$file" ]; then
+              # Check relative links
+              LINKS=$(grep -oE '\]\([^)]+\)' "$file" | grep -v 'http' | grep -v '#' || true)
+              for link in $LINKS; do
+                TARGET=$(echo "$link" | sed 's/\](\(.*\))/\1/')
+                DIR=$(dirname "$file")
+                if [ ! -f "$DIR/$TARGET" ] && [ ! -d "$DIR/$TARGET" ]; then
+                  echo "::warning file=$file::Possible broken link: $TARGET"
+                  ISSUES=1
+                fi
+              done
+            fi
+          done
+
+          if [ "$ISSUES" -eq 0 ]; then
+            echo "No broken links detected."
+          fi
