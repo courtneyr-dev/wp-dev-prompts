@@ -1,0 +1,39 @@
+name: UI/UX Audit Checklist
+description: WordPress plugin and theme UI/UX review checklist
+
+visual_consistency:
+  - Typography scale follows design system
+  - Color usage matches brand/WordPress admin tokens
+  - Spacing follows 4px/8px grid
+  - Icons are consistent style and size
+  - Border radius follows design tokens
+  - Light and dark mode support (if applicable)
+
+interaction_patterns:
+  - Interactive elements have hover/focus/active states
+  - Loading states present for async operations
+  - Error states provide clear guidance
+  - Empty states are designed (not blank)
+  - Destructive actions require confirmation
+  - Success feedback is visible
+
+responsive_behavior:
+  - Layout adapts to mobile, tablet, desktop
+  - Touch targets at least 44x44px on mobile
+  - Text remains readable at all breakpoints
+  - Images scale appropriately
+  - No horizontal scroll on mobile
+
+motion_design:
+  - Animations serve a purpose (not decorative)
+  - Duration under 300ms for UI transitions
+  - Easing matches pattern (ease-out for enter, ease-in for exit)
+  - Respects prefers-reduced-motion
+  - No auto-playing animations
+
+wordpress_admin:
+  - Uses WordPress admin color scheme variables
+  - Matches WordPress admin UI patterns
+  - Admin notices use proper classes
+  - Settings pages follow Settings API layout
+  - Uses @wordpress/components where appropriate

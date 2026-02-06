@@ -1,0 +1,70 @@
+name: WCAG 2.2 Level AA Checklist
+description: WordPress-focused WCAG compliance checklist
+
+perceivable:
+  - text_alternatives:
+      criterion: "1.1.1"
+      check: All images have meaningful alt text (or empty alt for decorative)
+  - captions:
+      criterion: "1.2.2"
+      check: Pre-recorded audio/video has captions
+  - info_and_relationships:
+      criterion: "1.3.1"
+      check: Headings, lists, tables use proper HTML elements
+  - meaningful_sequence:
+      criterion: "1.3.2"
+      check: DOM order matches visual order
+  - contrast_minimum:
+      criterion: "1.4.3"
+      check: "Text contrast >= 4.5:1 (normal) or >= 3:1 (large)"
+  - resize_text:
+      criterion: "1.4.4"
+      check: Text can be resized to 200% without loss of content
+  - non_text_contrast:
+      criterion: "1.4.11"
+      check: "UI components and graphics have >= 3:1 contrast"
+
+operable:
+  - keyboard:
+      criterion: "2.1.1"
+      check: All functionality available via keyboard
+  - no_keyboard_trap:
+      criterion: "2.1.2"
+      check: Focus can be moved away from every element
+  - focus_visible:
+      criterion: "2.4.7"
+      check: Keyboard focus indicator is visible
+  - focus_order:
+      criterion: "2.4.3"
+      check: Tab order is logical and meaningful
+  - link_purpose:
+      criterion: "2.4.4"
+      check: Link text describes destination (no bare "click here")
+  - page_title:
+      criterion: "2.4.2"
+      check: Pages have descriptive titles
+  - skip_navigation:
+      criterion: "2.4.1"
+      check: Skip navigation link present
+
+understandable:
+  - language:
+      criterion: "3.1.1"
+      check: Page lang attribute is set on <html>
+  - labels:
+      criterion: "3.3.2"
+      check: Form inputs have visible labels
+  - error_identification:
+      criterion: "3.3.1"
+      check: Errors are identified and described in text
+  - error_suggestion:
+      criterion: "3.3.3"
+      check: Error messages suggest corrections
+
+robust:
+  - parsing:
+      criterion: "4.1.1"
+      check: Valid HTML (no duplicate IDs, proper nesting)
+  - name_role_value:
+      criterion: "4.1.2"
+      check: Custom components have proper ARIA roles and states

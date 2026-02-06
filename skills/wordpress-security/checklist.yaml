@@ -1,0 +1,37 @@
+name: WordPress Security Checklist
+description: Security review checklist for WordPress plugins
+
+input_sanitization:
+  - Every $_GET, $_POST, $_REQUEST, $_SERVER access is sanitized
+  - Correct sanitization function used for data type
+  - File uploads validated with wp_check_filetype
+  - wp_unslash used before sanitization on superglobals
+
+output_escaping:
+  - Every echo/print of dynamic data uses escaping
+  - esc_html for HTML content
+  - esc_attr for HTML attributes
+  - esc_url for URLs
+  - wp_kses_post for rich HTML
+  - Template files have no unescaped variables
+  - JavaScript output uses wp_json_encode or esc_js
+
+authentication:
+  - All admin actions check nonces (wp_verify_nonce)
+  - All admin actions check capabilities (current_user_can)
+  - AJAX handlers verify both nonce AND capability
+  - REST API endpoints have permission_callback
+  - No __return_true as permission_callback in production
+
+database:
+  - All queries with user input use $wpdb->prepare()
+  - No raw SQL concatenation
+  - $wpdb->esc_like() used before LIKE wildcards
+  - Table names use $wpdb->prefix
+
+wordpress_specific:
+  - No unserialize() on user data (use json_decode)
+  - File operations validate paths
+  - wp_remote_get/post URLs are validated
+  - No direct file inclusion with user input
+  - Options/meta updates check capabilities

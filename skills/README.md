@@ -1,85 +1,81 @@
 # Skills
 
-Reusable knowledge modules that teach AI assistants WordPress best practices. 76 skills across 10 categories.
+Reusable knowledge modules for AI-assisted WordPress development. Each skill is a directory containing a `SKILL.md` with YAML frontmatter and optional bundled resources.
 
-## Categories
+## Available Skills
 
-| Category | Skills | Description |
-|----------|--------|-------------|
-| [wordpress/](wordpress/) | 16 | Plugin architecture, blocks, REST API, Interactivity API, WP-CLI, Playground |
-| [security/](security/) | 5 | Input sanitization, output escaping, nonces, database queries, pentesting |
-| [testing/](testing/) | 29 | PHPUnit, PHPCS, PHPStan, Playwright, Jest, visual regression |
-| [performance/](performance/) | 6 | Core Web Vitals, profiling, caching, asset optimization |
-| [accessibility/](accessibility/) | 6 | WCAG checklist, ARIA patterns, keyboard navigation, screen readers |
-| [design/](design/) | 2 | Motion design, WordPress Design System (WPDS) |
-| [social-media/](social-media/) | 1 | X/Twitter content creation with anti-patterns |
-| [product-management/](product-management/) | 6 | JTBD, user stories, positioning, personas, problem framing |
-| [engineering/](engineering/) | 4 | Planning, code review, documentation, git worktrees |
-| [technical-writing/](technical-writing/) | 1 | Blog post drafting with WordPress style guide |
+| Skill | Description |
+|---|---|
+| [wordpress-dev](wordpress-dev/) | Plugin, block, and theme development for WordPress 6.9+ |
+| [wordpress-security](wordpress-security/) | Security Trinity — sanitize, validate, escape |
+| [wordpress-testing](wordpress-testing/) | PHPUnit, PHPCS, PHPStan, Playwright, CI/CD |
+| [wordpress-playground](wordpress-playground/) | Browser-based WordPress via WebAssembly |
+| [wordpress-accessibility](wordpress-accessibility/) | WCAG 2.1/2.2 Level AA compliance |
+| [wordpress-performance](wordpress-performance/) | Core Web Vitals and server optimization |
+| [prompt-engineering](prompt-engineering/) | Prompt structure, anti-patterns, technical writing |
+| [ui-ux-audit](ui-ux-audit/) | UI/UX review and motion design specifications |
+| [engineering](engineering/) | Planning, code review, git workflows |
+| [product-management](product-management/) | Personas, JTBD, positioning, user stories |
 
 ## Skill Format
 
-```markdown
-# [Skill Name]
+Each skill directory contains:
 
-> **Topic**: [category/skill-name]
-> **Platforms**: All
-> **Source**: [attribution]
-
-<skill>
-<summary>[One-line description]</summary>
-<knowledge>
-## Core Concepts
-[Essential knowledge]
-
-## Best Practices
-1. [Practice with explanation]
-
-## Common Patterns
-[Code examples]
-
-## Anti-Patterns (Avoid)
-- ❌ [What NOT to do]
-
-## Verification Checklist
-- [ ] [How to verify]
-</knowledge>
-<references>[Links]</references>
-</skill>
+```
+skill-name/
+├── SKILL.md              # Main skill file with YAML frontmatter
+├── references/           # Optional reference docs
+├── checklist.yaml        # Optional structured checklist
+└── setup.sh              # Optional setup scripts
 ```
 
-## Using Skills
+### SKILL.md Structure
+
+```yaml
+---
+name: Skill Name
+description: One-line description of what this skill covers.
+triggers:
+  - keyword that activates this skill
+  - another trigger phrase
+---
+```
+
+The body contains actionable knowledge with code examples.
+
+## Usage
 
 ### In Claude Code
 
-Reference in CLAUDE.md or conversation:
+Reference skills in conversation or CLAUDE.md:
+
 ```markdown
-When working on security, apply:
-- skills/security/input-sanitization.md
-- skills/security/output-escaping.md
+Apply the wordpress-security skill when reviewing this plugin code.
 ```
 
-### In Cursor
+Or load directly:
 
-Reference in .cursorrules:
 ```markdown
-For WordPress security, follow patterns from skills/security/
+Read skills/wordpress-security/SKILL.md and review my code for vulnerabilities.
 ```
 
-### In Prompts
+### In Cursor / Cline
 
-Link to skills for context:
+Add to your rules file:
+
 ```markdown
-<references>
-- [Security: Input Sanitization](../../skills/security/input-sanitization.md)
-</references>
+For WordPress security reviews, follow the guidelines in:
+skills/wordpress-security/SKILL.md
 ```
 
 ## Sources
 
-- **[WordPress/agent-skills](https://github.com/WordPress/agent-skills)** — WordPress development patterns (MIT)
-- **[richtabor/agent-skills](https://github.com/richtabor/agent-skills)** — Accessibility, motion design, X writing
-- **[deanpeters/product-manager-prompts](https://github.com/deanpeters/product-manager-prompts)** — Product management (MIT)
-- **[EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin)** — Engineering workflows (MIT)
-- **[skills.sh](https://skills.sh)** — Community WordPress skills
-- **[WordPress Documentation Style Guide](https://make.wordpress.org/docs/style-guide/)** — Official standards (GPLv2+)
+Skills are consolidated from:
+
+- [WordPress/agent-skills](https://github.com/WordPress/agent-skills) — WordPress core development skills
+- [richtabor/agent-skills](https://github.com/richtabor/agent-skills) — Accessibility, motion design, writing
+- [skills.sh](https://skills.sh) — Community WordPress skills
+- [WordPress Documentation Style Guide](https://make.wordpress.org/docs/style-guide/) — Official standards
+- wp-dev-prompts original content
+
+Previous v2.0 skills (76 individual files) are archived in `archive/v2.0/skills/`.
