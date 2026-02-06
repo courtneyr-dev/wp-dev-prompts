@@ -19,8 +19,8 @@ Copy this file to your WordPress plugin/theme project root as `.clinerules` and 
 - **Slug**: [project-slug]
 - **Text Domain**: [text-domain]
 - **Function Prefix**: [prefix_]
-- **Minimum WordPress**: 6.5
-- **Minimum PHP**: 8.0
+- **Minimum WordPress**: 6.9
+- **Minimum PHP**: 8.2
 
 ## Development Standards
 

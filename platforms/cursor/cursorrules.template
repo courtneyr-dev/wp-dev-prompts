@@ -19,8 +19,8 @@ You are working on a WordPress [plugin/theme] called [PROJECT_NAME].
 - **Slug**: [project-slug]
 - **Text Domain**: [text-domain]
 - **Prefix**: [prefix_]
-- **Minimum WordPress**: 6.5
-- **Minimum PHP**: 8.0
+- **Minimum WordPress**: 6.9
+- **Minimum PHP**: 8.2
 
 ## Coding Standards
 

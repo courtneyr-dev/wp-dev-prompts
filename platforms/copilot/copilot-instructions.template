@@ -18,8 +18,8 @@ This is a WordPress [plugin/theme] project.
 
 - **Text Domain**: [text-domain]
 - **Function Prefix**: [prefix_]
-- **Minimum WordPress**: 6.5
-- **Minimum PHP**: 8.0
+- **Minimum WordPress**: 6.9
+- **Minimum PHP**: 8.2
 
 ## Coding Standards
 

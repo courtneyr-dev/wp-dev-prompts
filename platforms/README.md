@@ -6,11 +6,11 @@ Configuration files for using wp-dev-prompts across different AI platforms.
 
 | Platform | Copy This | To Your Project |
 |----------|-----------|-----------------|
-| Claude Code | `platforms/claude-code/CLAUDE.md` | Project root |
-| Cursor | `platforms/cursor/.cursorrules` | Project root |
-| Cline | `platforms/cline/.clinerules` | Project root |
-| Copilot | `platforms/copilot/copilot-instructions.md` | `.github/` |
-| n8n | `templates/n8n/*.json` | n8n workflows |
+| Claude Code | `CLAUDE.md.template` | Project root as `CLAUDE.md` |
+| Cursor | `cursorrules.template` | Project root as `.cursorrules` |
+| Cline | `clinerules.template` | Project root as `.clinerules` |
+| Copilot | `copilot-instructions.template` | `.github/copilot-instructions.md` |
+| n8n | `platforms/n8n/*.json` | n8n workflows |
 
 ## Which Platform?
 
@@ -52,11 +52,11 @@ platforms/
 
 ### IDE Platforms (Claude Code, Cursor, Cline)
 
-Reference files directly:
+Reference skills directly:
 ```markdown
 Follow the patterns from:
-- skills/security/input-sanitization.md
-- skills/testing/phpunit.md
+- skills/wordpress-security/SKILL.md
+- skills/wordpress-testing/SKILL.md
 ```
 
 ### Web Platforms (ChatGPT, Gemini)

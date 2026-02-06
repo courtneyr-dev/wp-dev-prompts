@@ -19,6 +19,8 @@ Copy this file to your WordPress plugin/theme project root and customize the pla
 **Slug**: [project-slug]
 **Text Domain**: [text-domain]
 **Prefix**: [prefix_]
+**Minimum WordPress**: 6.9
+**Minimum PHP**: 8.2
 
 ## Development Standards
 
@@ -27,37 +29,38 @@ Copy this file to your WordPress plugin/theme project root and customize the pla
 - Follow [WordPress PHP Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/)
 - Follow [WordPress JavaScript Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/javascript/)
 - Use tabs for indentation (PHP and JS)
-- Maximum line length: 100 characters (soft limit)
+- Use Yoda conditions: `if ( 'value' === $var )`
 
 ### Naming Conventions
 
 - Functions: `[prefix_]function_name`
-- Classes: `[Prefix_]Class_Name` or `[Prefix]\Namespace\ClassName`
+- Classes: `[Prefix_]Class_Name` or `[Prefix]\Namespace\ClassName` (PSR-4)
 - Constants: `[PREFIX_]CONSTANT_NAME`
 - Hooks: `[prefix_]/hook-name` or `[prefix_]_hook_name`
+- Options: `[prefix_]_option_name`
 
-### Security Requirements
+### Security Requirements (the Security Trinity)
 
-**Always:**
-- Sanitize all input: `sanitize_text_field()`, `absint()`, `sanitize_email()`, etc.
-- Escape all output: `esc_html()`, `esc_attr()`, `esc_url()`, etc.
-- Verify nonces AND check capabilities for all admin actions
-- Use `$wpdb->prepare()` for all database queries with user input
+**Sanitize input** — every value from `$_GET`, `$_POST`, `$_REQUEST`:
+- `sanitize_text_field()`, `absint()`, `sanitize_email()`, `wp_kses_post()`
 
-**Never:**
-- Trust `$_GET`, `$_POST`, `$_REQUEST` without sanitization
-- Echo user input without escaping
-- Use `eval()` or similar dangerous functions
+**Validate data** — confirm it matches expectations:
+- Nonces: `wp_verify_nonce()` or `check_admin_referer()`
+- Capabilities: `current_user_can()` before any protected action
+- Allowlists: `in_array( $val, $allowed, true )`
+
+**Escape output** — at the point of rendering:
+- `esc_html()`, `esc_attr()`, `esc_url()`, `wp_kses_post()`
+- SQL: `$wpdb->prepare()` with `%s`, `%d`, `%f` placeholders
 
 ### i18n Requirements
 
 - Wrap all user-facing strings in translation functions
-- Use text domain: `[text-domain]`
-- Include translator comments for complex strings
+- Text domain: `[text-domain]`
+- Include translator comments for strings with placeholders
 
 ```php
 __( 'Text', '[text-domain]' );
-_e( 'Text', '[text-domain]' );
 /* translators: %s: user name */
 sprintf( __( 'Hello, %s', '[text-domain]' ), $name );
 ```
@@ -68,65 +71,45 @@ sprintf( __( 'Hello, %s', '[text-domain]' ), $name );
 [project-slug]/
 ├── [project-slug].php      # Main plugin file
 ├── includes/               # PHP classes
-├── src/                    # Block source files
-├── build/                  # Compiled assets
-├── assets/                 # Static assets
+├── src/                    # Block source / JS source
+├── build/                  # Compiled assets (gitignored)
+├── assets/                 # Static assets (images, fonts)
 ├── languages/              # Translation files
 ├── templates/              # Template files
-└── tests/                  # Test files
+├── tests/
+│   ├── Unit/               # Brain\Monkey unit tests
+│   └── Integration/        # WP_UnitTestCase integration tests
+├── uninstall.php           # Cleanup on uninstall
+├── readme.txt              # WordPress.org readme
+└── composer.json
 ```
 
 ## Build Commands
 
 ```bash
-# Install dependencies
-composer install
-npm install
-
-# Development
-npm run start           # Watch mode
-npm run build           # Production build
-
-# Testing
-composer test           # PHPUnit
-composer lint           # PHPCS
-composer analyze        # PHPStan
-npm run lint:js         # ESLint
-npm run lint:css        # Stylelint
-npm run test:unit       # Jest
-
-# WordPress environment
-npm run env:start       # Start wp-env
-npm run env:stop        # Stop wp-env
+composer install && npm install    # Dependencies
+npm run start                      # Watch mode
+npm run build                      # Production build
+composer test                      # PHPUnit
+composer lint                      # PHPCS (WordPress-Extra)
+composer analyze                   # PHPStan level 6
+npm run lint:js                    # ESLint
+npm run test:unit                  # Jest
+npm run env:start                  # Start wp-env
 ```
 
-## Testing Requirements
+## Testing
 
-- PHPUnit tests for all public methods
-- PHPCS with WordPress-Extra ruleset
-- PHPStan level [5+]
-- Jest tests for JavaScript components
-- Playwright E2E tests for critical paths
-
-## Skills Reference
-
-When working on this project, reference these skills:
-
-- **Security**: skills/security/*.md
-- **Testing**: skills/testing/*.md
-- **WordPress**: skills/wordpress/*.md
-- **Performance**: skills/performance/*.md
+- PHPUnit with `yoast/phpunit-polyfills` for all public methods
+- PHPCS with `WordPress-Extra` ruleset
+- PHPStan level 6 with `szepeviktor/phpstan-wordpress`
+- Jest for JavaScript components
+- Playwright E2E for critical user flows
 
 ## Project-Specific Notes
 
-[Add any project-specific instructions, gotchas, or important context here]
+[Add project-specific instructions, gotchas, or important context here]
 
 ## External Dependencies
 
-[List any external services, APIs, or dependencies with relevant documentation links]
-
-## Related Resources
-
-- [WordPress Plugin Handbook](https://developer.wordpress.org/plugins/)
-- [Block Editor Handbook](https://developer.wordpress.org/block-editor/)
-- [wp-dev-prompts](https://github.com/courtneyr-dev/wp-dev-prompts)
+[List external services, APIs, or dependencies with docs links]

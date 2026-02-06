@@ -13,7 +13,7 @@ This document outlines what each AI platform can and cannot do, helping you choo
 | Multi-turn memory | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | Limited |
 | Custom instructions | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | File upload | ✅ | ✅ | ✅ | N/A | N/A | N/A | N/A |
-| Context window | 128K | 1M+ | 200K | 200K | 200K | Varies | 8K |
+| Context window | 128K | 2M | 200K | 200K | 200K | Varies | 128K |
 | Code execution | ✅*** | ✅*** | ❌ | ✅ | ✅ | ✅ | ❌ |
 
 *Copilot: Within current file context
