@@ -8,12 +8,32 @@
         },
         "command": "npx prettier --write \"$CLAUDE_FILE_PATH\" 2>/dev/null || true",
         "description": "Format markdown files with Prettier after editing"
+      },
+      {
+        "matcher": {
+          "tool": ["Write", "Edit"],
+          "filePath": "*.php"
+        },
+        "command": "vendor/bin/phpcbf --standard=WordPress-Extra \"$CLAUDE_FILE_PATH\" 2>/dev/null || true",
+        "description": "Auto-fix WordPress coding standards in PHP files"
+      },
+      {
+        "matcher": {
+          "tool": ["Write", "Edit"],
+          "filePath": "skills/*/SKILL.md"
+        },
+        "command": "head -1 \"$CLAUDE_FILE_PATH\" | grep -q '^---$' || echo 'WARNING: SKILL.md missing YAML frontmatter'",
+        "description": "Verify SKILL.md files have YAML frontmatter"
       }
     ],
     "PreCommit": [
       {
-        "command": "echo 'Running pre-commit verification...' && grep -r -q 'delve\\|tapestry\\|myriad' --include='*.md' . && echo 'WARNING: AI indicator words detected' || true",
-        "description": "Check for AI indicator words before commit"
+        "command": "BANNED='delve|tapestry|myriad|leverage|utilize|seamless|robust|paradigm|synergy|cutting-edge|game-changer'; FOUND=$(grep -r -l -E \"$BANNED\" --include='*.md' . 2>/dev/null | grep -v archive/ | grep -v node_modules/ || true); if [ -n \"$FOUND\" ]; then echo \"WARNING: AI indicator words in: $FOUND\"; fi",
+        "description": "Check for AI indicator words in non-archived files"
+      },
+      {
+        "command": "for f in $(git diff --cached --name-only --diff-filter=ACM | grep '\\.php$'); do grep -L 'defined.*ABSPATH' \"$f\" 2>/dev/null && echo \"WARNING: $f missing ABSPATH check\" || true; done",
+        "description": "Verify PHP files check for ABSPATH"
       }
     ]
   }
