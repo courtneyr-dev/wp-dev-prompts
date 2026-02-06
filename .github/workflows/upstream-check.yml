@@ -2,14 +2,9 @@ name: Check Upstream Dependencies
 
 on:
   schedule:
-    # Run every Monday at 9:00 AM UTC
+    # Every Monday at 9:00 AM UTC
     - cron: '0 9 * * 1'
   workflow_dispatch:
-    inputs:
-      force_issue:
-        description: 'Create issue even if no updates'
-        required: false
-        default: 'false'
 
 permissions:
   contents: read
@@ -23,154 +18,70 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check Automattic/agent-skills
-        id: automattic
+      - name: Check all upstream sources
+        id: check
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Checking Automattic/agent-skills..."
+          # Run the sync script in check mode (covers all 8 sources + skills.sh sub-repos)
+          set +e
+          bash scripts/sync-upstream.sh --check > check-results.txt 2>&1
+          EXIT_CODE=$?
+          set -e
 
-          # Get latest commit
-          LATEST=$(gh api repos/Automattic/agent-skills/commits?per_page=1 --jq '.[0]')
-          SHA=$(echo "$LATEST" | jq -r '.sha[0:7]')
-          DATE=$(echo "$LATEST" | jq -r '.commit.author.date[0:10]')
-          MSG=$(echo "$LATEST" | jq -r '.commit.message | split("\n")[0]')
+          cat check-results.txt
 
-          echo "latest_sha=$SHA" >> $GITHUB_OUTPUT
-          echo "latest_date=$DATE" >> $GITHUB_OUTPUT
-          echo "latest_msg=$MSG" >> $GITHUB_OUTPUT
-
-          # Check if this is newer than our last sync (from UPSTREAM.md)
-          LAST_SYNC=$(grep -A1 "Automattic/agent-skills" UPSTREAM.md | grep "Last Synced" | sed 's/.*: //')
-          echo "last_sync=$LAST_SYNC" >> $GITHUB_OUTPUT
-
-          if [[ "$DATE" > "$LAST_SYNC" ]]; then
-            echo "has_updates=true" >> $GITHUB_OUTPUT
+          if [[ $EXIT_CODE -eq 1 ]]; then
+            echo "has_updates=true" >> "$GITHUB_OUTPUT"
           else
-            echo "has_updates=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Check richtabor/skills
-        id: richtabor
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Checking richtabor/skills..."
-
-          LATEST=$(gh api repos/richtabor/skills/commits?per_page=1 --jq '.[0]')
-          SHA=$(echo "$LATEST" | jq -r '.sha[0:7]')
-          DATE=$(echo "$LATEST" | jq -r '.commit.author.date[0:10]')
-          MSG=$(echo "$LATEST" | jq -r '.commit.message | split("\n")[0]')
-
-          echo "latest_sha=$SHA" >> $GITHUB_OUTPUT
-          echo "latest_date=$DATE" >> $GITHUB_OUTPUT
-          echo "latest_msg=$MSG" >> $GITHUB_OUTPUT
-
-          LAST_SYNC=$(grep -A1 "richtabor/skills" UPSTREAM.md | grep "Last Synced" | sed 's/.*: //')
-          echo "last_sync=$LAST_SYNC" >> $GITHUB_OUTPUT
-
-          if [[ "$DATE" > "$LAST_SYNC" ]]; then
-            echo "has_updates=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_updates=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Check WordPress/WordPress-Documentation-Style-Guide
-        id: wordpress
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Checking WordPress/WordPress-Documentation-Style-Guide..."
-
-          LATEST=$(gh api repos/WordPress/WordPress-Documentation-Style-Guide/commits?per_page=1 --jq '.[0]')
-          SHA=$(echo "$LATEST" | jq -r '.sha[0:7]')
-          DATE=$(echo "$LATEST" | jq -r '.commit.author.date[0:10]')
-          MSG=$(echo "$LATEST" | jq -r '.commit.message | split("\n")[0]')
-
-          echo "latest_sha=$SHA" >> $GITHUB_OUTPUT
-          echo "latest_date=$DATE" >> $GITHUB_OUTPUT
-          echo "latest_msg=$MSG" >> $GITHUB_OUTPUT
-
-          LAST_SYNC=$(grep -A1 "WordPress/WordPress-Documentation-Style-Guide" UPSTREAM.md | grep "Last Synced" | sed 's/.*: //')
-          echo "last_sync=$LAST_SYNC" >> $GITHUB_OUTPUT
-
-          if [[ "$DATE" > "$LAST_SYNC" ]]; then
-            echo "has_updates=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_updates=false" >> $GITHUB_OUTPUT
+            echo "has_updates=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create issue if updates available
-        if: steps.automattic.outputs.has_updates == 'true' || steps.richtabor.outputs.has_updates == 'true' || steps.wordpress.outputs.has_updates == 'true' || github.event.inputs.force_issue == 'true'
+        if: steps.check.outputs.has_updates == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Build issue body
-          BODY="## Upstream Dependency Updates Available
+          BODY=$(cat <<'ISSUE_EOF'
+          ## Upstream Dependency Updates
 
-          The following upstream repositories have new commits since our last sync.
+          ```
+          ISSUE_EOF
+          )
+          BODY+=$'\n'
+          BODY+=$(cat check-results.txt)
+          BODY+=$'\n```\n\n'
+          BODY+=$(cat <<'ISSUE_EOF'
+          ## Next Steps
 
-          "
+          1. Fetch updated source:
+             ```bash
+             bash scripts/sync-upstream.sh --fetch <owner/repo>
+             ```
+          2. Compare changes:
+             ```bash
+             bash scripts/sync-upstream.sh --diff <owner/repo>
+             ```
+          3. Apply relevant changes manually (content is adapted, not copied)
+          4. Update sync date:
+             ```bash
+             bash scripts/sync-upstream.sh --update <owner/repo>
+             ```
 
-          if [[ "${{ steps.automattic.outputs.has_updates }}" == "true" ]]; then
-            BODY+="### Automattic/agent-skills
+          See `UPSTREAM.md` for full integration notes and affected files.
+          ISSUE_EOF
+          )
 
-          - **Latest commit:** ${{ steps.automattic.outputs.latest_sha }} - ${{ steps.automattic.outputs.latest_msg }}
-          - **Date:** ${{ steps.automattic.outputs.latest_date }}
-          - **Our last sync:** ${{ steps.automattic.outputs.last_sync }}
-          - **Affected files:** \`skills/security/*.md\`
-          - **View changes:** https://github.com/Automattic/agent-skills/commits/main
-
-          "
-          fi
-
-          if [[ "${{ steps.richtabor.outputs.has_updates }}" == "true" ]]; then
-            BODY+="### richtabor/skills
-
-          - **Latest commit:** ${{ steps.richtabor.outputs.latest_sha }} - ${{ steps.richtabor.outputs.latest_msg }}
-          - **Date:** ${{ steps.richtabor.outputs.latest_date }}
-          - **Our last sync:** ${{ steps.richtabor.outputs.last_sync }}
-          - **Affected files:** \`skills/technical-writing/**\`
-          - **View changes:** https://github.com/richtabor/skills/commits/main
-
-          "
-          fi
-
-          if [[ "${{ steps.wordpress.outputs.has_updates }}" == "true" ]]; then
-            BODY+="### WordPress/WordPress-Documentation-Style-Guide
-
-          - **Latest commit:** ${{ steps.wordpress.outputs.latest_sha }} - ${{ steps.wordpress.outputs.latest_msg }}
-          - **Date:** ${{ steps.wordpress.outputs.latest_date }}
-          - **Our last sync:** ${{ steps.wordpress.outputs.last_sync }}
-          - **Affected files:** \`skills/technical-writing/references/wordpress-docs-style-guide.md\`
-          - **View changes:** https://github.com/WordPress/WordPress-Documentation-Style-Guide/commits/main
-
-          "
-          fi
-
-          BODY+="## Next Steps
-
-          1. Review the upstream changes
-          2. Determine if updates are relevant to our integration
-          3. Manually sync any valuable changes
-          4. Update the \"Last Synced\" date in \`UPSTREAM.md\`
-          5. Close this issue
-
-          See \`UPSTREAM.md\` for detailed sync instructions.
-          "
-
-          # Create the issue
           gh issue create \
             --title "Upstream updates available ($(date +%Y-%m-%d))" \
             --body "$BODY" \
             --label "dependencies,upstream"
 
       - name: Summary
+        if: always()
         run: |
-          echo "## Upstream Check Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Repository | Has Updates | Latest Commit | Our Last Sync |" >> $GITHUB_STEP_SUMMARY
-          echo "|------------|-------------|---------------|---------------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Automattic/agent-skills | ${{ steps.automattic.outputs.has_updates }} | ${{ steps.automattic.outputs.latest_date }} | ${{ steps.automattic.outputs.last_sync }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| richtabor/skills | ${{ steps.richtabor.outputs.has_updates }} | ${{ steps.richtabor.outputs.latest_date }} | ${{ steps.richtabor.outputs.last_sync }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| WordPress/WordPress-Documentation-Style-Guide | ${{ steps.wordpress.outputs.has_updates }} | ${{ steps.wordpress.outputs.latest_date }} | ${{ steps.wordpress.outputs.last_sync }} |" >> $GITHUB_STEP_SUMMARY
+          echo "## Upstream Check" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat check-results.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

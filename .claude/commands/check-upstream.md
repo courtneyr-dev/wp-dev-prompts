@@ -1,59 +1,44 @@
 # Check Upstream Dependencies
 
-Check for updates in tracked upstream repositories.
+Check all 8 upstream sources tracked in `UPSTREAM.md` for updates.
 
-## Current Upstreams
+## Quick check
 
-```bash
-# Show tracked repos and last sync dates
-grep -A2 "### [0-9]" UPSTREAM.md | head -20
-```
-
-## Check Each Repository
+Run the sync script to see which sources have new commits:
 
 ```bash
-echo "=== WordPress/agent-skills ==="
-gh api repos/WordPress/agent-skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.author.date[0:10]) \(.commit.message | split("\n")[0])"' 2>/dev/null || echo "Run: gh auth login"
-
-echo ""
-echo "=== richtabor/skills ==="
-gh api repos/richtabor/skills/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.author.date[0:10]) \(.commit.message | split("\n")[0])"' 2>/dev/null || echo "Run: gh auth login"
-
-echo ""
-echo "=== WordPress/WordPress-Documentation-Style-Guide ==="
-gh api repos/WordPress/WordPress-Documentation-Style-Guide/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.author.date[0:10]) \(.commit.message | split("\n")[0])"' 2>/dev/null || echo "Run: gh auth login"
+bash scripts/sync-upstream.sh --check
 ```
 
-## Instructions
+## Full sync workflow
 
-1. Compare the commit dates above with "Last Synced" dates in `UPSTREAM.md`
+When updates are found:
 
-2. For any repo with newer commits:
-   - List the new commits
-   - Identify which files we integrated from that repo
-   - Determine if updates are relevant
+```bash
+# 1. Fetch the upstream repo
+bash scripts/sync-upstream.sh --fetch <owner/repo>
 
-3. If updates are relevant:
-   - Fetch the updated content
-   - Compare with our current version
-   - Highlight key differences
-   - Ask user if they want to apply updates
+# 2. Compare upstream vs local files
+bash scripts/sync-upstream.sh --diff <owner/repo>
 
-4. After syncing:
-   - Update "Last Synced" date in `UPSTREAM.md`
-   - Document what changed in commit message
+# 3. Apply changes manually (content is adapted, not directly copied)
 
-## Affected Files by Upstream
+# 4. Update the sync date in UPSTREAM.md
+bash scripts/sync-upstream.sh --update <owner/repo>
+```
 
-**WordPress/agent-skills:**
-- `skills/wordpress-security/*.md`
+## Tracked sources
 
-**richtabor/skills:**
-- `skills/prompt-engineering/SKILL.md`
-- `skills/prompt-engineering/references/anti-patterns.md`
-- `skills/prompt-engineering/references/style-guide.md`
-- `skills/prompt-engineering/references/wordpress-publishing.md`
-- `skills/prompt-engineering/scripts/publish-to-wordpress.py`
+| # | Repository | Affects |
+|---|-----------|---------|
+| 1 | WordPress/agent-skills | skills/wordpress-dev/, wordpress-security/, wordpress-performance/ |
+| 2 | richtabor/skills | skills/prompt-engineering/ |
+| 2b | richtabor/agent-skills | skills/wordpress-accessibility/, ui-ux-audit/, prompt-engineering/ |
+| 3 | WordPress/WordPress-Documentation-Style-Guide | skills/prompt-engineering/references/ |
+| 4 | Jameswlepage/trac-mcp | platforms/claude-code/ |
+| 5 | felixarntz/packages | skills/wordpress-dev/, workflows/plugin-maintenance/ |
+| 6 | deanpeters/product-manager-prompts | skills/product-management/ |
+| 7 | EveryInc/compound-engineering-plugin | skills/engineering/ |
+| 8 | skills.sh (7 individual repos) | skills/wordpress-dev/, wordpress-security/, wordpress-performance/ |
 
-**WordPress/WordPress-Documentation-Style-Guide:**
-- `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
+See `UPSTREAM.md` for full details, licenses, and per-repo sync commands.
