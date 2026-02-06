@@ -17,7 +17,7 @@ Example: `security xss-prevention "Prevent cross-site scripting attacks in WordP
 ls -d skills/*/ 2>/dev/null | sed 's/skills\///' | sed 's/\///'
 
 # Show skill format reference
-head -30 skills/technical-writing/SKILL.md
+head -30 skills/prompt-engineering/SKILL.md
 ```
 
 ## Instructions
@@ -28,8 +28,8 @@ head -30 skills/technical-writing/SKILL.md
    - One-line description
 
 2. Load style guides first:
-   - `skills/technical-writing/references/anti-patterns.md`
-   - `skills/technical-writing/references/wordpress-docs-style-guide.md`
+   - `skills/prompt-engineering/references/anti-patterns.md`
+   - `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
 
 3. Create the skill file at `skills/<category>/<skill-name>.md` with this structure:
 

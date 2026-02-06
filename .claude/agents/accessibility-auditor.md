@@ -51,7 +51,7 @@ Severity levels: Critical, Major, Minor, Best Practice
 ## Reference Skills
 
 When you need deeper context, read:
-- `skills/accessibility/accessibility-review.md`
-- `skills/accessibility/wcag-checklist.md`
-- `skills/accessibility/aria-patterns.md`
-- `skills/accessibility/keyboard-navigation.md`
+- `skills/wordpress-accessibility/accessibility-review.md`
+- `skills/wordpress-accessibility/wcag-checklist.md`
+- `skills/wordpress-accessibility/aria-patterns.md`
+- `skills/wordpress-accessibility/keyboard-navigation.md`

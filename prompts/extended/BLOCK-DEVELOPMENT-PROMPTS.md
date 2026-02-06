@@ -539,13 +539,13 @@ These prompts work best when combined with the following skills from this reposi
 
 | Skill | Use For |
 |-------|---------|
-| [Block Development](../../skills/wordpress/block-development.md) | API versions, deprecations, block types |
-| [Block Themes](../../skills/wordpress/block-themes.md) | theme.json, templates, style variations |
-| [Interactivity API](../../skills/wordpress/interactivity-api.md) | Directives, stores, hydration |
-| [Abilities API](../../skills/wordpress/abilities-api.md) | Permission-based functionality |
-| [REST API](../../skills/wordpress/rest-api.md) | Custom endpoints, authentication |
-| [Project Triage](../../skills/wordpress/project-triage.md) | Project detection before development |
-| [WPDS](../../skills/design/wpds.md) | WordPress Design System components |
+| [Block Development](../../skills/wordpress-dev/block-development.md) | API versions, deprecations, block types |
+| [Block Themes](../../skills/wordpress-dev/block-themes.md) | theme.json, templates, style variations |
+| [Interactivity API](../../skills/wordpress-dev/interactivity-api.md) | Directives, stores, hydration |
+| [Abilities API](../../skills/wordpress-dev/abilities-api.md) | Permission-based functionality |
+| [REST API](../../skills/wordpress-dev/rest-api.md) | Custom endpoints, authentication |
+| [Project Triage](../../skills/wordpress-dev/project-triage.md) | Project detection before development |
+| [WPDS](../../skills/ui-ux-audit/wpds.md) | WordPress Design System components |
 
 ---
 

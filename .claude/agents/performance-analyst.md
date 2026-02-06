@@ -50,7 +50,7 @@ You are a WordPress performance analyst. You identify bottlenecks in plugins, th
 
 ## Reference Skills
 
-- `skills/performance/performance-rules.md`
-- `skills/performance/core-web-vitals.md`
-- `skills/performance/caching-strategies.md`
-- `skills/performance/database-optimization.md`
+- `skills/wordpress-performance/performance-rules.md`
+- `skills/wordpress-performance/core-web-vitals.md`
+- `skills/wordpress-performance/caching-strategies.md`
+- `skills/wordpress-performance/database-optimization.md`

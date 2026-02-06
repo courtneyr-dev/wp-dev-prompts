@@ -50,7 +50,7 @@ Severity: Critical (exploitable now), High (exploitable with effort), Medium (ne
 
 ## Reference Skills
 
-- `skills/security/input-sanitization.md`
-- `skills/security/output-escaping.md`
-- `skills/security/nonces-capabilities.md`
-- `skills/security/database-queries.md`
+- `skills/wordpress-security/input-sanitization.md`
+- `skills/wordpress-security/output-escaping.md`
+- `skills/wordpress-security/nonces-capabilities.md`
+- `skills/wordpress-security/database-queries.md`

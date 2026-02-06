@@ -109,10 +109,10 @@ All styles use CSS custom properties for easy theming:
 ## Related Resources
 
 - **Storybook**: [../../ui/storybook/](../../ui/storybook/) - Preview and test components
-- **Skills**: [../../skills/accessibility/](../../skills/accessibility/) - Accessibility knowledge
-- **Skills**: [../../skills/performance/](../../skills/performance/) - Performance optimization
-- **Skills**: [../../skills/design/wpds.md](../../skills/design/wpds.md) - WordPress Design System
-- **Skills**: [../../skills/design/motion-design.md](../../skills/design/motion-design.md) - Animation specifications
+- **Skills**: [../../skills/wordpress-accessibility/](../../skills/wordpress-accessibility/) - Accessibility knowledge
+- **Skills**: [../../skills/wordpress-performance/](../../skills/wordpress-performance/) - Performance optimization
+- **Skills**: [../../skills/ui-ux-audit/wpds.md](../../skills/ui-ux-audit/wpds.md) - WordPress Design System
+- **Skills**: [../../skills/ui-ux-audit/motion-design.md](../../skills/ui-ux-audit/motion-design.md) - Animation specifications
 - **Agents**: [../../agents/specialists/accessibility.md](../../agents/specialists/accessibility.md) - A11y specialist
 
 ## Output Format

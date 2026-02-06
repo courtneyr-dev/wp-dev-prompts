@@ -205,4 +205,4 @@ For file access and execution, use Claude Code, Cursor, or Cline.
 - [Gemini AI](https://gemini.google.com/)
 - [Gemini API Docs](https://ai.google.dev/docs)
 - [Platform Comparison](../universal/capability-matrix.md)
-- [Security Skills](../../skills/security/)
+- [Security Skills](../../skills/wordpress-security/)

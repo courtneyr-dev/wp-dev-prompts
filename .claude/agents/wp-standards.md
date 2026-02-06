@@ -67,7 +67,7 @@ You review WordPress code for compliance with official coding standards, hook ar
 
 ## Reference Skills
 
-- `skills/wordpress/plugin-architecture.md`
-- `skills/wordpress/plugin-core.md`
-- `skills/wordpress/block-development.md`
-- `skills/wordpress/interactivity-api.md`
+- `skills/wordpress-dev/plugin-architecture.md`
+- `skills/wordpress-dev/plugin-core.md`
+- `skills/wordpress-dev/block-development.md`
+- `skills/wordpress-dev/interactivity-api.md`

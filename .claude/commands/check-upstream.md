@@ -46,14 +46,14 @@ gh api repos/WordPress/WordPress-Documentation-Style-Guide/commits?per_page=3 --
 ## Affected Files by Upstream
 
 **WordPress/agent-skills:**
-- `skills/security/*.md`
+- `skills/wordpress-security/*.md`
 
 **richtabor/skills:**
-- `skills/technical-writing/SKILL.md`
-- `skills/technical-writing/references/anti-patterns.md`
-- `skills/technical-writing/references/style-guide.md`
-- `skills/technical-writing/references/wordpress-publishing.md`
-- `skills/technical-writing/scripts/publish-to-wordpress.py`
+- `skills/prompt-engineering/SKILL.md`
+- `skills/prompt-engineering/references/anti-patterns.md`
+- `skills/prompt-engineering/references/style-guide.md`
+- `skills/prompt-engineering/references/wordpress-publishing.md`
+- `skills/prompt-engineering/scripts/publish-to-wordpress.py`
 
 **WordPress/WordPress-Documentation-Style-Guide:**
-- `skills/technical-writing/references/wordpress-docs-style-guide.md`
+- `skills/prompt-engineering/references/wordpress-docs-style-guide.md`

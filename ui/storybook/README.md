@@ -246,7 +246,7 @@ npm run test:visual -- --update-snapshots
 - **Tests**: [../../tests/ui-ux/](../../tests/ui-ux/) - Playwright UI/UX tests
 - **Docs**: [../../docs/ui-ux-audit.md](../../docs/ui-ux-audit.md) - UI/UX audit guide
 - **Docs**: [../../docs/ui-ux-guidelines.md](../../docs/ui-ux-guidelines.md) - Design principles
-- **Skills**: [../../skills/accessibility/](../../skills/accessibility/) - Accessibility knowledge
+- **Skills**: [../../skills/wordpress-accessibility/](../../skills/wordpress-accessibility/) - Accessibility knowledge
 - **Agents**: [../../agents/specialists/accessibility.md](../../agents/specialists/accessibility.md) - A11y specialist
 - **CI**: [../../.github/workflows/ci-nightly.yml](../../.github/workflows/ci-nightly.yml) - Visual regression tests
 - **CI**: [../../.github/workflows/ui-ux-audit.yml](../../.github/workflows/ui-ux-audit.yml) - UI/UX audit workflow

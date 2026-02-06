@@ -52,7 +52,7 @@ Use PLUGIN-MARKETING-PROMPTS.md
 
 ## Related Resources
 
-- **Core Prompts**: [../core/](../core/) - Portable prompts (coming soon)
+- **Core Prompts**: [../core/](../core/) - Portable, token-optimized prompts
 - **Prompt Guide**: [../README.md](../README.md) - Prompt structure guide
 - **Skills**: [../../skills/](../../skills/) - Knowledge modules
 - **Guides**: [../../guides/](../../guides/) - Development guides

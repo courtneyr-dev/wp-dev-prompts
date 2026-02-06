@@ -61,7 +61,7 @@ Include skill content in your rules:
 ```markdown
 # Security Rules
 
-Follow the patterns in wp-dev-prompts skills/security/
+Follow the patterns in wp-dev-prompts skills/wordpress-security/
 
 [Paste relevant skill content]
 ```

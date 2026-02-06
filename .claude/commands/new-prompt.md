@@ -18,8 +18,8 @@ Example: `core security-review "Quick security audit checklist for WordPress plu
    - **Description**: one-line summary
 
 2. Load style guides:
-   - `skills/technical-writing/references/anti-patterns.md`
-   - `skills/technical-writing/references/wordpress-docs-style-guide.md`
+   - `skills/prompt-engineering/references/anti-patterns.md`
+   - `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
 
 3. Determine prompt type:
    - **core/**: Must be under 2000 tokens, self-contained, no external refs

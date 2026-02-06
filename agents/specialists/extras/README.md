@@ -13,5 +13,5 @@ Specialized agents for niche tasks.
 
 ## Related
 
-- [skills/testing/](../../../skills/testing/) - Testing patterns
+- [skills/wordpress-testing/](../../../skills/wordpress-testing/) - Testing patterns
 - [docs/](../../../docs/) - Documentation standards

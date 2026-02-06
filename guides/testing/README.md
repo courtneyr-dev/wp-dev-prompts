@@ -12,5 +12,5 @@ Step-by-step guides for setting up and running tests.
 
 ## Related
 
-- [skills/testing/](../../skills/testing/) - Testing configuration skills
+- [skills/wordpress-testing/](../../skills/wordpress-testing/) - Testing configuration skills
 - [workflows/add-testing/](../../workflows/add-testing/) - Add testing workflow

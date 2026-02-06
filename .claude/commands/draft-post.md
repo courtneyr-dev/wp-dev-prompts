@@ -24,9 +24,9 @@ git diff --stat HEAD~5
 ## Instructions
 
 1. **Load all reference files first** (this is critical):
-   - Read `skills/technical-writing/references/anti-patterns.md`
-   - Read `skills/technical-writing/references/wordpress-docs-style-guide.md`
-   - Read `skills/technical-writing/references/style-guide.md`
+   - Read `skills/prompt-engineering/references/anti-patterns.md`
+   - Read `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
+   - Read `skills/prompt-engineering/references/style-guide.md`
 
 2. **Research the topic**:
    - Review recent commits related to the topic
@@ -72,5 +72,5 @@ echo "Saving to: .blog/${DATE}-${SLUG}.md"
    - Fix any issues found
 
 8. **Ask about WordPress publishing**:
-   - If yes, read `skills/technical-writing/references/wordpress-publishing.md`
+   - If yes, read `skills/prompt-engineering/references/wordpress-publishing.md`
    - Run the publish script

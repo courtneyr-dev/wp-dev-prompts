@@ -86,7 +86,7 @@ Include skill content in your rules:
 
 ```markdown
 For security patterns, follow:
-[Paste content from skills/security/nonces-capabilities.md]
+[Paste content from skills/wordpress-security/nonces-capabilities.md]
 ```
 
 ## Integration with wp-dev-prompts

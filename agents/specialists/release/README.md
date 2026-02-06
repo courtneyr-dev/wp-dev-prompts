@@ -14,5 +14,5 @@ Agents focused on plugin releases and WordPress.org publishing.
 ## Related
 
 - [workflows/plugin-maintenance/](../../../workflows/plugin-maintenance/) - Maintenance workflow
-- [skills/wordpress/wp-plugins-cli.md](../../../skills/wordpress/wp-plugins-cli.md) - CLI tools
-- [skills/testing/readme-validation.md](../../../skills/testing/readme-validation.md)
+- [skills/wordpress-dev/wp-plugins-cli.md](../../../skills/wordpress-dev/wp-plugins-cli.md) - CLI tools
+- [skills/wordpress-testing/readme-validation.md](../../../skills/wordpress-testing/readme-validation.md)

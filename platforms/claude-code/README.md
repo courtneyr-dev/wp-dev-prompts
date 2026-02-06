@@ -29,7 +29,7 @@ Customize the placeholders:
 Reference skills directly in conversations:
 
 ```
-Read skills/security/input-sanitization.md and apply those patterns to this form handler.
+Read skills/wordpress-security/input-sanitization.md and apply those patterns to this form handler.
 ```
 
 Or ask Claude Code to use them:
@@ -62,8 +62,8 @@ Before diving into implementation, point Claude Code at relevant skills:
 
 ```
 Before we implement this feature, read:
-- skills/wordpress/plugin-architecture.md
-- skills/security/nonces-capabilities.md
+- skills/wordpress-dev/plugin-architecture.md
+- skills/wordpress-security/nonces-capabilities.md
 ```
 
 ### Use the Task System
@@ -133,7 +133,7 @@ Commit these changes with a conventional commit message.
 Ensure you're in the wp-dev-prompts directory or have proper paths:
 
 ```
-Read /path/to/wp-dev-prompts/skills/wordpress/plugin-architecture.md
+Read /path/to/wp-dev-prompts/skills/wordpress-dev/plugin-architecture.md
 ```
 
 ### Permission Issues

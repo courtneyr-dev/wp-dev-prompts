@@ -3,9 +3,9 @@
 Use this template to announce your WordPress plugin launch. Replace all [BRACKETED] sections with your specific information.
 
 > **Style Guides**: Before writing, review [STYLE-REFERENCES.md](./STYLE-REFERENCES.md) and load:
-> - `skills/technical-writing/references/anti-patterns.md`
-> - `skills/technical-writing/references/wordpress-docs-style-guide.md`
-> - `skills/technical-writing/references/style-guide.md`
+> - `skills/prompt-engineering/references/anti-patterns.md`
+> - `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
+> - `skills/prompt-engineering/references/style-guide.md`
 
 ---
 

@@ -57,7 +57,7 @@ These prompts reference structured data files:
 ## Related Resources
 
 - **Extended Prompts**: [../extended/BLOCK-DEVELOPMENT-PROMPTS.md](../extended/BLOCK-DEVELOPMENT-PROMPTS.md) - Comprehensive block development
-- **Skills**: [../../skills/wordpress/block-development.md](../../skills/wordpress/block-development.md) - Block development knowledge
+- **Skills**: [../../skills/wordpress-dev/block-development.md](../../skills/wordpress-dev/block-development.md) - Block development knowledge
 - **Core Prompts**: [../core/blocks/](../core/blocks/) - Portable block prompts
 - **Data**: [../../data/](../../data/) - Reference data files
 - **Docs**: [../../docs/core-blocks-reference.md](../../docs/core-blocks-reference.md) - Block documentation

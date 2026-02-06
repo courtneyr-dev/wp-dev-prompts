@@ -92,18 +92,18 @@ When reviewing code:
 Upload these files from wp-dev-prompts as knowledge:
 
 **Security** (upload all):
-- `skills/security/input-sanitization.md`
-- `skills/security/output-escaping.md`
-- `skills/security/nonces-capabilities.md`
-- `skills/security/database-queries.md`
+- `skills/wordpress-security/input-sanitization.md`
+- `skills/wordpress-security/output-escaping.md`
+- `skills/wordpress-security/nonces-capabilities.md`
+- `skills/wordpress-security/database-queries.md`
 
 **WordPress** (upload relevant ones):
-- `skills/wordpress/plugin-architecture.md`
-- `skills/wordpress/block-development.md`
+- `skills/wordpress-dev/plugin-architecture.md`
+- `skills/wordpress-dev/block-development.md`
 
 **Testing** (optional):
-- `skills/testing/phpunit-wordpress.md`
-- `skills/testing/phpcs-wordpress.md`
+- `skills/wordpress-testing/phpunit-wordpress.md`
+- `skills/wordpress-testing/phpcs-wordpress.md`
 
 ### 4. Conversation Starters
 
@@ -165,4 +165,4 @@ response = client.chat.completions.create(
 
 - [OpenAI GPT Builder](https://chat.openai.com/gpts/editor)
 - [Platform Comparison](../universal/capability-matrix.md)
-- [Security Skills](../../skills/security/)
+- [Security Skills](../../skills/wordpress-security/)

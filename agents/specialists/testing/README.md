@@ -15,6 +15,6 @@ Agents focused on test strategy and implementation.
 
 ## Related Skills
 
-- [skills/testing/](../../../skills/testing/) - Testing configuration
-- [skills/testing/phpunit-wordpress.md](../../../skills/testing/phpunit-wordpress.md)
-- [skills/testing/playwright-wordpress.md](../../../skills/testing/playwright-wordpress.md)
+- [skills/wordpress-testing/](../../../skills/wordpress-testing/) - Testing configuration
+- [skills/wordpress-testing/phpunit-wordpress.md](../../../skills/wordpress-testing/phpunit-wordpress.md)
+- [skills/wordpress-testing/playwright-wordpress.md](../../../skills/wordpress-testing/playwright-wordpress.md)

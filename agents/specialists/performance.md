@@ -141,11 +141,11 @@ Via orchestrator:
 ## Related Resources
 
 ### Skills
-- [Core Web Vitals](../../skills/performance/core-web-vitals.md) — LCP, INP, CLS optimization
-- [WP Profiling](../../skills/performance/wp-profiling.md) — WP-CLI performance profiling
-- [Performance Rules](../../skills/performance/performance-rules.md) — 34 performance best practices
-- [Caching Strategies](../../skills/performance/caching-strategies.md) — Object, page, and transient caching
-- [Asset Optimization](../../skills/performance/asset-optimization.md) — Images, scripts, stylesheets
+- [Core Web Vitals](../../skills/wordpress-performance/core-web-vitals.md) — LCP, INP, CLS optimization
+- [WP Profiling](../../skills/wordpress-performance/wp-profiling.md) — WP-CLI performance profiling
+- [Performance Rules](../../skills/wordpress-performance/performance-rules.md) — 34 performance best practices
+- [Caching Strategies](../../skills/wordpress-performance/caching-strategies.md) — Object, page, and transient caching
+- [Asset Optimization](../../skills/wordpress-performance/asset-optimization.md) — Images, scripts, stylesheets
 
 ### Prompts
 - [Testing Automation](../../prompts/extended/TESTING-AUTOMATION-PROMPTS.md) (#15, #25, #26) — Performance testing

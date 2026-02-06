@@ -65,9 +65,9 @@ wp-plugins get-plugins ./plugins --vendor myname | \
 
 ## Related Skills
 
-- [wp-plugins-cli](../../skills/wordpress/wp-plugins-cli.md) - Full command reference
-- [wp-cli](../../skills/wordpress/wp-cli.md) - WordPress CLI operations
-- [plugin-architecture](../../skills/wordpress/plugin-architecture.md) - Plugin structure
+- [wp-plugins-cli](../../skills/wordpress-dev/wp-plugins-cli.md) - Full command reference
+- [wp-cli](../../skills/wordpress-dev/wp-cli.md) - WordPress CLI operations
+- [plugin-architecture](../../skills/wordpress-dev/plugin-architecture.md) - Plugin structure
 
 ## Next Steps
 

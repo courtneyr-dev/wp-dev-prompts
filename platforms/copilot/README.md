@@ -134,7 +134,7 @@ In `.github/copilot-instructions.md`, include the most critical patterns from sk
 ```markdown
 ## Security Patterns
 
-[Paste key patterns from skills/security/]
+[Paste key patterns from skills/wordpress-security/]
 ```
 
 ### Keep It Concise

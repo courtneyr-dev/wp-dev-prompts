@@ -13,9 +13,9 @@ All marketing content in this directory should follow these style guides. When g
 ### Before Writing
 
 Load these files:
-- `skills/technical-writing/references/anti-patterns.md`
-- `skills/technical-writing/references/wordpress-docs-style-guide.md`
-- `skills/technical-writing/references/style-guide.md`
+- `skills/prompt-engineering/references/anti-patterns.md`
+- `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
+- `skills/prompt-engineering/references/style-guide.md`
 
 ### Core Principles
 
@@ -163,4 +163,4 @@ Never use:
 
 - [WordPress Documentation Style Guide](https://make.wordpress.org/docs/style-guide/)
 - [richtabor/skills - Technical Writing](https://github.com/richtabor/skills/tree/main/technical-writing)
-- Local files in `skills/technical-writing/references/`
+- Local files in `skills/prompt-engineering/references/`

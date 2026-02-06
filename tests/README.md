@@ -186,7 +186,7 @@ test.describe('My Audit', () => {
 - **Prompts**: [../prompts/audit/](../prompts/audit/) - Audit prompt templates
 - **Docs**: [../docs/audit/](../docs/audit/) - Audit documentation
 - **CI**: [../.github/workflows/](../.github/workflows/) - GitHub Actions
-- **Skills**: [../skills/testing/](../skills/testing/) - Testing knowledge modules
+- **Skills**: [../skills/wordpress-testing/](../skills/wordpress-testing/) - Testing knowledge modules
 
 ## Test Reports
 

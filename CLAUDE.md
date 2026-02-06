@@ -28,9 +28,9 @@ wp-dev-prompts/
 When creating or editing any documentation, prompts, or templates:
 
 1. **Load style guides first** (in priority order):
-   - `skills/technical-writing/references/anti-patterns.md` — highest priority
-   - `skills/technical-writing/references/wordpress-docs-style-guide.md`
-   - `skills/technical-writing/references/style-guide.md`
+   - `skills/prompt-engineering/references/anti-patterns.md` — highest priority
+   - `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
+   - `skills/prompt-engineering/references/style-guide.md`
 
 2. **Follow these rules**:
    - Use second person ("you") and present tense

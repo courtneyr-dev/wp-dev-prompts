@@ -35,9 +35,9 @@ Interactive WordPress project setup using the PROJECT-KICKSTART-PROMPT.
    - Marketing prep from `prompts/extended/PLUGIN-MARKETING-PROMPTS.md`
 
 3. Load relevant skills for each phase:
-   - `skills/wordpress/plugin-architecture.md` for plugin projects
-   - `skills/wordpress/block-development.md` for block projects
-   - `skills/security/` for security setup
-   - `skills/testing/` for test configuration
+   - `skills/wordpress-dev/plugin-architecture.md` for plugin projects
+   - `skills/wordpress-dev/block-development.md` for block projects
+   - `skills/wordpress-security/` for security setup
+   - `skills/wordpress-testing/` for test configuration
 
 4. Generate a project plan document summarizing all decisions.

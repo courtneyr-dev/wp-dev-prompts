@@ -106,6 +106,6 @@ Via orchestrator:
 
 ## Related Resources
 
-- **Skills**: skills/wordpress/content-modeling.md
+- **Skills**: skills/wordpress-dev/content-modeling.md
 - **Agents**: agents/specialists/seo-strategy.md (findability connection)
 - **Prompts**: prompts/extended/PROJECT-KICKSTART-PROMPT.md (Phase 0)

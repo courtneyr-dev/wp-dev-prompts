@@ -14,4 +14,4 @@ Agents focused on continuous integration and automation.
 ## Related
 
 - [templates/github/](../../../templates/github/) - GitHub workflow templates
-- [skills/testing/](../../../skills/testing/) - Testing configuration
+- [skills/wordpress-testing/](../../../skills/wordpress-testing/) - Testing configuration

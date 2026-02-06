@@ -884,9 +884,9 @@ performance, visual regression, etc.
 ## Knowledge Files
 Upload these from the wp-dev-prompts repository:
 - prompts/extended/PROJECT-KICKSTART-PROMPT.md
-- skills/wordpress/*.md
-- skills/security/*.md
-- skills/testing/*.md
+- skills/wordpress-dev/*.md
+- skills/wordpress-security/*.md
+- skills/wordpress-testing/*.md
 ```
 
 ### 5.6 Gemini Configuration

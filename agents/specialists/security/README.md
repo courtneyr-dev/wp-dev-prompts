@@ -13,6 +13,6 @@ Agents focused on WordPress security auditing and hardening.
 
 ## Related Skills
 
-- [skills/security/](../../../skills/security/) - Security patterns
-- [skills/testing/security-scanning.md](../../../skills/testing/security-scanning.md)
-- [skills/testing/penetration-testing.md](../../../skills/testing/penetration-testing.md)
+- [skills/wordpress-security/](../../../skills/wordpress-security/) - Security patterns
+- [skills/wordpress-testing/security-scanning.md](../../../skills/wordpress-testing/security-scanning.md)
+- [skills/wordpress-testing/penetration-testing.md](../../../skills/wordpress-testing/penetration-testing.md)

@@ -29,5 +29,5 @@ Always reference STYLE-REFERENCES.md when creating marketing content to avoid AI
 
 ## Related
 
-- [skills/technical-writing/](../../skills/technical-writing/) - Writing skills
+- [skills/prompt-engineering/](../../skills/prompt-engineering/) - Writing skills
 - [docs/](../../docs/) - Documentation examples

@@ -16,4 +16,4 @@ Copy and customize for your project's testing needs.
 
 - [data/ui-ux-audit-checklist.yaml](../../data/ui-ux-audit-checklist.yaml)
 - [data/wpaudit-checklist.json](../../data/wpaudit-checklist.json)
-- [skills/testing/](../../skills/testing/)
+- [skills/wordpress-testing/](../../skills/wordpress-testing/)

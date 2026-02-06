@@ -109,5 +109,5 @@ Include in [FULL ASSESSMENT] Phase 3
 
 ## Related Resources
 
-- **Skills**: skills/wordpress/internationalization.md
+- **Skills**: skills/wordpress-dev/internationalization.md
 - **Agents**: agents/specialists/content-strategy.md (content alignment)

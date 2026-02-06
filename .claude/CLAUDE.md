@@ -44,9 +44,9 @@ wp-dev-prompts/
 ## Writing Rules
 
 Load these references (in priority order) when writing content:
-1. `skills/technical-writing/references/anti-patterns.md` (highest priority)
-2. `skills/technical-writing/references/wordpress-docs-style-guide.md`
-3. `skills/technical-writing/references/style-guide.md`
+1. `skills/prompt-engineering/references/anti-patterns.md` (highest priority)
+2. `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
+3. `skills/prompt-engineering/references/style-guide.md`
 
 **Required**: Use second person, active voice, contractions, and present tense. Vary sentence lengths. Be direct.
 
@@ -67,7 +67,7 @@ For marketing content, also load `templates/marketing/STYLE-REFERENCES.md`.
 ## Content Formats
 
 ### Skill Format
-Skills use `<skill>`, `<summary>`, `<knowledge>`, `<references>` tags. See `skills/technical-writing/SKILL.md` as the reference implementation.
+Skills use `<skill>`, `<summary>`, `<knowledge>`, `<references>` tags. See `skills/prompt-engineering/SKILL.md` as the reference implementation.
 
 ### Prompt Format
 Prompts use `<prompt>` tags with category/platform metadata. See `platforms/universal/prompt-specification.md`.

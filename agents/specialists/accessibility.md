@@ -130,6 +130,6 @@ Via orchestrator:
 
 ## Related Resources
 
-- **Skills**: skills/accessibility/wcag-checklist.md
+- **Skills**: skills/wordpress-accessibility/wcag-checklist.md
 - **Prompts**: prompts/extended/TESTING-AUTOMATION-PROMPTS.md (#13, #14)
 - **Tools**: @axe-core/playwright for automated testing

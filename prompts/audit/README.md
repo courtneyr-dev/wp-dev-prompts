@@ -74,7 +74,7 @@ See:
 - **Docs**: [../../docs/audit.md](../../docs/audit.md) - WordPress audit guide
 - **Docs**: [../../docs/audit/graphql-audit.md](../../docs/audit/graphql-audit.md) - GraphQL audit guide
 - **Agents**: [../../agents/specialists/security-advisory.md](../../agents/specialists/security-advisory.md) - Security specialist
-- **Skills**: [../../skills/security/](../../skills/security/) - Security knowledge modules
+- **Skills**: [../../skills/wordpress-security/](../../skills/wordpress-security/) - Security knowledge modules
 - **Site Review**: [../site-review/](../site-review/) - Comprehensive site assessment
 
 ## Automation Mappings

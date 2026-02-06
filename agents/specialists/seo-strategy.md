@@ -109,6 +109,6 @@ Via orchestrator:
 
 ## Related Resources
 
-- **Skills**: skills/wordpress/seo-fundamentals.md
+- **Skills**: skills/wordpress-dev/seo-fundamentals.md
 - **Agents**: agents/specialists/content-strategy.md (content connection)
 - **Agents**: agents/specialists/performance.md (Core Web Vitals)

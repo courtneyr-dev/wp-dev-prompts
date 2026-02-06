@@ -18,5 +18,5 @@ Copy and customize for your project workflow needs.
 ## Related
 
 - [workflows/](../../workflows/) - Multi-step workflows
-- [skills/testing/visual-regression.md](../../skills/testing/visual-regression.md)
-- [skills/wordpress/playground.md](../../skills/wordpress/playground.md)
+- [skills/wordpress-testing/visual-regression.md](../../skills/wordpress-testing/visual-regression.md)
+- [skills/wordpress-dev/playground.md](../../skills/wordpress-dev/playground.md)

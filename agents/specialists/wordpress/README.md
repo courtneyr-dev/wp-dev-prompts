@@ -14,6 +14,6 @@ Agents focused on WordPress-specific patterns and architecture.
 
 ## Related Skills
 
-- [skills/wordpress/](../../../skills/wordpress/) - WordPress development patterns
-- [skills/testing/multisite-testing.md](../../../skills/testing/multisite-testing.md)
-- [skills/testing/locale-rtl-testing.md](../../../skills/testing/locale-rtl-testing.md)
+- [skills/wordpress-dev/](../../../skills/wordpress-dev/) - WordPress development patterns
+- [skills/wordpress-testing/multisite-testing.md](../../../skills/wordpress-testing/multisite-testing.md)
+- [skills/wordpress-testing/locale-rtl-testing.md](../../../skills/wordpress-testing/locale-rtl-testing.md)

@@ -41,10 +41,10 @@ This repository integrates content from external sources. This document tracks t
 - wpds (NEW)
 
 **Files affected:**
-- `skills/wordpress/*.md`
-- `skills/security/*.md`
-- `skills/performance/*.md`
-- `skills/design/wpds.md`
+- `skills/wordpress-dev/*.md`
+- `skills/wordpress-security/*.md`
+- `skills/wordpress-performance/*.md`
+- `skills/ui-ux-audit/wpds.md`
 
 **Sync command:**
 ```bash
@@ -67,11 +67,11 @@ gh api repos/WordPress/agent-skills/commits --jq '.[0] | "\(.sha[0:7]) - \(.comm
 - WordPress REST API publishing script
 
 **Files affected:**
-- `skills/technical-writing/SKILL.md`
-- `skills/technical-writing/references/anti-patterns.md`
-- `skills/technical-writing/references/style-guide.md`
-- `skills/technical-writing/references/wordpress-publishing.md`
-- `skills/technical-writing/scripts/publish-to-wordpress.py`
+- `skills/prompt-engineering/SKILL.md`
+- `skills/prompt-engineering/references/anti-patterns.md`
+- `skills/prompt-engineering/references/style-guide.md`
+- `skills/prompt-engineering/references/wordpress-publishing.md`
+- `skills/prompt-engineering/scripts/publish-to-wordpress.py`
 
 **Sync command:**
 ```bash
@@ -93,14 +93,14 @@ gh api repos/richtabor/skills/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.mes
 - X writing skill (Twitter content creation)
 
 **Files affected:**
-- `skills/accessibility/accessibility-review.md`
-- `skills/design/motion-design.md`
-- `skills/design/references/decision-tree.md`
-- `skills/design/references/easing-tokens.md`
-- `skills/social-media/x-writing.md`
-- `skills/social-media/references/x-strategy.md`
-- `skills/social-media/references/style-guide.md`
-- `skills/social-media/references/anti-patterns.md`
+- `skills/wordpress-accessibility/accessibility-review.md`
+- `skills/ui-ux-audit/motion-design.md`
+- `skills/ui-ux-audit/references/decision-tree.md`
+- `skills/ui-ux-audit/references/easing-tokens.md`
+- `skills/prompt-engineering/x-writing.md`
+- `skills/prompt-engineering/references/x-strategy.md`
+- `skills/prompt-engineering/references/style-guide.md`
+- `skills/prompt-engineering/references/anti-patterns.md`
 
 **Sync command:**
 ```bash
@@ -125,7 +125,7 @@ gh api repos/richtabor/agent-skills/commits --jq '.[0] | "\(.sha[0:7]) - \(.comm
 - Formatting standards
 
 **Files affected:**
-- `skills/technical-writing/references/wordpress-docs-style-guide.md`
+- `skills/prompt-engineering/references/wordpress-docs-style-guide.md`
 
 **Sync command:**
 ```bash
@@ -169,7 +169,7 @@ gh api repos/Jameswlepage/trac-mcp/commits --jq '.[0] | "\(.sha[0:7]) - \(.commi
 - Workflow integration for version management
 
 **Files affected:**
-- `skills/wordpress/wp-plugins-cli.md`
+- `skills/wordpress-dev/wp-plugins-cli.md`
 - `workflows/plugin-maintenance/`
 
 **Sync command:**
@@ -253,13 +253,13 @@ gh api repos/EveryInc/compound-engineering-plugin/commits --jq '.[0] | "\(.sha[0
 - SEO WordPress manager (Yoast batch updates)
 
 **Files affected:**
-- `skills/security/penetration-testing.md`
-- `skills/performance/performance-rules.md`
-- `skills/wordpress/plugin-core.md`
-- `skills/wordpress/wordpress-publisher.md`
-- `skills/wordpress/wordpress-router.md`
-- `skills/wordpress/wordpress-pro.md`
-- `skills/wordpress/seo-wordpress-manager.md`
+- `skills/wordpress-security/penetration-testing.md`
+- `skills/wordpress-performance/performance-rules.md`
+- `skills/wordpress-dev/plugin-core.md`
+- `skills/wordpress-dev/wordpress-publisher.md`
+- `skills/wordpress-dev/wordpress-router.md`
+- `skills/wordpress-dev/wordpress-pro.md`
+- `skills/wordpress-dev/seo-wordpress-manager.md`
 
 **Individual sources:**
 

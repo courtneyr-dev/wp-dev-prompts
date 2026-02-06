@@ -144,12 +144,12 @@ Via orchestrator:
 ## Related Resources
 
 ### Skills
-- [Input Sanitization](../../skills/security/input-sanitization.md) — Validating and sanitizing user input
-- [Output Escaping](../../skills/security/output-escaping.md) — Context-specific output escaping
-- [Nonces & Capabilities](../../skills/security/nonces-capabilities.md) — CSRF protection and authorization
-- [Database Queries](../../skills/security/database-queries.md) — Secure $wpdb usage
-- [Penetration Testing](../../skills/security/penetration-testing.md) — WordPress security assessment
-- [REST API](../../skills/wordpress/rest-api.md) — Secure REST endpoint patterns
+- [Input Sanitization](../../skills/wordpress-security/input-sanitization.md) — Validating and sanitizing user input
+- [Output Escaping](../../skills/wordpress-security/output-escaping.md) — Context-specific output escaping
+- [Nonces & Capabilities](../../skills/wordpress-security/nonces-capabilities.md) — CSRF protection and authorization
+- [Database Queries](../../skills/wordpress-security/database-queries.md) — Secure $wpdb usage
+- [Penetration Testing](../../skills/wordpress-security/penetration-testing.md) — WordPress security assessment
+- [REST API](../../skills/wordpress-dev/rest-api.md) — Secure REST endpoint patterns
 
 ### Prompts
 - [Testing Automation](../../prompts/extended/TESTING-AUTOMATION-PROMPTS.md) (#10, #11, #12) — Security testing

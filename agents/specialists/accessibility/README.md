@@ -13,5 +13,5 @@ Agents focused on accessibility compliance and testing.
 
 ## Related Skills
 
-- [skills/accessibility/](../../../skills/accessibility/)
-- [skills/testing/accessibility-linting.md](../../../skills/testing/accessibility-linting.md)
+- [skills/wordpress-accessibility/](../../../skills/wordpress-accessibility/)
+- [skills/wordpress-testing/accessibility-linting.md](../../../skills/wordpress-testing/accessibility-linting.md)

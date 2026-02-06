@@ -208,7 +208,7 @@ jobs:
 
 ## Related Skills
 
-- [wp-plugins-cli](../../skills/wordpress/wp-plugins-cli.md) - Command reference
+- [wp-plugins-cli](../../skills/wordpress-dev/wp-plugins-cli.md) - Command reference
 - GitHub Actions documentation
 
 ## Workflow Complete

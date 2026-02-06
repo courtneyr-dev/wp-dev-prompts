@@ -64,7 +64,7 @@ Own the quality gates across the entire development lifecycle. Define what block
 - [ ] Visual regression baseline established
 
 ### Test Matrix
-- [ ] PHP versions: 7.4, 8.0, 8.1, 8.2, 8.3
+- [ ] PHP versions: 8.2, 8.3, 8.4
 - [ ] WordPress versions: latest, latest-1
 - [ ] Multisite: single-site + subdirectory
 - [ ] Locales: en_US + ar (RTL)
