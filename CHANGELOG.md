@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- **wp-openrouter-provider skill** (`skills/wordpress-dev/wp-openrouter-provider.md`) — WordPress AI Client provider patterns from [jonathanbossenger/wp-openrouter-provider](https://github.com/jonathanbossenger/wp-openrouter-provider)
+- **Upstream tracking** for jonathanbossenger/wp-openrouter-provider (source #9)
+
 ## [3.0.0] - 2026-02-06
 
 ### Added

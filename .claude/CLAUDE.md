@@ -84,10 +84,11 @@ Prompts use `<prompt>` tags with category/platform metadata. See `platforms/univ
 
 ## Upstream Dependencies
 
-This repo tracks 8 external sources. See `UPSTREAM.md` for sync status and update commands. Key sources:
+This repo tracks 9 external sources. See `UPSTREAM.md` for sync status and update commands. Key sources:
 - WordPress/agent-skills (WordPress development patterns)
 - richtabor/agent-skills (accessibility, motion design, X writing)
 - skills.sh (community WordPress skills)
+- jonathanbossenger/wp-openrouter-provider (WordPress AI Client + OpenRouter)
 
 ## Verification
 

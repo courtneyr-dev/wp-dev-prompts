@@ -237,6 +237,30 @@ gh api repos/EveryInc/compound-engineering-plugin/commits --jq '.[0] | "\(.sha[0
 
 ---
 
+### 9. jonathanbossenger/wp-openrouter-provider
+
+**Repository**: [github.com/jonathanbossenger/wp-openrouter-provider](https://github.com/jonathanbossenger/wp-openrouter-provider)
+**License**: Check repository
+**Last Synced**: 2026-02-09
+
+**What we use:**
+- WordPress AI Client provider registration pattern
+- OpenRouter multi-model gateway integration
+- OpenAI-compatible API wrapper for WordPress
+- Settings API with Select2 searchable dropdowns
+- Custom filter and public API patterns
+
+**Files affected:**
+- `skills/wordpress-dev/wp-openrouter-provider.md`
+
+**Sync command:**
+```bash
+# Check for updates
+gh api repos/jonathanbossenger/wp-openrouter-provider/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
 ### 8. skills.sh WordPress Skills
 
 **Source**: [skills.sh](https://skills.sh)
@@ -299,7 +323,9 @@ gh api repos/WordPress/WordPress-Documentation-Style-Guide/commits?per_page=3 --
 echo "\n=== Jameswlepage/trac-mcp ===" && \
 gh api repos/Jameswlepage/trac-mcp/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
 echo "\n=== felixarntz/packages ===" && \
-gh api repos/felixarntz/packages/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"'
+gh api repos/felixarntz/packages/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
+echo "\n=== jonathanbossenger/wp-openrouter-provider ===" && \
+gh api repos/jonathanbossenger/wp-openrouter-provider/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"'
 ```
 
 ---

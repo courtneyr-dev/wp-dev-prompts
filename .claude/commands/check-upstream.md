@@ -1,6 +1,6 @@
 # Check Upstream Dependencies
 
-Check all 8 upstream sources tracked in `UPSTREAM.md` for updates.
+Check all 9 upstream sources tracked in `UPSTREAM.md` for updates.
 
 ## Quick check
 
@@ -40,5 +40,6 @@ bash scripts/sync-upstream.sh --update <owner/repo>
 | 6 | deanpeters/product-manager-prompts | skills/product-management/ |
 | 7 | EveryInc/compound-engineering-plugin | skills/engineering/ |
 | 8 | skills.sh (7 individual repos) | skills/wordpress-dev/, wordpress-security/, wordpress-performance/ |
+| 9 | jonathanbossenger/wp-openrouter-provider | skills/wordpress-dev/ |
 
 See `UPSTREAM.md` for full details, licenses, and per-repo sync commands.

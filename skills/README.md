@@ -76,6 +76,7 @@ Skills are consolidated from:
 - [richtabor/agent-skills](https://github.com/richtabor/agent-skills) — Accessibility, motion design, writing
 - [skills.sh](https://skills.sh) — Community WordPress skills
 - [WordPress Documentation Style Guide](https://make.wordpress.org/docs/style-guide/) — Official standards
+- [jonathanbossenger/wp-openrouter-provider](https://github.com/jonathanbossenger/wp-openrouter-provider) — WordPress AI Client + OpenRouter integration
 - wp-dev-prompts original content
 
 Previous v2.0 skills (76 individual files) are archived in `archive/v2.0/skills/`.

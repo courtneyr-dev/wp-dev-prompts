@@ -139,10 +139,11 @@ grep -r "\](\./" --include="*.md" . | head -10
 
 ## Upstream Dependencies
 
-This repo tracks external sources. See `UPSTREAM.md` for:
+This repo tracks 9 external sources. See `UPSTREAM.md` for:
 - WordPress/agent-skills (security skills)
 - richtabor/skills (technical writing)
 - WordPress/WordPress-Documentation-Style-Guide
+- jonathanbossenger/wp-openrouter-provider (WordPress AI Client + OpenRouter)
 
 When syncing upstream changes:
 1. Check `UPSTREAM.md` for last sync dates
