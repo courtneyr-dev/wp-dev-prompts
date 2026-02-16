@@ -261,6 +261,31 @@ gh api repos/jonathanbossenger/wp-openrouter-provider/commits --jq '.[0] | "\(.s
 
 ---
 
+### 10. laxmariappan/abilities-scout
+
+**Repository**: [github.com/laxmariappan/abilities-scout](https://github.com/laxmariappan/abilities-scout)
+**License**: GPL v2 or later
+**Last Synced**: 2026-02-16
+
+**What we use:**
+- Static analysis scanner using `token_get_all()` for WordPress plugins
+- Point-based scoring engine for ability classification
+- Verb-based tool/resource classification (TOOL_VERBS, RESOURCE_VERBS)
+- Infrastructure suffix filtering patterns
+- Abilities API registration patterns (`wp_register_ability()`, `wp_register_ability_category()`)
+- MCP tools integration for WordPress abilities
+
+**Files affected:**
+- `skills/wordpress-dev/abilities-scout.md`
+
+**Sync command:**
+```bash
+# Check for updates
+gh api repos/laxmariappan/abilities-scout/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
 ### 8. skills.sh WordPress Skills
 
 **Source**: [skills.sh](https://skills.sh)
@@ -325,7 +350,9 @@ gh api repos/Jameswlepage/trac-mcp/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) 
 echo "\n=== felixarntz/packages ===" && \
 gh api repos/felixarntz/packages/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
 echo "\n=== jonathanbossenger/wp-openrouter-provider ===" && \
-gh api repos/jonathanbossenger/wp-openrouter-provider/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"'
+gh api repos/jonathanbossenger/wp-openrouter-provider/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
+echo "\n=== laxmariappan/abilities-scout ===" && \
+gh api repos/laxmariappan/abilities-scout/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"'
 ```
 
 ---
