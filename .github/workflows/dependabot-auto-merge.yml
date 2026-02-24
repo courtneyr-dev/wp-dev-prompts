@@ -191,7 +191,7 @@ jobs:
 
       - name: Send Slack notification for security updates
         if: steps.security-check.outputs.is_security == 'true' && secrets.SLACK_WEBHOOK_URL != ''
-        uses: slackapi/slack-github-action@v1
+        uses: slackapi/slack-github-action@v2
         with:
           payload: |
             {
