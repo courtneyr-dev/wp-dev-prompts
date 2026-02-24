@@ -94,6 +94,80 @@ https://mcp-server-wporg-trac-staging.a8cai.workers.dev/mcp/chatgpt
 
 Connect via ChatGPT Settings > Connectors.
 
+### WordPress DevDocs MCP Server
+
+**Repository**: [pluginslab/wp-devdocs-mcp](https://github.com/pluginslab/wp-devdocs-mcp)
+
+A local MCP server that indexes every action, filter, block registration, and JavaScript API call from WordPress core, WooCommerce, Gutenberg, or any plugin codebase. Gives your AI assistant a verified hook database instead of relying on training data.
+
+#### What It Does
+
+- Index PHP actions and filters (`do_action`, `apply_filters` calls)
+- Index JavaScript hooks (`addAction`, `addFilter`, etc.)
+- Track block registrations and variations
+- Capture WordPress JS API usage (`wp.blocks.*`, `wp.blockEditor.*`, `wp.data.*`)
+- Full-text search across all indexed hooks with file locations, docblocks, and parameters
+- Validate hook names against actual source to prevent hallucination
+
+#### Setup
+
+```bash
+git clone https://github.com/pluginslab/wp-devdocs-mcp.git
+cd wp-devdocs-mcp
+npm install
+```
+
+Add to your `.mcp.json` or `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "wp-devdocs": {
+      "command": "npx",
+      "args": ["--prefix", "/path/to/wp-devdocs-mcp", "wp-devdocs-mcp"]
+    }
+  }
+}
+```
+
+#### Available Tools
+
+| Tool | Description |
+|------|-------------|
+| `search_hooks` | Find hooks by name, type, or keyword across indexed sources |
+| `validate_hook` | Confirm a hook exists in actual source code |
+| `get_hook_context` | Get surrounding code, parameters, and docblock for a hook |
+| `search_block_apis` | Search block registrations and JS API usage |
+
+#### Use Cases
+
+**Before using a hook in your plugin:**
+```
+Validate that the hook "wp_enqueue_scripts" exists and show me its parameters.
+```
+
+**Finding the right filter:**
+```
+Search for hooks related to "post title" filtering.
+```
+
+**Understanding block APIs:**
+```
+Search for block registrations related to "gallery" in Gutenberg.
+```
+
+**Indexing your own plugin:**
+```
+Index the hooks in /path/to/my-plugin so I can search them.
+```
+
+#### Requirements
+
+- Node.js 20+
+- ~500MB disk space per large indexed source
+
+---
+
 ## Other Useful MCP Servers
 
 ### Database Access
@@ -121,3 +195,4 @@ For project-specific needs, you can create MCP servers using:
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [Claude Code MCP Documentation](https://docs.anthropic.com/claude-code/mcp)
 - [trac-mcp GitHub](https://github.com/Jameswlepage/trac-mcp)
+- [wp-devdocs-mcp GitHub](https://github.com/pluginslab/wp-devdocs-mcp)

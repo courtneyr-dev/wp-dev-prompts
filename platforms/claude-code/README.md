@@ -90,9 +90,13 @@ Claude Code supports MCP (Model Context Protocol) servers for extended capabilit
 
 #### WordPress Trac MCP Server
 
-**Highly recommended**: [trac-mcp](https://github.com/Jameswlepage/trac-mcp) provides AI access to WordPress.org Trac data—60,000+ tickets, changesets with diffs, and development activity.
+**Highly recommended**: Two MCP servers cover WordPress development from different angles.
 
-**Setup** (add to `claude_desktop_config.json`):
+**[trac-mcp](https://github.com/Jameswlepage/trac-mcp)** — AI access to WordPress.org Trac data: 60,000+ tickets, changesets with diffs, and development activity.
+
+**[wp-devdocs-mcp](https://github.com/pluginslab/wp-devdocs-mcp)** — Local hook/filter/block database indexed from actual source code. Prevents AI hallucination of hook names.
+
+**Setup** (add to `claude_desktop_config.json` or `.mcp.json`):
 
 ```json
 {
@@ -100,23 +104,16 @@ Claude Code supports MCP (Model Context Protocol) servers for extended capabilit
     "wordpress-trac": {
       "command": "npx",
       "args": ["mcp-remote", "https://mcp-server-wporg-trac-staging.a8cai.workers.dev/mcp"]
+    },
+    "wp-devdocs": {
+      "command": "npx",
+      "args": ["--prefix", "/path/to/wp-devdocs-mcp", "wp-devdocs-mcp"]
     }
   }
 }
 ```
 
-**Use cases**:
-- Research existing tickets before creating new ones
-- Find related changesets when debugging
-- Track WordPress core development activity
-- Understand how core handles specific features
-
-**Example queries**:
-```
-Search Trac for tickets about block editor performance.
-Get ticket #59166 with comments to understand the discussion.
-Show me recent changesets related to the REST API.
-```
+See [MCP Servers](mcp-servers.md) for full documentation, tools, and use cases.
 
 ### Git Operations
 

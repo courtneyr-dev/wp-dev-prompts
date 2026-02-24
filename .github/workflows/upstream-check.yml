@@ -13,6 +13,7 @@ permissions:
 jobs:
   check-upstreams:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -23,7 +24,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Run the sync script in check mode (covers all 10 sources + skills.sh sub-repos)
+          # Run the sync script in check mode (covers all 11 sources + skills.sh sub-repos)
           set +e
           bash scripts/sync-upstream.sh --check > check-results.txt 2>&1
           EXIT_CODE=$?

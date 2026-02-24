@@ -139,10 +139,11 @@ grep -r "\](\./" --include="*.md" . | head -10
 
 ## Upstream Dependencies
 
-This repo tracks 10 external sources. See `UPSTREAM.md` for:
-- WordPress/agent-skills (security skills)
-- richtabor/skills (technical writing)
+This repo tracks 11 external sources. See `UPSTREAM.md` for:
+- WordPress/agent-skills (WordPress development patterns)
+- richtabor/skills + richtabor/agent-skills (writing, accessibility, motion design)
 - WordPress/WordPress-Documentation-Style-Guide
+- pluginslab/wp-devdocs-mcp (hook/filter/block database MCP server)
 - jonathanbossenger/wp-openrouter-provider (WordPress AI Client + OpenRouter)
 - laxmariappan/abilities-scout (Abilities API static analysis)
 

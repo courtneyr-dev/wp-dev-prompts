@@ -286,6 +286,30 @@ gh api repos/laxmariappan/abilities-scout/commits --jq '.[0] | "\(.sha[0:7]) - \
 
 ---
 
+### 11. pluginslab/wp-devdocs-mcp
+
+**Repository**: [github.com/pluginslab/wp-devdocs-mcp](https://github.com/pluginslab/wp-devdocs-mcp)
+**License**: MIT
+**Last Synced**: 2026-02-24
+
+**What we use:**
+- Local MCP server that indexes WordPress hooks, filters, blocks, and JS APIs from source code
+- SQLite-backed full-text search for validated hook names and parameters
+- Tools: `search_hooks`, `validate_hook`, `get_hook_context`, `search_block_apis`
+- Eliminates AI hallucination of hook names by validating against actual source
+
+**Files affected:**
+- `platforms/claude-code/mcp-servers.md`
+- `platforms/claude-code/README.md`
+
+**Sync command:**
+```bash
+# Check for updates
+gh api repos/pluginslab/wp-devdocs-mcp/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
 ### 8. skills.sh WordPress Skills
 
 **Source**: [skills.sh](https://skills.sh)
@@ -352,7 +376,9 @@ gh api repos/felixarntz/packages/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(
 echo "\n=== jonathanbossenger/wp-openrouter-provider ===" && \
 gh api repos/jonathanbossenger/wp-openrouter-provider/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
 echo "\n=== laxmariappan/abilities-scout ===" && \
-gh api repos/laxmariappan/abilities-scout/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"'
+gh api repos/laxmariappan/abilities-scout/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' && \
+echo "\n=== pluginslab/wp-devdocs-mcp ===" && \
+gh api repos/pluginslab/wp-devdocs-mcp/commits?per_page=3 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"'
 ```
 
 ---

@@ -36,6 +36,7 @@ jobs:
   schema-validation:
     name: Schema Validation
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -67,7 +68,7 @@ jobs:
           echo "## Schema Introspection" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+          response=$(curl -s --connect-timeout 10 --max-time 30 -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Content-Type: application/json" \
             -d '{"query":"{ __schema { queryType { name } mutationType { name } types { name kind } } }"}')
 
@@ -97,6 +98,7 @@ jobs:
   query-tests:
     name: Query Functionality
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -126,7 +128,7 @@ jobs:
         run: |
           echo "## Pagination Test" >> $GITHUB_STEP_SUMMARY
 
-          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+          response=$(curl -s --connect-timeout 10 --max-time 30 -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Content-Type: application/json" \
             -d '{"query":"{ posts(first: 2) { pageInfo { hasNextPage endCursor } nodes { id } } }"}')
 
@@ -150,6 +152,7 @@ jobs:
   auth-tests:
     name: Auth & Authorization
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -180,7 +183,7 @@ jobs:
         run: |
           echo "## Authentication Checks" >> $GITHUB_STEP_SUMMARY
 
-          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+          response=$(curl -s --connect-timeout 10 --max-time 30 -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Content-Type: application/json" \
             -d '{"query":"{ viewer { id email capabilities } }"}')
 
@@ -193,7 +196,7 @@ jobs:
 
       - name: Check mutation protection
         run: |
-          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+          response=$(curl -s --connect-timeout 10 --max-time 30 -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Content-Type: application/json" \
             -d '{"query":"mutation { createPost(input: { title: \"Test\", status: DRAFT, clientMutationId: \"test\" }) { post { id } } }"}')
 
@@ -217,6 +220,7 @@ jobs:
   security-tests:
     name: Security Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: ${{ inputs.run_security_tests != false }}
 
     steps:
@@ -249,7 +253,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           echo "### CORS Configuration" >> $GITHUB_STEP_SUMMARY
-          cors_response=$(curl -s -I -X OPTIONS "${{ env.GRAPHQL_ENDPOINT }}" \
+          cors_response=$(curl -s --connect-timeout 10 --max-time 30 -I -X OPTIONS "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Origin: https://malicious-site.com" \
             -H "Access-Control-Request-Method: POST" 2>/dev/null || echo "CORS check failed")
 
@@ -271,7 +275,7 @@ jobs:
 
           deep_query='{"query":"{ posts { nodes { categories { nodes { posts { nodes { categories { nodes { name } } } } } } } } }"}'
 
-          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+          response=$(curl -s --connect-timeout 10 --max-time 30 -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Content-Type: application/json" \
             -d "$deep_query")
 
@@ -286,7 +290,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Introspection Status" >> $GITHUB_STEP_SUMMARY
 
-          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+          response=$(curl -s --connect-timeout 10 --max-time 30 -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Content-Type: application/json" \
             -d '{"query":"{ __schema { types { name } } }"}')
 
@@ -301,7 +305,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Information Leakage Check" >> $GITHUB_STEP_SUMMARY
 
-          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+          response=$(curl -s --connect-timeout 10 --max-time 30 -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Content-Type: application/json" \
             -d '{"query":"{ posts { nodes { nonExistentField } } }"}')
 
@@ -325,6 +329,7 @@ jobs:
   wpgraphql-tests:
     name: WPGraphQL Specific
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -354,7 +359,7 @@ jobs:
         run: |
           echo "## WPGraphQL Specific Checks" >> $GITHUB_STEP_SUMMARY
 
-          response=$(curl -s -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
+          response=$(curl -s --connect-timeout 10 --max-time 30 -X POST "${{ env.GRAPHQL_ENDPOINT }}" \
             -H "Content-Type: application/json" \
             -d '{"query":"{ contentNodes(first: 5) { nodes { __typename id } } }"}')
 
@@ -378,6 +383,7 @@ jobs:
   generate-report:
     name: Generate Audit Report
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs:
       - schema-validation
       - query-tests

@@ -130,12 +130,17 @@ See [Platform Capability Matrix](platforms/universal/capability-matrix.md) for a
 This toolkit builds on:
 
 - **[WordPress/agent-skills](https://github.com/WordPress/agent-skills)** — WordPress development patterns (MIT)
+- **[richtabor/skills](https://github.com/richtabor/skills)** — Technical writing and style guides
 - **[richtabor/agent-skills](https://github.com/richtabor/agent-skills)** — Accessibility, motion design, X writing
+- **[WordPress/WordPress-Documentation-Style-Guide](https://github.com/WordPress/WordPress-Documentation-Style-Guide)** — Official WordPress docs style guide (GPLv2+)
 - **[deanpeters/product-manager-prompts](https://github.com/deanpeters/product-manager-prompts)** — Product management frameworks (MIT)
 - **[EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin)** — Engineering workflows (MIT)
 - **[skills.sh](https://skills.sh)** — Community WordPress skills
 - **[@felixarntz/wp-plugins-cli](https://www.npmjs.com/package/@felixarntz/wp-plugins-cli)** — Plugin maintenance CLI
 - **[Jameswlepage/trac-mcp](https://github.com/Jameswlepage/trac-mcp)** — WordPress Trac access
+- **[pluginslab/wp-devdocs-mcp](https://github.com/pluginslab/wp-devdocs-mcp)** — Hook/filter/block database from source code
+- **[jonathanbossenger/wp-openrouter-provider](https://github.com/jonathanbossenger/wp-openrouter-provider)** — WordPress AI Client + OpenRouter
+- **[laxmariappan/abilities-scout](https://github.com/laxmariappan/abilities-scout)** — Abilities API static analysis
 
 See [UPSTREAM.md](UPSTREAM.md) for sync status.
 

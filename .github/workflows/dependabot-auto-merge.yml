@@ -19,6 +19,7 @@ jobs:
   auto-merge:
     name: Auto-merge Dependabot PRs
     runs-on: ubuntu-latest
+    timeout-minutes: 35
 
     # Only run for Dependabot PRs
     if: github.actor == 'dependabot[bot]'
@@ -132,6 +133,7 @@ jobs:
   notify-security:
     name: Notify Security Updates
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     if: github.actor == 'dependabot[bot]'
 
     steps:

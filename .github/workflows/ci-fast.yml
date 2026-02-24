@@ -22,6 +22,7 @@ jobs:
   lint:
     name: Lint & Format
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -73,6 +74,7 @@ jobs:
   php-lint:
     name: PHP Linting
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     if: ${{ hashFiles('**/*.php') != '' }}
 
     steps:
@@ -111,6 +113,7 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -135,6 +138,7 @@ jobs:
   a11y-check:
     name: Basic Accessibility Check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -166,6 +170,7 @@ jobs:
   validate-prompts:
     name: Validate Prompts & Blueprints
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -231,6 +236,7 @@ jobs:
   static-analysis:
     name: Static Analysis
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -249,7 +255,7 @@ jobs:
         run: npx tsc --noEmit 2>/dev/null || echo "No TypeScript configured"
 
       - name: Check for secrets
-        uses: trufflesecurity/trufflehog@main
+        uses: trufflesecurity/trufflehog@v3
         with:
           path: ./
           base: ""
@@ -261,6 +267,7 @@ jobs:
   ci-summary:
     name: CI Summary
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs: [lint, unit-tests, validate-prompts, static-analysis]
     if: always()
 
