@@ -31,7 +31,7 @@
 #
 ###############################################################################
 
-set -e  # Exit on error
+set -euo pipefail  # Exit on error, undefined vars, and pipe failures
 
 # Colors for output
 RED='\033[0;31m'
@@ -487,13 +487,13 @@ if [ "$SKIP_WORKFLOWS" = false ]; then
     print_header "Setting Up GitHub Actions"
 
     # Check if workflow templates exist in the repo
-    WORKFLOW_DIR="github-workflows"
+    WORKFLOW_DIR="templates/github-workflows"
     if [ -d "$WORKFLOW_DIR" ]; then
         cp "$WORKFLOW_DIR/wordpress-plugin-ci.yml" .github/workflows/ci.yml 2>/dev/null || print_warning "CI workflow template not found"
         cp "$WORKFLOW_DIR/visual-regression-testing.yml" .github/workflows/visual-regression.yml 2>/dev/null || print_warning "Visual regression workflow template not found"
         print_success "GitHub Actions workflows copied"
     else
-        print_warning "Workflow templates not found. Please copy manually from github-workflows/ directory"
+        print_warning "Workflow templates not found. Please copy manually from templates/github-workflows/ directory"
     fi
 
     # Copy Dependabot config

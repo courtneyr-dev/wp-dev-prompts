@@ -12,6 +12,10 @@ permissions:
   pull-requests: write
   checks: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
 jobs:
   # ============================================================================
   # AUTO-MERGE SAFE UPDATES
@@ -37,12 +41,11 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           # Wait for these checks to complete
           check-name: |
-            PHP Linting (PHPCS + PHPStan)
-            JavaScript/CSS Linting
-            PHPUnit - PHP 8.2 / WP 6.7
-            JavaScript Unit Tests (Jest)
-            WordPress Plugin Check (PCP)
-            Security Scanning
+            Lint & Format
+            PHP Linting
+            Unit Tests
+            Validate Prompts & Blueprints
+            Static Analysis
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
           # Fail if checks don't complete in 30 minutes

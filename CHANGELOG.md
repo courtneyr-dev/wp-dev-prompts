@@ -6,8 +6,20 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
-- **wp-openrouter-provider skill** (`skills/wordpress-dev/wp-openrouter-provider.md`) — WordPress AI Client provider patterns from [jonathanbossenger/wp-openrouter-provider](https://github.com/jonathanbossenger/wp-openrouter-provider)
-- **Upstream tracking** for jonathanbossenger/wp-openrouter-provider (source #9)
+- **wp-devdocs-mcp integration** — local MCP server for WordPress hooks, filters, blocks, and JS APIs via [pluginslab/wp-devdocs-mcp](https://github.com/pluginslab/wp-devdocs-mcp) (upstream #11)
+- **abilities-scout skill** (`skills/wordpress-dev/abilities-scout.md`) — Abilities API static analysis from [laxmariappan/abilities-scout](https://github.com/laxmariappan/abilities-scout) (upstream #10)
+- **wp-openrouter-provider skill** (`skills/wordpress-dev/wp-openrouter-provider.md`) — WordPress AI Client provider patterns from [jonathanbossenger/wp-openrouter-provider](https://github.com/jonathanbossenger/wp-openrouter-provider) (upstream #9)
+- **Concurrency controls** added to all 9 GitHub Actions workflows
+
+### Fixed
+
+- **GitHub Actions timeouts** — added `timeout-minutes` to every job across all 9 workflow files; added `--connect-timeout 10 --max-time 30` to all curl commands in audit workflows
+- **Dependabot auto-merge** — check names now match actual ci-fast.yml job names
+- **Nightly summary** — `multisite-tests` job now included in summary table and failure notifications
+- **Workflow placeholders** — replaced hard-coded `your-org` URLs with dynamic `github.server_url`/`github.repository`
+- **Stale test references** — audit.yml now checks for test files before running them
+- **Pinned trufflehog** action from `@main` to `@v3` for reproducible builds
+- **Cross-references** — source counts and lists updated across README.md and both CLAUDE.md files
 
 ## [3.0.0] - 2026-02-06
 

@@ -365,6 +365,7 @@ jobs:
     needs:
       - integration-tests
       - e2e-tests
+      - multisite-tests
       - visual-regression
       - performance-tests
       - audit-runs
@@ -381,6 +382,7 @@ jobs:
           echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| Integration Tests | ${{ needs.integration-tests.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| E2E Tests | ${{ needs.e2e-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Multisite & Locale | ${{ needs.multisite-tests.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Visual Regression | ${{ needs.visual-regression.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Performance | ${{ needs.performance-tests.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Audit Runs | ${{ needs.audit-runs.result }} |" >> $GITHUB_STEP_SUMMARY
@@ -404,6 +406,7 @@ jobs:
             ${Object.entries({
               'Integration Tests': '${{ needs.integration-tests.result }}',
               'E2E Tests': '${{ needs.e2e-tests.result }}',
+              'Multisite & Locale': '${{ needs.multisite-tests.result }}',
               'Visual Regression': '${{ needs.visual-regression.result }}',
               'Performance': '${{ needs.performance-tests.result }}',
               'Audit Runs': '${{ needs.audit-runs.result }}',

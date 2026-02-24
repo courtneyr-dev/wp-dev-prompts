@@ -27,6 +27,10 @@ on:
         type: boolean
         default: true
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   SITE_URL: ${{ inputs.site_url || 'http://localhost:8888' }}
 
@@ -57,8 +61,11 @@ jobs:
 
       - name: Run SEO audit tests
         run: |
-          npx playwright test tests/audit/seo.spec.ts --reporter=html 2>/dev/null || \
-            echo "No SEO tests found"
+          if [ -f "tests/audit/seo.spec.ts" ]; then
+            npx playwright test tests/audit/seo.spec.ts --reporter=html
+          else
+            echo "No SEO tests found — skipping"
+          fi
         env:
           BASE_URL: ${{ env.SITE_URL }}
 
@@ -225,8 +232,11 @@ jobs:
 
       - name: Run Playwright a11y tests
         run: |
-          npx playwright test tests/audit/accessibility.spec.ts --reporter=html 2>/dev/null || \
-            echo "No accessibility tests found"
+          if [ -f "tests/audit/accessibility.spec.ts" ]; then
+            npx playwright test tests/audit/accessibility.spec.ts --reporter=html
+          else
+            echo "No accessibility tests found — skipping"
+          fi
         env:
           BASE_URL: ${{ env.SITE_URL }}
 
@@ -475,7 +485,7 @@ jobs:
           echo "| Security | ${{ needs.security-audit.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "---" >> $GITHUB_STEP_SUMMARY
-          echo "Audit powered by [wp-dev-prompts](https://github.com/your-org/wp-dev-prompts)" >> $GITHUB_STEP_SUMMARY
+          echo "Audit powered by [wp-dev-prompts](${{ github.server_url }}/${{ github.repository }})" >> $GITHUB_STEP_SUMMARY
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4

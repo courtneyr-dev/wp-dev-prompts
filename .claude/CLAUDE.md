@@ -2,7 +2,7 @@
 
 AI-powered toolkit for WordPress plugin and theme development. Works across Claude Code, Cursor, Cline, Copilot, ChatGPT, Gemini, and others.
 
-**Version**: 3.0.0 | **WordPress**: 6.9+ | **PHP**: 8.2+
+**Version**: 3.1.0-dev | **WordPress**: 6.9+ | **PHP**: 8.2+
 
 ## Architecture
 
