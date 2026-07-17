@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- **wp-screenshots skill** (`skills/wp-screenshots/`) — headless-Chromium WordPress screenshot harness driven by JSON briefs, with login-aware capture, admin-notice hiding, retina DPR, site verifier, and HTML gallery generator, from [flintfromthebasement/skills](https://github.com/flintfromthebasement/skills) (upstream #12)
 - **wp-devdocs-mcp integration** — local MCP server for WordPress hooks, filters, blocks, and JS APIs via [pluginslab/wp-devdocs-mcp](https://github.com/pluginslab/wp-devdocs-mcp) (upstream #11)
 - **abilities-scout skill** (`skills/wordpress-dev/abilities-scout.md`) — Abilities API static analysis from [laxmariappan/abilities-scout](https://github.com/laxmariappan/abilities-scout) (upstream #10)
 - **wp-openrouter-provider skill** (`skills/wordpress-dev/wp-openrouter-provider.md`) — WordPress AI Client provider patterns from [jonathanbossenger/wp-openrouter-provider](https://github.com/jonathanbossenger/wp-openrouter-provider) (upstream #9)

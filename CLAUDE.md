@@ -139,7 +139,7 @@ grep -r "\](\./" --include="*.md" . | head -10
 
 ## Upstream Dependencies
 
-This repo tracks 11 external sources. See `UPSTREAM.md` for:
+This repo tracks 12 external sources. See `UPSTREAM.md` for:
 - WordPress/agent-skills (WordPress development patterns)
 - richtabor/skills + richtabor/agent-skills (writing, accessibility, motion design)
 - WordPress/WordPress-Documentation-Style-Guide

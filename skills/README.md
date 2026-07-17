@@ -16,6 +16,7 @@ Reusable knowledge modules for AI-assisted WordPress development. Each skill is 
 | [ui-ux-audit](ui-ux-audit/) | UI/UX review and motion design specifications |
 | [engineering](engineering/) | Planning, code review, git workflows |
 | [product-management](product-management/) | Personas, JTBD, positioning, user stories |
+| [wp-screenshots](wp-screenshots/) | Headless-Chromium WordPress screenshot harness driven by JSON briefs |
 
 ## Skill Format
 

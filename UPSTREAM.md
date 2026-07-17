@@ -310,6 +310,30 @@ gh api repos/pluginslab/wp-devdocs-mcp/commits --jq '.[0] | "\(.sha[0:7]) - \(.c
 
 ---
 
+### 12. flintfromthebasement/skills (wp-screenshots)
+
+**Repository**: [github.com/flintfromthebasement/skills](https://github.com/flintfromthebasement/skills)
+**License**: none declared (no LICENSE file in upstream repo)
+**Last Synced**: 2026-07-17
+
+**What we use:**
+- wp-screenshots skill — Puppeteer harness for clean WordPress admin and front-end screenshots
+- JSON brief schema (per-shot URL, viewport, DPR, login state, hover/click targets)
+- Login-aware capture with admin-notice hiding CSS and retina defaults
+- Site verifier (login, update bubbles, PHP warnings) and standalone HTML gallery generator
+- Fontconfig aliases for Mac-faithful `system-ui` rendering on Linux
+
+**Files affected:**
+- `skills/wp-screenshots/` (entire directory)
+
+**Sync command:**
+```bash
+# Check for updates
+gh api repos/flintfromthebasement/skills/commits --jq '.[0] | "\(.sha[0:7]) - \(.commit.message | split("\n")[0]) (\(.commit.author.date[0:10]))"'
+```
+
+---
+
 ### 8. skills.sh WordPress Skills
 
 **Source**: [skills.sh](https://skills.sh)
