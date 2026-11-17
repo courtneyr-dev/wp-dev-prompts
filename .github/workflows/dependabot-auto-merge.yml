@@ -191,6 +191,8 @@ jobs:
         if: steps.security-check.outputs.is_security == 'true' && secrets.SLACK_WEBHOOK_URL != ''
         uses: slackapi/slack-github-action@v2
         with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
           payload: |
             {
               "text": "🚨 Security Update Available",
@@ -204,6 +206,3 @@ jobs:
                 }
               ]
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
